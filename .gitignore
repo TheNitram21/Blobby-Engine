@@ -1,0 +1,6 @@
+# Java files
+*.class
+*.jar
+
+# IntelliJ data
+.idea
