@@ -36,7 +36,7 @@ public class EngineTest implements EventListener {
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), BlobbyEngine.getTexture("player"), null));
         Player p = BlobbyEngine.getPlayer();
         p.setTextureToRender(BlobbyEngine.getTexture("player"));
-        BlobbyEngine.setLevel(LevelLoader.loadLevel("blobby_debug.json"));
+        BlobbyEngine.setLevel(LevelLoader.loadLevel("blobby_debug"));
 
         List<Button> buttons = new ArrayList<>();
         buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f), BlobbyEngine.getTexture("button"),

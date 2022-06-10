@@ -24,7 +24,7 @@ public class LevelLoader {
         try {
             BlobbyEngine.renderPlayer = false;
 
-            filename = BlobbyEngine.MAPS_PATH + filename;
+            filename = BlobbyEngine.MAPS_PATH + filename + ".json";
             JSONObject json = loadJSONFromFile(filename);
             Level level;
 
