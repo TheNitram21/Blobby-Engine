@@ -7,7 +7,13 @@ import java.util.Map;
 
 public class Entity {
 
-    public Entity(Vector2d position, ITexture texture, Map<String, Object> parameters) {}
+    private static int entityCount = 0;
+    private long id;
+
+    public Entity(Vector2d position, ITexture texture, Map<String, Object> parameters) {
+        entityCount++;
+        this.id = entityCount;
+    }
 
     public Vector2d getPosition() {
         return null;
@@ -23,5 +29,21 @@ public class Entity {
 
     public ITexture getTexture() {
         return null;
+    }
+
+    public boolean renderInFrontOfPlayer() {
+        return true;
+    }
+
+    public final long getId() {
+        return id;
+    }
+
+    public final boolean equals(Object that) {
+        if(that == null)
+            return false;
+        if(!(that instanceof Entity))
+            return false;
+        return this.getId() == ((Entity) that).getId();
     }
 }

@@ -2,6 +2,7 @@ package de.arnomann.martin.blobby.physics;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import org.joml.Vector2d;
+import org.joml.Vector2i;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,8 +25,9 @@ public class Physics {
                 if(!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
                     return;
 
-                if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight()))
+                if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight())) {
                     collides.set(true);
+                }
             });
         });
 

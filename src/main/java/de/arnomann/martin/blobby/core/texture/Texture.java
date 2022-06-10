@@ -97,6 +97,10 @@ public class Texture implements ITexture {
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
+    public ByteBuffer getPixels() {
+        return pixels;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -110,20 +114,8 @@ public class Texture implements ITexture {
         return filename;
     }
 
-    public void genId() {
-        if(id == 0) {
-            id = glGenTextures();
-            bind();
-
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-        }
-    }
-
     @Override
     public String toString() {
-        return filename;
+        return getClass().getSimpleName() + "[filename=" + filename + "]";
     }
 }

@@ -26,7 +26,7 @@ public class EngineTest implements EventListener {
     public static void main(String[] args) {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
-        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1]));
+        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1]), args);
     }
 
     @Override
@@ -38,9 +38,9 @@ public class EngineTest implements EventListener {
         p.setTextureToRender(BlobbyEngine.getTexture("player"));
         BlobbyEngine.setLevel(LevelLoader.loadLevel("blobby_debug.json"));
 
-
         List<Button> buttons = new ArrayList<>();
-        buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f), BlobbyEngine.getTexture("button"), () -> {}));
+        buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f), BlobbyEngine.getTexture("button"),
+                BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
     }
 
@@ -54,17 +54,21 @@ public class EngineTest implements EventListener {
 
         if(!BlobbyEngine.paused) {
             Player p = BlobbyEngine.getPlayer();
-            boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(0, p.getHeight() / 2d), 1, 0.2,
+            boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 2d, 0), 1, 0.05,
                     "Block");
 
             Vector2d move = new Vector2d();
-            if(Input.keyPressed(GLFW_KEY_A))
-                move.add(-5 * event.deltaTime, 0);
-            else if(Input.keyPressed(GLFW_KEY_D))
-                move.add(5 * event.deltaTime, 0);
 
-            if(Input.keyPressed(GLFW_KEY_SPACE))
-                playerYVelocity = .01f * -fallSpeed;
+            if(!BlobbyEngine.isTransitioningBetweenScreens()) {
+                if (Input.keyPressed(GLFW_KEY_A))
+                    move.add(-5 * event.deltaTime, 0);
+                else if (Input.keyPressed(GLFW_KEY_D))
+                    move.add(5 * event.deltaTime, 0);
+
+                if (Input.keyPressed(GLFW_KEY_SPACE) && playerOnGround)
+                    playerYVelocity = .01f * -fallSpeed;
+            }
+
             if(playerOnGround && playerYVelocity > 0) {
                 playerYVelocity = 0;
             }

@@ -1,14 +1,20 @@
 package de.arnomann.martin.blobby.core;
 
 import de.arnomann.martin.blobby.RunConfigurations;
+import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StartEvent;
 import de.arnomann.martin.blobby.event.UpdateEvent;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -58,6 +64,7 @@ public final class Window {
 
     void start() {
         GL.createCapabilities();
+
         glClearColor(0.2f, 0.3f, 1f, 0f);
 
         glEnable(GL_TEXTURE_2D);
@@ -73,7 +80,7 @@ public final class Window {
             float delta = (float) (curTime - lastFrameTime);
             ListenerManager.callEvent(new UpdateEvent(delta, curTime));
 
-            Renderer.render(this);
+            Renderer.render(this, delta);
 
             lastFrameTime = curTime;
 

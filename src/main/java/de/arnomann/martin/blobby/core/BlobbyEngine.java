@@ -7,12 +7,14 @@ import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.levels.Level;
+import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.logging.Logger;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
 
 import java.io.*;
+import java.lang.Math;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +41,11 @@ public final class BlobbyEngine {
 
     public static boolean paused = false;
 
+    static boolean transitioningScreen = false;
+
     private BlobbyEngine() {}
 
-    public static void run(RunConfigurations runConfig) {
+    public static void run(RunConfigurations runConfig, String[] arguments) {
         textures = new HashMap<>();
         logger = new Logger();
 
@@ -55,12 +59,35 @@ public final class BlobbyEngine {
         }
 
         window = new Window(runConfig);
-        unitMultiplier = window.getWidth() / 16;
+        unitMultiplier = window.getWidth() / 16d;
 
         Input.initialize();
         Sound.initialize();
 
+        checkArguments(arguments);
+
         window.start();
+    }
+
+    private static void checkArguments(String[] arguments) {
+        for(String argument : arguments) {
+            String[] split = argument.split(":", 1);
+
+            String key = split[0];
+            String value = split[1];
+
+            switch(key) {
+                case "map":
+                    currentLevel = LevelLoader.loadLevel(value);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public static boolean isTransitioningBetweenScreens() {
+        return transitioningScreen;
     }
 
     public static double unitMultiplier() {
@@ -73,12 +100,7 @@ public final class BlobbyEngine {
     }
 
     public static Vector2i getEntityScreen(Entity e) {
-        Vector2i screenPos;
-
-        Vector2d entityPos = e.getPosition();
-        screenPos = new Vector2i((int) (entityPos.x / 16), (int) (entityPos.y / 9));
-
-        return screenPos;
+        return new Vector2i((int) Math.floor((e.getPosition().x + e.getWidth() / 2d) / 16), (int) Math.floor((e.getPosition().y + e.getHeight() / 2d) / 9));
     }
 
     public static ITexture loadTexture(String filename) {
@@ -98,7 +120,7 @@ public final class BlobbyEngine {
             texture = new Texture(filename);
         }
 
-        logger.debug("filename: " + filename + " / width: " + texture.getWidth() + " / height: " + texture.getHeight());
+        logger.debug("Loaded texture " + filename + " with size " + texture.getWidth() + ", " + texture.getHeight() + ".");
 
         textures.put(filename, texture);
         return texture;

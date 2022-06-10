@@ -4,9 +4,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.arnomann.martin</groupId>
+    <groupId>io.github.thenitram21</groupId>
     <artifactId>BlobbyEngine</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
+
+    <name>Blobby Engine</name>
+    <description>A 2d level-based game engine</description>
+    <url>https://www.github.com/TheNitram21/Blobby-Engine</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Nitram21</name>
+            <email>martin@arnomann.de</email>
+            <url>https://www.github.com/TheNitram21/</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/TheNitram21/Blobby-Engine.git</connection>
+        <developerConnection>scm:git:ssh://github.com:TheNitram21/Blobby-Engine.git</developerConnection>
+        <url>https://www.github.com/TheNitram21/Blobby-Engine/tree/development</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

@@ -3,7 +3,6 @@ package de.arnomann.martin.blobby.core;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.levels.Level;
-import de.arnomann.martin.blobby.levels.Screen;
 import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
@@ -21,6 +20,12 @@ public final class Renderer {
 
     private static Window curWindow;
 
+    private static Vector2d entityOffset = new Vector2d();
+    private static Vector2i currentScreen;
+    private static double screenTransition = 0d;
+
+    private static final double screenTransitionDuration = 1d; // seconds
+
     private Renderer() {}
 
     /* ONLY FOR INTERNAL USE */
@@ -37,34 +42,70 @@ public final class Renderer {
         queuedTextures.put(new Vector4i(x, y, width, height), texture);
     }
 
-    public static void render(Window window) {
+    public static void render(Window window, float deltaTime) {
         curWindow = window;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        int textureWidth = (int) BlobbyEngine.unitMultiplier();
-        int textureHeight = (int) BlobbyEngine.unitMultiplier();
 
         Level level = BlobbyEngine.getCurrentLevel();
 
         Player player = BlobbyEngine.getPlayer();
-        System.out.println(player.getPosition().x + " " + player.getPosition().y);
 
+        Vector2i playerScreen = BlobbyEngine.getEntityScreen(player);
+
+        double um = BlobbyEngine.unitMultiplier();
+
+        Vector2d transitionOffset = new Vector2d();
+        if(currentScreen == null) {
+            currentScreen = playerScreen;
+        }
+
+        entityOffset.x = currentScreen.x * 16;
+        entityOffset.y = currentScreen.y * 9;
+
+        if(playerScreen.x != currentScreen.x || playerScreen.y != currentScreen.y) {
+            BlobbyEngine.transitioningScreen = true;
+            screenTransition += deltaTime;
+            if(screenTransition >= screenTransitionDuration) {
+                screenTransition = 0;
+                currentScreen = playerScreen;
+                BlobbyEngine.transitioningScreen = false;
+            } else {
+                double screenTransitionPercentage = screenTransition / screenTransitionDuration;
+                transitionOffset = new Vector2d( (playerScreen.x - currentScreen.x) * screenTransitionPercentage,
+                        (playerScreen.y - currentScreen.y) * screenTransitionPercentage);
+                transitionOffset.mul(16 * um, 9 * um);
+            }
+        }
+
+        Vector2d finalTransitionOffset = transitionOffset;
         if(level != null) {
-            Vector2i playerScreenPos = BlobbyEngine.getEntityScreen(player);
-
             level.screens.forEach((screenPos, screen) -> {
-                if(screenPos.equals(playerScreenPos)) {
-                    screen.entities.forEach(entity -> {
-                        Vector2d entityPos = new Vector2d(entity.getPosition()).mul(BlobbyEngine.unitMultiplier());
-                        queueTexture((int) (entityPos.x), (int) (entityPos.y), textureWidth, textureHeight, entity.getTexture());
-                    });
-                }
+                screen.entities.forEach(entity -> {
+                    if(!entity.renderInFrontOfPlayer()) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                    }
+                });
             });
         }
 
         if(BlobbyEngine.renderPlayer) {
-            render((int) (textureWidth * (player.getPosition().x % 16)), (int) (textureHeight * (player.getPosition().y % 9) - textureHeight * 2),
-                    textureWidth, textureHeight * 2, player.getTexture());
+            render((int) (um * (player.getPosition().x - entityOffset.x) - finalTransitionOffset.x),
+                    (int) (um * (player.getPosition().y - entityOffset.y) - finalTransitionOffset.y - um * 2),
+                    (int) um, (int) um * 2, player.getTexture());
+        }
+
+        if(level != null) {
+            level.screens.forEach((screenPos, screen) -> {
+                screen.entities.forEach(entity -> {
+                    if(entity.renderInFrontOfPlayer()) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                    }
+                });
+            });
         }
 
         queuedTextures.forEach((pos, tex) -> {
