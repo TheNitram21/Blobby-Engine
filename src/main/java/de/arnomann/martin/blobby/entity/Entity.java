@@ -1,11 +1,12 @@
 package de.arnomann.martin.blobby.entity;
 
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.event.EventListener;
 import org.joml.Vector2d;
 
 import java.util.Map;
 
-public class Entity {
+public class Entity implements EventListener {
 
     private static int entityCount = 0;
     private long id;

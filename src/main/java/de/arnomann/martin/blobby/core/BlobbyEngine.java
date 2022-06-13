@@ -6,6 +6,7 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
+import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
@@ -15,6 +16,7 @@ import org.joml.*;
 
 import java.io.*;
 import java.lang.Math;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,6 +86,16 @@ public final class BlobbyEngine {
                     break;
             }
         }
+    }
+
+    public static Entity instantiateEntity(String classname, Vector2d position, ITexture texture, Map<String, Object> properties)
+            throws Exception { /* We could throw:
+                                    ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+                                    But that would be a bit much. */
+        Class<?> entityClass = Class.forName(classname);
+        Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, ITexture.class, Map.class).newInstance(position, texture, properties);
+        ListenerManager.registerEventListener(entity);
+        return entity;
     }
 
     public static boolean isTransitioningBetweenScreens() {

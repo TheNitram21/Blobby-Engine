@@ -2,7 +2,6 @@ package de.arnomann.martin.blobby.physics;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import org.joml.Vector2d;
-import org.joml.Vector2i;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -15,10 +14,10 @@ public class Physics {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
 
-    public static boolean objectInBox(Vector2d boxMiddlePos, double boxWidth, double boxHeight, String entityClassName) {
+    public static boolean objectInBox(Vector2d boxStartingPos, double boxWidth, double boxHeight, String entityClassName) {
         AtomicBoolean collides = new AtomicBoolean(false);
 
-        Rectangle.Double r = new Rectangle.Double(boxMiddlePos.x - boxWidth / 2, boxMiddlePos.y - boxHeight / 2, boxWidth, boxHeight);
+        Rectangle.Double r = new Rectangle.Double(boxStartingPos.x, boxStartingPos.y, boxWidth, boxHeight);
 
         BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
             screen.entities.forEach(e -> {
@@ -33,7 +32,5 @@ public class Physics {
 
         return collides.get();
     }
-
-
 
 }

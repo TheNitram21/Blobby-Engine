@@ -1,20 +1,14 @@
 package de.arnomann.martin.blobby.core;
 
 import de.arnomann.martin.blobby.RunConfigurations;
-import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StartEvent;
 import de.arnomann.martin.blobby.event.UpdateEvent;
-import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;

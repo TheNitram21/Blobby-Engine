@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class LevelLoader {
@@ -62,10 +61,9 @@ public class LevelLoader {
                         }
 
                         try {
-                            e = (Entity) Class.forName(entityJson.getString("ClassName")).getConstructors()[0].newInstance(
-                                    new Vector2d(x + screenX * 16, y + screenY * 9),
+                            e = BlobbyEngine.instantiateEntity(entityJson.getString("ClassName"), new Vector2d(x + screenX * 16, y + screenY * 9),
                                     BlobbyEngine.getTexture(entityJson.getString("ClassName")), entityParameters);
-                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassNotFoundException ex) {
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 

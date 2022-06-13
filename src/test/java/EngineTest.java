@@ -26,7 +26,7 @@ public class EngineTest implements EventListener {
     public static void main(String[] args) {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
-        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1]), args);
+        BlobbyEngine.run(RunConfigurations.createDefault("Blobby Engine Test", windowSize[0], windowSize[1]), args);
     }
 
     @Override
@@ -54,15 +54,17 @@ public class EngineTest implements EventListener {
 
         if(!BlobbyEngine.paused) {
             Player p = BlobbyEngine.getPlayer();
-            boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 2d, 0), 1, 0.05,
+            boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, 0), 0.5, 0.05,
                     "Block");
 
             Vector2d move = new Vector2d();
 
             if(!BlobbyEngine.isTransitioningBetweenScreens()) {
-                if (Input.keyPressed(GLFW_KEY_A))
+                if (Input.keyPressed(GLFW_KEY_A) && !Physics.objectInBox(new Vector2d(p.getPosition()).add(-p.getWidth() / 5, -p.getHeight()),
+                        0.05, 1.5, "Block"))
                     move.add(-5 * event.deltaTime, 0);
-                else if (Input.keyPressed(GLFW_KEY_D))
+                else if (Input.keyPressed(GLFW_KEY_D) && !Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth(), -p.getHeight()),
+                        0.05, 1.5, "Block"))
                     move.add(5 * event.deltaTime, 0);
 
                 if (Input.keyPressed(GLFW_KEY_SPACE) && playerOnGround)
