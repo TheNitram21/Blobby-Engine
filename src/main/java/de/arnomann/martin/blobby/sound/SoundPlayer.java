@@ -55,15 +55,7 @@ public class Sound {
         IntBuffer channelsBuffer = stackMallocInt(1);
         stackPush();
         IntBuffer sampleRateBuffer = stackMallocInt(1);
-
-        /*
-            === THIS LINE CAUSES AN AL_INVALID_NAME ERROR WHEN PLAYING SOUND AFTER STOPPING ALL SOUNDS ===
-
-            Fix this.
-            Sometime.
-
-            TODO
-         */
+        
         ShortBuffer rawAudioBuffer = stb_vorbis_decode_filename(name, channelsBuffer, sampleRateBuffer);
 
         int channels = channelsBuffer.get();
