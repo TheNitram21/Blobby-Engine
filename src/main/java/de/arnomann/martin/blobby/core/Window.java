@@ -5,6 +5,7 @@ import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StartEvent;
 import de.arnomann.martin.blobby.event.UpdateEvent;
+import de.arnomann.martin.blobby.sound.SoundPlayer;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
@@ -82,8 +83,8 @@ public final class Window {
             glfwPollEvents();
         }
 
-        if(Sound.isInitialized())
-            Sound.destroy();
+        if(SoundPlayer.isInitialized())
+            SoundPlayer.destroy();
 
         close();
 

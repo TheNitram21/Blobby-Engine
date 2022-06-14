@@ -11,12 +11,12 @@ import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.logging.Logger;
+import de.arnomann.martin.blobby.sound.SoundPlayer;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
 
 import java.io.*;
 import java.lang.Math;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +67,7 @@ public final class BlobbyEngine {
         unitMultiplier = window.getWidth() / 16d;
 
         Input.initialize();
-        Sound.initialize();
+        SoundPlayer.initialize();
 
         window.start();
     }

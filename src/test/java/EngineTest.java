@@ -2,7 +2,8 @@ import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
 import de.arnomann.martin.blobby.entity.Player;
-import de.arnomann.martin.blobby.core.Sound;
+import de.arnomann.martin.blobby.sound.Sound;
+import de.arnomann.martin.blobby.sound.SoundPlayer;
 import de.arnomann.martin.blobby.event.*;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.Logger;
@@ -82,6 +83,8 @@ public class EngineTest implements EventListener {
         }
     }
 
+    Sound hiSound;
+
     @Override
     public void onKeyPressed(KeyPressedEvent event) {
         if(event.key == GLFW_KEY_ESCAPE) {
@@ -94,9 +97,11 @@ public class EngineTest implements EventListener {
             }
         }
 
-        if(event.key == GLFW_KEY_M)
-            Sound.playSound("hi.ogg");
-        if(event.key == GLFW_KEY_X)
-            Sound.stopAllSounds();
+        if(event.key == GLFW_KEY_M) {
+            if(hiSound == null)
+                hiSound = SoundPlayer.createSound("hi.ogg");
+            SoundPlayer.playSound(hiSound);
+        } if(event.key == GLFW_KEY_X)
+            SoundPlayer.stopSound(hiSound);
     }
 }
