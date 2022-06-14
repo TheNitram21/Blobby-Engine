@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static de.arnomann.martin.blobby.MathUtil.booleanToInt;
 
 public final class Renderer {
 
@@ -24,7 +25,7 @@ public final class Renderer {
     private static Vector2i currentScreen;
     private static double screenTransition = 0d;
 
-    private static final double screenTransitionDuration = 1d; // seconds
+    private static double screenTransitionDuration = 1d; // seconds
 
     private Renderer() {}
 
@@ -126,14 +127,16 @@ public final class Renderer {
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture) {
         texture.bind();
 
+        boolean flipped = texture.isFlipped();
+
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
+        glTexCoord2f(booleanToInt(flipped), 0);
         glVertex2f(uvStart.x, uvStart.y);
-        glTexCoord2f(1, 0);
+        glTexCoord2f(booleanToInt(!flipped), 0);
         glVertex2f(uvEnd.x, uvStart.y);
-        glTexCoord2f(1, 1);
+        glTexCoord2f(booleanToInt(!flipped), 1);
         glVertex2f(uvEnd.x, uvEnd.y);
-        glTexCoord2f(0, 1);
+        glTexCoord2f(booleanToInt(flipped), 1);
         glVertex2f(uvStart.x, uvEnd.y);
         glEnd();
     }
@@ -148,16 +151,22 @@ public final class Renderer {
     public static void render(int x, int y, int width, int height, ITexture texture) {
         texture.bind();
 
+        boolean flipped = texture.isFlipped();
+
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
+        glTexCoord2f(booleanToInt(flipped), 0);
         glVertex2f(windowXToVertexX(x), windowYToVertexY(y));
-        glTexCoord2f(1, 0);
+        glTexCoord2f(booleanToInt(!flipped), 0);
         glVertex2f(windowXToVertexX(x + width), windowYToVertexY(y));
-        glTexCoord2f(1, 1);
+        glTexCoord2f(booleanToInt(!flipped), 1);
         glVertex2f(windowXToVertexX(x + width), windowYToVertexY(y + height));
-        glTexCoord2f(0, 1);
+        glTexCoord2f(booleanToInt(flipped), 1);
         glVertex2f(windowXToVertexX(x), windowYToVertexY(y + height));
         glEnd();
+    }
+
+    public static void setScreenTransitionDuration(double duration) {
+        screenTransitionDuration = duration;
     }
 
     public static float windowXToVertexX(int x) {

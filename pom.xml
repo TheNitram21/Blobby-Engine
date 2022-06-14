@@ -6,7 +6,7 @@
 
     <groupId>io.github.thenitram21</groupId>
     <artifactId>BlobbyEngine</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
 
     <name>Blobby Engine</name>
     <description>A 2d level-based game engine</description>

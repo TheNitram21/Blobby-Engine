@@ -12,4 +12,8 @@ public class MathUtil {
         return min < val && val < max;
     }
 
+    public static int booleanToInt(boolean b) {
+        return b ? 1 : 0;
+    }
+
 }

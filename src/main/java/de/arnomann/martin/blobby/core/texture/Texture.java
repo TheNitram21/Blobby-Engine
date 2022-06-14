@@ -20,6 +20,8 @@ public class Texture implements ITexture {
 
     protected ByteBuffer pixels;
 
+    protected boolean flipped = false;
+
     public Texture(BufferedImage image) {
         width = image.getWidth();
         height = image.getHeight();
@@ -112,6 +114,17 @@ public class Texture implements ITexture {
     @Override
     public String getFilename() {
         return filename;
+    }
+
+    @Override
+    public ITexture setFlipped(boolean flipped) {
+        this.flipped = flipped;
+        return this;
+    }
+
+    @Override
+    public boolean isFlipped() {
+        return flipped;
     }
 
     @Override

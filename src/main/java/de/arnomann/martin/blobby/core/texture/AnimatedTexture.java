@@ -4,7 +4,6 @@ import org.joml.Vector2i;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -16,6 +15,8 @@ public class AnimatedTexture implements ITexture {
     private final String filename;
     private final List<Texture> textures;
     private final double animationTimeSecs;
+
+    private boolean flipped = false;
 
     public AnimatedTexture(double animationTimeSecs, String path) {
         filename = path;
@@ -43,7 +44,7 @@ public class AnimatedTexture implements ITexture {
         double timeBetweenTextures = animationTimeSecs / textures.size();
         int texIndex = (int) Math.floor((time % animationTimeSecs) / timeBetweenTextures);
 
-        glBindTexture(GL_TEXTURE_2D, textures.get((int) texIndex).id);
+        glBindTexture(GL_TEXTURE_2D, textures.get(texIndex).id);
     }
 
     @Override
@@ -59,6 +60,17 @@ public class AnimatedTexture implements ITexture {
     @Override
     public String getFilename() {
         return filename;
+    }
+
+    @Override
+    public ITexture setFlipped(boolean flipped) {
+        this.flipped = flipped;
+        return this;
+    }
+
+    @Override
+    public boolean isFlipped() {
+        return flipped;
     }
 
 }

@@ -45,11 +45,14 @@ public final class BlobbyEngine {
 
     static boolean transitioningScreen = false;
 
+    private static String[] consoleArguments;
+
     private BlobbyEngine() {}
 
     public static void run(RunConfigurations runConfig, String[] arguments) {
         textures = new HashMap<>();
         logger = new Logger();
+        consoleArguments = arguments;
 
         if(runConfig.width / 16 != runConfig.height / 9) {
             throw new RuntimeException("Window size ratio not 16:9");
@@ -66,9 +69,11 @@ public final class BlobbyEngine {
         Input.initialize();
         Sound.initialize();
 
-        checkArguments(arguments);
-
         window.start();
+    }
+
+    static void onWindowOpen() {
+        checkArguments(consoleArguments);
     }
 
     private static void checkArguments(String[] arguments) {

@@ -67,6 +67,7 @@ public final class Window {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         ListenerManager.callEvent(new StartEvent());
+        BlobbyEngine.onWindowOpen();
 
         double lastFrameTime = glfwGetTime();
         while(!glfwWindowShouldClose(windowId)) {

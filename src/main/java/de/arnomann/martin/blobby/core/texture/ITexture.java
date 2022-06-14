@@ -5,4 +5,6 @@ public interface ITexture {
     int getWidth();
     int getHeight();
     String getFilename();
+    ITexture setFlipped(boolean flipped);
+    boolean isFlipped();
 }
