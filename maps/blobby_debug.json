@@ -1,5 +1,6 @@
 {
     "PlayerStartY": 6,
+    "BackgroundTexture": "grass",
     "PlayerStartX": 3,
     "Screens": [
         {
@@ -458,23 +459,18 @@
                 },
                 {
                     "Path": "grass",
-                    "X": 11,
-                    "Y": 5
-                },
-                {
-                    "Path": "grass",
                     "X": 13,
                     "Y": 7
                 },
                 {
                     "Path": "dirt",
-                    "X": 11,
-                    "Y": 6
-                },
-                {
-                    "Path": "dirt",
                     "X": 13,
                     "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 11,
+                    "Y": 6
                 },
                 {
                     "Path": "dirt",
@@ -540,41 +536,31 @@
                     "Path": "grass",
                     "X": 14,
                     "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 14,
+                    "Y": 8
                 },
                 {
                     "Path": "grassRightEdge",
                     "X": 12,
-                    "Y": 5
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
                     "Y": 6
                 },
                 {
                     "Path": "dirt",
-                    "X": 14,
+                    "X": 12,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
                     "Y": 8
                 },
                 {
                     "Path": "grassLeftEdge",
                     "X": 10,
-                    "Y": 5
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 10,
                     "Y": 6
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 8
                 },
                 {
                     "Path": "dirt",

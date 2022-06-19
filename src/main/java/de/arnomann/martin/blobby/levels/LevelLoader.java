@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.levels;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.entity.Block;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
@@ -77,9 +78,15 @@ public class LevelLoader {
             BlobbyEngine.getPlayer().setPosition(json.getDouble("PlayerStartX"), json.getDouble("PlayerStartY"));
             String title = json.getString("Name");
 
+            ITexture backgroundTexture = null;
+
+            try {
+                backgroundTexture = BlobbyEngine.getTexture(json.getString("BackgroundTexture"));
+            } catch(JSONException ignored) {}
+
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens);
+            level = new Level(title, screens, backgroundTexture);
             return level;
         } catch(JSONException e) {
             e.printStackTrace();

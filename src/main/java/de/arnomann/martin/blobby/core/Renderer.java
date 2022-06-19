@@ -78,16 +78,22 @@ public final class Renderer {
             }
         }
 
+        if(level != null && level.backgroundTexture != null) {
+            render(0, 0, curWindow.getWidth(), curWindow.getHeight(), level.backgroundTexture);
+        }
+
         Vector2d finalTransitionOffset = transitionOffset;
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
-                screen.entities.forEach(entity -> {
-                    if(!entity.renderInFrontOfPlayer()) {
-                        Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
-                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
-                    }
-                });
+                if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
+                    screen.entities.forEach(entity -> {
+                        if (entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
+                            Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
+                            render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                    (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                        }
+                    });
+                }
             });
         }
 
@@ -99,23 +105,20 @@ public final class Renderer {
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
-                screen.entities.forEach(entity -> {
-                    if(entity.renderInFrontOfPlayer()) {
-                        Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
-                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
-                    }
-                });
+                if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
+                    screen.entities.forEach(entity -> {
+                        if (entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
+                            Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
+                            render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                    (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                        }
+                    });
+                }
             });
         }
 
-        queuedTextures.forEach((pos, tex) -> {
-            render(pos.x, pos.y, pos.z, pos.w, tex);
-        });
-
-        queuedUITextures.forEach((uvs, tex) -> {
-            renderUV(new Vector2f(uvs.x, uvs.y), new Vector2f(uvs.z, uvs.w), tex);
-        });
+        queuedTextures.forEach((pos, tex) -> render(pos.x, pos.y, pos.z, pos.w, tex));
+        queuedUITextures.forEach((uvs, tex) -> renderUV(new Vector2f(uvs.x, uvs.y), new Vector2f(uvs.z, uvs.w), tex));
 
         if(BlobbyEngine.showMenu && BlobbyEngine.menu != null)
             renderMenu(BlobbyEngine.menu);
