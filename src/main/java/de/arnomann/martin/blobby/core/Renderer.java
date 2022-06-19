@@ -133,6 +133,7 @@ public final class Renderer {
         boolean flipped = texture.isFlipped();
 
         glBegin(GL_QUADS);
+        glColor4f(texture.getColorModifiers().x, texture.getColorModifiers().y, texture.getColorModifiers().z, texture.getColorModifiers().w);
         glTexCoord2f(booleanToInt(flipped), 0);
         glVertex2f(uvStart.x, uvStart.y);
         glTexCoord2f(booleanToInt(!flipped), 0);
@@ -141,6 +142,7 @@ public final class Renderer {
         glVertex2f(uvEnd.x, uvEnd.y);
         glTexCoord2f(booleanToInt(flipped), 1);
         glVertex2f(uvStart.x, uvEnd.y);
+        glColor4f(1, 1, 1, 1);
         glEnd();
     }
 
@@ -157,6 +159,7 @@ public final class Renderer {
         boolean flipped = texture.isFlipped();
 
         glBegin(GL_QUADS);
+        glColor4f(texture.getColorModifiers().x, texture.getColorModifiers().y, texture.getColorModifiers().z, texture.getColorModifiers().w);
         glTexCoord2f(booleanToInt(flipped), 0);
         glVertex2f(windowXToVertexX(x), windowYToVertexY(y));
         glTexCoord2f(booleanToInt(!flipped), 0);
@@ -165,6 +168,7 @@ public final class Renderer {
         glVertex2f(windowXToVertexX(x + width), windowYToVertexY(y + height));
         glTexCoord2f(booleanToInt(flipped), 1);
         glVertex2f(windowXToVertexX(x), windowYToVertexY(y + height));
+        glColor4f(1, 1, 1, 1);
         glEnd();
     }
 
