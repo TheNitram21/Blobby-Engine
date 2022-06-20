@@ -27,7 +27,7 @@ public class EngineTest implements EventListener {
     public static void main(String[] args) {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
-        BlobbyEngine.run(RunConfigurations.createDefault("Blobby Engine Test", windowSize[0], windowSize[1]), args);
+        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], "icon"), args);
     }
 
     @Override

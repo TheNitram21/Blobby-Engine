@@ -1,11 +1,13 @@
 package de.arnomann.martin.blobby.core;
 
 import de.arnomann.martin.blobby.RunConfigurations;
+import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StartEvent;
 import de.arnomann.martin.blobby.event.UpdateEvent;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
@@ -22,11 +24,13 @@ public final class Window {
     private String title;
     private final int width;
     private final int height;
+    private final String iconPath;
 
     public Window(RunConfigurations runConfig) {
         this.title = runConfig.title;
         this.width = runConfig.width;
         this.height = runConfig.height;
+        this.iconPath = runConfig.iconPath;
 
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
@@ -66,6 +70,12 @@ public final class Window {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        Texture iconTexture = (Texture) BlobbyEngine.getTexture(iconPath);
+        GLFWImage.Buffer iconBuffer = GLFWImage.create(1);
+        GLFWImage iconImage = GLFWImage.create().set(iconTexture.getWidth(), iconTexture.getHeight(), iconTexture.getPixels());
+        iconBuffer.put(0, iconImage);
+        glfwSetWindowIcon(windowId, iconBuffer);
 
         ListenerManager.callEvent(new StartEvent());
         BlobbyEngine.onWindowOpen();

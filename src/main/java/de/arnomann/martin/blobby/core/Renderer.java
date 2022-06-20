@@ -125,6 +125,7 @@ public final class Renderer {
 
         glfwSwapBuffers(window.getId());
         queuedTextures.clear();
+        queuedUITextures.clear();
     }
 
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture) {
