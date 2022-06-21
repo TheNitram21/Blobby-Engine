@@ -25,7 +25,7 @@ public class LevelLoader {
             BlobbyEngine.renderPlayer = false;
 
             filename = BlobbyEngine.MAPS_PATH + filename + ".json";
-            JSONObject json = loadJSONFromFile(filename);
+            JSONObject json = BlobbyEngine.loadJSON(new File(filename));
             Level level;
 
             Map<Vector2i, Screen> screens = new HashMap<>();
@@ -92,29 +92,6 @@ public class LevelLoader {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private static JSONObject loadJSONFromFile(String filename) {
-        JSONObject json;
-
-        File file = new File(filename);
-        if (!file.exists()) {
-            ErrorManagement.showErrorMessage(logger, new FileNotFoundException("File " + filename + " doesn't exist!"));
-        }
-
-        StringBuilder jsonTextBuilder = new StringBuilder();
-
-        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonTextBuilder.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            ErrorManagement.showErrorMessage(logger, e);
-        }
-
-        json = new JSONObject(jsonTextBuilder.toString());
-        return json;
     }
 
 }

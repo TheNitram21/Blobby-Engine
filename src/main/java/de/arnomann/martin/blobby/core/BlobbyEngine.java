@@ -14,6 +14,7 @@ import de.arnomann.martin.blobby.logging.Logger;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.lang.Math;
@@ -97,10 +98,46 @@ public final class BlobbyEngine {
             throws Exception { /* We could throw:
                                     ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
                                     But that would be a bit much. */
-        Class<?> entityClass = Class.forName(classname);
+        JSONObject entitiesJSON = loadJSON(new File("bin/entities.json"));
+        String classnameWithPackage = "";
+
+        for(Object entityObj : entitiesJSON.getJSONArray("Entities")) {
+            JSONObject entityJSON = (JSONObject) entityObj;
+
+            if(entityJSON.getString("ClassName").equals(classname)) {
+                classnameWithPackage = entityJSON.getString("InternalClassName");
+            }
+        }
+
+        if(classnameWithPackage.equals(""))
+            throw new IllegalStateException("Couldn't find an entity with the classname " + classname + " in 'entities.json'!");
+
+        Class<?> entityClass = Class.forName(classnameWithPackage);
         Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, ITexture.class, Map.class).newInstance(position, texture, properties);
         ListenerManager.registerEventListener(entity);
         return entity;
+    }
+
+    public static JSONObject loadJSON(File path) {
+        JSONObject json;
+
+        if(!path.exists()) {
+            ErrorManagement.showErrorMessage(logger, new FileNotFoundException("File " + path + " doesn't exist!"));
+        }
+
+        StringBuilder jsonTextBuilder = new StringBuilder();
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonTextBuilder.append(line).append("\n");
+            }
+        } catch(IOException e) {
+            ErrorManagement.showErrorMessage(logger, e);
+        }
+
+        json = new JSONObject(jsonTextBuilder.toString());
+        return json;
     }
 
     public static boolean isTransitioningBetweenScreens() {
