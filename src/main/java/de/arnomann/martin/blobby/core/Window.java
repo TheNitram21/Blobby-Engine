@@ -7,6 +7,7 @@ import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StartEvent;
 import de.arnomann.martin.blobby.event.UpdateEvent;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
+import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -22,8 +23,8 @@ public final class Window {
     private final long windowId;
 
     private String title;
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private final String iconPath;
 
     public Window(RunConfigurations runConfig) {
@@ -129,6 +130,22 @@ public final class Window {
     public void setTitle(String title) {
         this.title = title;
         glfwSetWindowTitle(windowId, title);
+    }
+
+    public boolean setWindowSize(int width, int height) {
+        if(width / 16 != height / 9)
+            return false;
+
+        this.width = width;
+        this.height = height;
+
+        glfwSetWindowSize(windowId, this.width, this.height);
+
+        return true;
+    }
+
+    public Vector2i getWindowSize() {
+        return new Vector2i(width, height);
     }
 
 }
