@@ -1,6 +1,8 @@
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
+import de.arnomann.martin.blobby.core.texture.AnimatedTexture;
+import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.sound.Sound;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
@@ -47,6 +49,7 @@ public class EngineTest implements EventListener {
 
     private double playerYVelocity = 0;
     private final double fallSpeed = 9.81f;
+    private boolean onGroundLastFrame = false;
 
     @Override
     public void onUpdate(UpdateEvent event) {
@@ -57,6 +60,10 @@ public class EngineTest implements EventListener {
             Player p = BlobbyEngine.getPlayer();
             boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, 0), 0.5, 0.05,
                     "Block");
+
+            if(playerOnGround && !onGroundLastFrame) {
+                new Particle("dust", new Vector2d(p.getPosition()).sub(0, 1));
+            }
 
             Vector2d move = new Vector2d();
 
@@ -80,6 +87,8 @@ public class EngineTest implements EventListener {
             if(!playerOnGround || playerYVelocity < 0)
                 move.add(0, playerYVelocity);
             p.setPosition(p.getPosition().add(move));
+
+            onGroundLastFrame = playerOnGround;
         }
     }
 

@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.core;
 
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.ui.Button;
@@ -87,7 +88,7 @@ public final class Renderer {
             level.screens.forEach((screenPos, screen) -> {
                 if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
                     screen.entities.forEach(entity -> {
-                        if (entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
+                        if(entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
                             Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
                             render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
                                     (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
@@ -107,7 +108,7 @@ public final class Renderer {
             level.screens.forEach((screenPos, screen) -> {
                 if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
                     screen.entities.forEach(entity -> {
-                        if (entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
+                        if(entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
                             Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
                             render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
                                     (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
@@ -115,6 +116,12 @@ public final class Renderer {
                     });
                 }
             });
+        }
+
+        for(Particle particle : Particle.getParticles()) {
+            Vector2d particlePos = new Vector2d(particle.getPosition()).mul(um);
+            render((int) (particlePos.x - entityOffset.x * um - finalTransitionOffset.x),
+                    (int) (particlePos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, particle);
         }
 
         queuedTextures.forEach((pos, tex) -> render(pos.x, pos.y, pos.z, pos.w, tex));
@@ -126,6 +133,8 @@ public final class Renderer {
         glfwSwapBuffers(window.getId());
         queuedTextures.clear();
         queuedUITextures.clear();
+
+        Particle.updateParticleList();
     }
 
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture) {

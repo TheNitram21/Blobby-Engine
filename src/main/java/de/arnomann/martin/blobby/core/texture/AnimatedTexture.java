@@ -56,7 +56,7 @@ public class AnimatedTexture implements ITexture {
         if(playOnStart)
             startAnimation();
 
-        startingTime = (animationTimeSecs / this.textures.size()) * startingFrame;
+        startingTime -= (animationTimeSecs / this.textures.size()) * startingFrame;
     }
 
     @Override
@@ -68,6 +68,8 @@ public class AnimatedTexture implements ITexture {
         } else {
             glBindTexture(GL_TEXTURE_2D, textures.get(0).id);
         }
+
+        System.out.println(textureIndex + " " + glfwGetTime() + " " + startingTime);
     }
 
     @Override
@@ -107,6 +109,10 @@ public class AnimatedTexture implements ITexture {
 
     public int getTextureIndex() {
         return textureIndex;
+    }
+
+    public int getFrameCount() {
+        return textures.size();
     }
 
     private void calculateTextureIndex() {

@@ -158,7 +158,24 @@ public final class BlobbyEngine {
     }
 
     public static ITexture loadTexture(String filename) {
+        ITexture texture = getTextureWithoutCaching(filename);
+        logger.debug("Loaded texture " + filename + " with size " + texture.getWidth() + ", " + texture.getHeight() + ".");
+        textures.put(filename, texture);
+        return texture;
+    }
+
+    public static ITexture getTexture(String name) {
+        ITexture texture = textures.get(name);
+        if(texture == null) {
+            texture = loadTexture(name);
+        }
+
+        return texture;
+    }
+
+    public static ITexture getTextureWithoutCaching(String filename) {
         ITexture texture;
+        filename = TEXTURES_PATH + filename;
         File file = new File(filename);
 
         if(file.exists()) {
@@ -172,19 +189,6 @@ public final class BlobbyEngine {
             texture = new AnimatedTexture(animTimeSecs, filename);
         } else {
             texture = new Texture(filename);
-        }
-
-        logger.debug("Loaded texture " + filename + " with size " + texture.getWidth() + ", " + texture.getHeight() + ".");
-
-        textures.put(filename, texture);
-        return texture;
-    }
-
-    public static ITexture getTexture(String name) {
-        name = TEXTURES_PATH + name;
-        ITexture texture = textures.get(name);
-        if(texture == null) {
-            texture = loadTexture(name);
         }
 
         return texture;
