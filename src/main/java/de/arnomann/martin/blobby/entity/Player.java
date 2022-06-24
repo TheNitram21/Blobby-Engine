@@ -1,6 +1,5 @@
 package de.arnomann.martin.blobby.entity;
 
-import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import org.joml.Vector2d;
 
@@ -49,7 +48,4 @@ public class Player extends Entity {
         return texture;
     }
 
-    void bind() {
-        texture.bind();
-    }
 }

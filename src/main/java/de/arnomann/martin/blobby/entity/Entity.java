@@ -1,7 +1,10 @@
 package de.arnomann.martin.blobby.entity;
 
+import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.core.Renderer;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
+import de.arnomann.martin.blobby.event.UpdateEvent;
 import org.joml.Vector2d;
 
 import java.util.Map;
@@ -47,4 +50,12 @@ public class Entity implements EventListener {
             return false;
         return this.getId() == ((Entity) that).getId();
     }
+
+    protected final void render(Vector2d pos, int width, int height, ITexture texture) {
+        double um = BlobbyEngine.unitMultiplier();
+        pos.mul(um);
+
+        Renderer.queueTexture((int) pos.x, (int) pos.y, width, height, texture);
+    }
+
 }
