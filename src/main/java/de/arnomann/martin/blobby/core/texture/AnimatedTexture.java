@@ -16,9 +16,25 @@ public class AnimatedTexture implements ITexture {
     private final List<Texture> textures;
     private final double animationTimeSecs;
 
+    private double startingTime;
+    private boolean playAnimation = false;
     private boolean flipped = false;
 
+    private int textureIndex;
+
     public AnimatedTexture(double animationTimeSecs, String path) {
+        this(animationTimeSecs, path, true, 0);
+    }
+
+    public AnimatedTexture(double animationTimeSecs, String path, boolean playOnStart) {
+        this(animationTimeSecs, path, playOnStart, 0);
+    }
+
+    public AnimatedTexture(double animationTimeSecs, String path, int startingFrame) {
+        this(animationTimeSecs, path, true, startingFrame);
+    }
+
+    public AnimatedTexture(double animationTimeSecs, String path, boolean playOnStart, int startingFrame) {
         filename = path;
         Texture[] textures = new Texture[new File(path).list().length - 1];
         for(int i = 0; i < textures.length; i++) {
@@ -36,15 +52,22 @@ public class AnimatedTexture implements ITexture {
         }
 
         this.animationTimeSecs = animationTimeSecs;
+
+        if(playOnStart)
+            startAnimation();
+
+        startingTime = (animationTimeSecs / this.textures.size()) * startingFrame;
     }
 
     @Override
     public void bind() {
-        double time = glfwGetTime();
-        double timeBetweenTextures = animationTimeSecs / textures.size();
-        int texIndex = (int) Math.floor((time % animationTimeSecs) / timeBetweenTextures);
+        if(playAnimation) {
+            calculateTextureIndex();
 
-        glBindTexture(GL_TEXTURE_2D, textures.get(texIndex).id);
+            glBindTexture(GL_TEXTURE_2D, textures.get(textureIndex).id);
+        } else {
+            glBindTexture(GL_TEXTURE_2D, textures.get(0).id);
+        }
     }
 
     @Override
@@ -71,6 +94,25 @@ public class AnimatedTexture implements ITexture {
     @Override
     public boolean isFlipped() {
         return flipped;
+    }
+
+    public void startAnimation() {
+        startingTime = glfwGetTime();
+        playAnimation = true;
+    }
+
+    public void stopAnimation() {
+        playAnimation = false;
+    }
+
+    public int getTextureIndex() {
+        return textureIndex;
+    }
+
+    private void calculateTextureIndex() {
+        double time = glfwGetTime() - startingTime;
+        double timeBetweenTextures = animationTimeSecs / textures.size();
+        textureIndex = (int) Math.floor((time % animationTimeSecs) / timeBetweenTextures);
     }
 
 }
