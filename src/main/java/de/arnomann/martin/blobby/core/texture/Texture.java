@@ -10,6 +10,9 @@ import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * A static texture.
+ */
 public class Texture implements ITexture {
 
     protected int id;
@@ -22,6 +25,10 @@ public class Texture implements ITexture {
 
     protected boolean flipped = false;
 
+    /**
+     * Creates a texture from a buffered image. The filename will not be set.
+     * @param image the buffered image.
+     */
     public Texture(BufferedImage image) {
         width = image.getWidth();
         height = image.getHeight();
@@ -54,6 +61,10 @@ public class Texture implements ITexture {
         this.pixels = pixels;
     }
 
+    /**
+     * Creates a texture from a path.
+     * @param filename the path.
+     */
     public Texture(String filename) {
         BufferedImage bi;
         filename = filename + ".png";
@@ -95,18 +106,25 @@ public class Texture implements ITexture {
         }
     }
 
+    @Override
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
+    /**
+     * Returns the pixels as a byte buffer.
+     * @return the pixels.
+     */
     public ByteBuffer getPixels() {
         return pixels;
     }
 
+    @Override
     public int getWidth() {
         return width;
     }
 
+    @Override
     public int getHeight() {
         return height;
     }

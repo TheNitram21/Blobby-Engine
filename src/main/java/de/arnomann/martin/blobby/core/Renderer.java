@@ -15,6 +15,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static de.arnomann.martin.blobby.MathUtil.booleanToInt;
 
+/**
+ * An <b>INTERNAL</b> class for rendering.
+ */
 public final class Renderer {
 
     private static Map<Vector4i, ITexture> queuedTextures = new HashMap<>();
@@ -40,6 +43,14 @@ public final class Renderer {
         queuedUITextures.put(new Vector4f(uvStart.x, uvStart.y, uvEnd.x, uvEnd.y), texture);
     }
 
+    /**
+     * Queues a texture for rendering.
+     * @param x the x position in pixels from the left of the window.
+     * @param y the y position in pixels from the top of the window.
+     * @param width the width in pixels.
+     * @param height the height in pixels.
+     * @param texture the texture to queue for rendering.
+     */
     public static void queueTexture(int x, int y, int width, int height, ITexture texture) {
         queuedTextures.put(new Vector4i(x, y, width, height), texture);
     }

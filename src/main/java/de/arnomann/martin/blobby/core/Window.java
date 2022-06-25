@@ -18,6 +18,9 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * Represents a basic window.
+ */
 public final class Window {
 
     private final long windowId;
@@ -27,6 +30,12 @@ public final class Window {
     private int height;
     private final String iconPath;
 
+    private boolean started = false;
+
+    /**
+     * Creates a new window. SHOULD ONLY BE CALLED FROM THE BLOBBY ENGINE CLASS.
+     * @param runConfig the run configuration.
+     */
     public Window(RunConfigurations runConfig) {
         this.title = runConfig.title;
         this.width = runConfig.width;
@@ -62,44 +71,51 @@ public final class Window {
         show();
     }
 
+    /**
+     * Starts the window.
+     */
     void start() {
-        GL.createCapabilities();
+        if(!started) {
+            started = true;
 
-        glClearColor(0.2f, 0.3f, 1f, 0f);
+            GL.createCapabilities();
 
-        glEnable(GL_TEXTURE_2D);
+            glClearColor(0.2f, 0.3f, 1f, 0f);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_TEXTURE_2D);
 
-        Texture iconTexture = (Texture) BlobbyEngine.getTexture(iconPath);
-        GLFWImage.Buffer iconBuffer = GLFWImage.create(1);
-        GLFWImage iconImage = GLFWImage.create().set(iconTexture.getWidth(), iconTexture.getHeight(), iconTexture.getPixels());
-        iconBuffer.put(0, iconImage);
-        glfwSetWindowIcon(windowId, iconBuffer);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        ListenerManager.callEvent(new StartEvent());
-        BlobbyEngine.onWindowOpen();
+            Texture iconTexture = (Texture) BlobbyEngine.getTexture(iconPath);
+            GLFWImage.Buffer iconBuffer = GLFWImage.create(1);
+            GLFWImage iconImage = GLFWImage.create().set(iconTexture.getWidth(), iconTexture.getHeight(), iconTexture.getPixels());
+            iconBuffer.put(0, iconImage);
+            glfwSetWindowIcon(windowId, iconBuffer);
 
-        double lastFrameTime = glfwGetTime();
-        while(!glfwWindowShouldClose(windowId)) {
-            double curTime = glfwGetTime();
-            float delta = (float) (curTime - lastFrameTime);
-            ListenerManager.callEvent(new UpdateEvent(delta, curTime));
+            ListenerManager.callEvent(new StartEvent());
+            BlobbyEngine.onWindowOpen();
 
-            Renderer.render(this, delta);
+            double lastFrameTime = glfwGetTime();
+            while(!glfwWindowShouldClose(windowId)) {
+                double curTime = glfwGetTime();
+                float delta = (float) (curTime - lastFrameTime);
+                ListenerManager.callEvent(new UpdateEvent(delta, curTime));
 
-            lastFrameTime = curTime;
+                Renderer.render(this, delta);
 
-            glfwPollEvents();
+                lastFrameTime = curTime;
+
+                glfwPollEvents();
+            }
+
+            if(SoundPlayer.isInitialized())
+                SoundPlayer.destroy();
+
+            close();
+
+            glfwTerminate();
         }
-
-        if(SoundPlayer.isInitialized())
-            SoundPlayer.destroy();
-
-        close();
-
-        glfwTerminate();
     }
 
     void close() {
@@ -115,23 +131,45 @@ public final class Window {
         glfwHideWindow(windowId);
     }
 
+    /**
+     * Returns the id of the window
+     * @return the id.
+     */
     public long getId() {
         return windowId;
     }
 
+    /**
+     * Returns the width of the window in pixels.
+     * @return the width.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Returns the height of the window in pixels.
+     * @return the height.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Sets the title of the window.
+     * @param title the new window.
+     */
     public void setTitle(String title) {
         this.title = title;
         glfwSetWindowTitle(windowId, title);
     }
 
+    /**
+     * Sets the size of the window. Has to be an aspect ratio of 16:9.
+     * @param width the new width.
+     * @param height the new height.
+     * @return {@code true} if the aspect ratio is 16:9 and the window size was changed, {@code false} otherwise.
+     */
     public boolean setWindowSize(int width, int height) {
         if(width / 16 != height / 9)
             return false;
@@ -144,6 +182,10 @@ public final class Window {
         return true;
     }
 
+    /**
+     * Returns the size of the window.
+     * @return the window size.
+     */
     public Vector2i getWindowSize() {
         return new Vector2i(width, height);
     }

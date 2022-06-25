@@ -6,14 +6,31 @@ import org.joml.Vector2d;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * A class for basic physics stuff.
+ */
 public class Physics {
 
     private Physics() {}
 
+    /**
+     * Calculates the distance between two points.
+     * @param a point a.
+     * @param b point b.
+     * @return the distance between point a and point b.
+     */
     public static double distance(Vector2d a, Vector2d b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
     }
 
+    /**
+     * Basic collision detection.
+     * @param boxStartingPos the starting position of the box.
+     * @param boxWidth the width of the box.
+     * @param boxHeight the height of the box.
+     * @param entityClassName the class of entities to search for.
+     * @return {@code true} if an entity with the class {@code entityClassName} is in the box, {@code false} otherwise.
+     */
     public static boolean objectInBox(Vector2d boxStartingPos, double boxWidth, double boxHeight, String entityClassName) {
         AtomicBoolean collides = new AtomicBoolean(false);
 

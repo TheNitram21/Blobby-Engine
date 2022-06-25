@@ -23,10 +23,16 @@ import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * The main class of the engine.
+ */
 public final class BlobbyEngine {
 
+    /** The path to textures. */
     public static final String TEXTURES_PATH = "textures/";
+    /** The path to maps. */
     public static final String MAPS_PATH = "maps/";
+    /** The path to sounds. */
     public static final String SOUNDS_PATH = "sounds/";
 
     private static Window window;
@@ -34,14 +40,18 @@ public final class BlobbyEngine {
     private static Logger logger;
     private static Level currentLevel;
 
+    /** The currently shown menu. */
     public static Menu menu;
+    /** Whether the menu {@link BlobbyEngine#menu} should be visible or not. */
     public static boolean showMenu = false;
 
     private static double unitMultiplier;
 
     private static Player player;
+    /** Whether the player should be rendered or not. */
     public static boolean renderPlayer = false;
 
+    /** Whether the game is paused or not. Can be set from the outside. */
     public static boolean paused = false;
 
     static boolean transitioningScreen = false;
@@ -50,6 +60,11 @@ public final class BlobbyEngine {
 
     private BlobbyEngine() {}
 
+    /**
+     * Starts the engine.
+     * @param runConfig the configuration for running.
+     * @param arguments the console arguments.
+     */
     public static void run(RunConfigurations runConfig, String[] arguments) {
         textures = new HashMap<>();
         logger = new Logger();
@@ -94,6 +109,15 @@ public final class BlobbyEngine {
         }
     }
 
+    /**
+     * Creates a new entity.
+     * @param classname the classname of the entity (as defined in the <i>bin/entities.json</i> file).
+     * @param position the position where the entity is created.
+     * @param texture the texture of the entity (it is possible that the entity doesn't use this texture).
+     * @param properties the entity properties.
+     * @return the created entity.
+     * @throws Exception if the entity class is not found, there is no valid constructor or the constructor couldn't be called.
+     */
     public static Entity instantiateEntity(String classname, Vector2d position, ITexture texture, Map<String, Object> properties)
             throws Exception { /* We could throw:
                                     ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
@@ -118,6 +142,11 @@ public final class BlobbyEngine {
         return entity;
     }
 
+    /**
+     * Loads a JSON from a file.
+     * @param path the path to the JSON file.
+     * @return the loaded JSON.
+     */
     public static JSONObject loadJSON(File path) {
         JSONObject json;
 
@@ -140,23 +169,44 @@ public final class BlobbyEngine {
         return json;
     }
 
+    /**
+     * Returns whether we are transitioning between to screens or not.
+     * @return {@code true} if the game is transitioning between two screens, {@code false} otherwise.
+     */
     public static boolean isTransitioningBetweenScreens() {
         return transitioningScreen;
     }
 
+    /**
+     * Returns the unit multiplier. Every world position is multiplied by this to get the screen position.
+     * @return the unit multiplier.
+     */
     public static double unitMultiplier() {
         return unitMultiplier;
     }
 
+    /**
+     * Enables the debug mode.
+     */
     public static void debugMode() {
         logger.enable(Logger.LoggingType.DEBUG);
         logger.debug("Debug mode activated");
     }
 
+    /**
+     * Returns the screen of a specific entity.
+     * @param e the entity.
+     * @return the screen.
+     */
     public static Vector2i getEntityScreen(Entity e) {
         return new Vector2i((int) Math.floor((e.getPosition().x + e.getWidth() / 2d) / 16), (int) Math.floor((e.getPosition().y + e.getHeight() / 2d) / 9));
     }
 
+    /**
+     * Loads a texture from a path.
+     * @param filename the texture path.
+     * @return the texture.
+     */
     public static ITexture loadTexture(String filename) {
         ITexture texture = getTextureWithoutCaching(filename);
         logger.debug("Loaded texture " + filename + " with size " + texture.getWidth() + ", " + texture.getHeight() + ".");
@@ -164,6 +214,11 @@ public final class BlobbyEngine {
         return texture;
     }
 
+    /**
+     * Gets a texture from a path. Loads the texture only if it hasn't been loaded yet.
+     * @param name the path to the texture.
+     * @return the texture.
+     */
     public static ITexture getTexture(String name) {
         ITexture texture = textures.get(name);
         if(texture == null) {
@@ -173,6 +228,11 @@ public final class BlobbyEngine {
         return texture;
     }
 
+    /**
+     * Loads a texture from a path. DOES NOT cache it.
+     * @param filename the path of the texture.
+     * @return the texture.
+     */
     public static ITexture getTextureWithoutCaching(String filename) {
         ITexture texture;
         filename = TEXTURES_PATH + filename;
@@ -194,30 +254,60 @@ public final class BlobbyEngine {
         return texture;
     }
 
+    /**
+     * Sets the current level.
+     * @param level the new current level.
+     * @see BlobbyEngine#getCurrentLevel()
+     */
     public static void setLevel(Level level) {
         currentLevel = level;
     }
 
+    /**
+     * Returns the current level.
+     * @return the current level.
+     * @see BlobbyEngine#setLevel(Level)
+     */
     public static Level getCurrentLevel() {
         return currentLevel;
     }
 
+    /**
+     * Returns the player.
+     * @return the player.
+     */
     public static Player getPlayer() {
         return player;
     }
 
+    /**
+     * Sets the player.
+     * @param newPlayer the new player.
+     */
     public static void setPlayer(Player newPlayer) {
         player = newPlayer;
     }
 
+    /**
+     * Returns the window so that you can perform operations like resizing.
+     * @return the window.
+     * @see Window
+     */
     public static Window getWindow() {
         return window;
     }
 
+    /**
+     * Returns the logger. You should create your own logger though.
+     * @return the logger.
+     */
     public static Logger getLogger() {
         return logger;
     }
 
+    /**
+     * Shuts down the engine.
+     */
     public static void stop() {
         if(window != null)
             glfwSetWindowShouldClose(window.getId(), true);

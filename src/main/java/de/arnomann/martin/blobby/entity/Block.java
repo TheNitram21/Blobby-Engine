@@ -5,6 +5,9 @@ import org.joml.Vector2d;
 
 import java.util.Map;
 
+/**
+ * A basic block entity.
+ */
 public class Block extends Entity {
 
     private final Vector2d pos;

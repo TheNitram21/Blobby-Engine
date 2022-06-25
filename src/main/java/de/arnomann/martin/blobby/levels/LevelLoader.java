@@ -14,13 +14,23 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.*;
 
+/**
+ * A class for loading levels.
+ */
 public class LevelLoader {
 
     private static final Logger logger = new Logger();
 
     private LevelLoader() {}
 
+    /**
+     * Loads a level.
+     * @param filename the path of the level.
+     * @return the loaded level.
+     */
     public static Level loadLevel(String filename) {
+        logger.info("Starting loading level '" + filename + "'...");
+
         try {
             BlobbyEngine.renderPlayer = false;
 
@@ -87,6 +97,9 @@ public class LevelLoader {
             BlobbyEngine.renderPlayer = true;
 
             level = new Level(title, screens, backgroundTexture);
+
+            logger.info("Level '" + filename + "' loaded!");
+
             return level;
         } catch(JSONException e) {
             e.printStackTrace();
