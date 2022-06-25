@@ -1,3 +1,5 @@
+package entities;
+
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.entity.Entity;

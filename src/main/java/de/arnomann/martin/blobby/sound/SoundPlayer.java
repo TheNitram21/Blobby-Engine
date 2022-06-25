@@ -57,7 +57,7 @@ public class SoundPlayer {
     /**
      * Creates a new instance of the sound class.
      * @param name the path to the sound file.
-     * @return
+     * @return the created sound file.
      */
     public static Sound createSound(String name) {
         name = BlobbyEngine.SOUNDS_PATH + name;

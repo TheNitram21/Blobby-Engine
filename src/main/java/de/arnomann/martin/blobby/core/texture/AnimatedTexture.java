@@ -95,8 +95,6 @@ public class AnimatedTexture implements ITexture {
         } else {
             glBindTexture(GL_TEXTURE_2D, textures.get(0).id);
         }
-
-        System.out.println(textureIndex + " " + glfwGetTime() + " " + startingTime);
     }
 
     @Override

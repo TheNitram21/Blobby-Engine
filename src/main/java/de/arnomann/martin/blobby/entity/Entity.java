@@ -52,6 +52,14 @@ public class Entity implements EventListener {
     }
 
     /**
+     * Returns the offset of the texture when rendering in units. OVERRIDE.
+     * @return the offset.
+     */
+    public Vector2d getRenderingOffset() {
+        return new Vector2d();
+    }
+
+    /**
      * Returns the texture of the entity. OVERRIDE.
      * @return the texture.
      */
@@ -86,13 +94,6 @@ public class Entity implements EventListener {
         if(!(that instanceof Entity))
             return false;
         return this.getId() == ((Entity) that).getId();
-    }
-
-    protected final void render(Vector2d pos, int width, int height, ITexture texture) {
-        double um = BlobbyEngine.unitMultiplier();
-        pos.mul(um);
-
-        Renderer.queueTexture((int) pos.x, (int) pos.y, width, height, texture);
     }
 
 }

@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.entity;
 
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.event.UpdateEvent;
 import org.joml.Vector2d;
 
 import java.util.Map;

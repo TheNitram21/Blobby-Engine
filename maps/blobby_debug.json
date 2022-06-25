@@ -573,6 +573,13 @@
                     "Y": 8
                 }
             ],
+            "Entities": [
+                {
+                    "ClassName": "Ladder",
+                    "X": 1,
+                    "Y": 2
+                }
+            ],
             "X": 0,
             "Y": 0
         }
