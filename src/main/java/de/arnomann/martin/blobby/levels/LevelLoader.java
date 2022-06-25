@@ -50,8 +50,10 @@ public class LevelLoader {
                     JSONObject blockJson = (JSONObject) blockObj;
                     int x = blockJson.getInt("X");
                     int y = blockJson.getInt("Y");
-                    Block block = new Block(new Vector2d(x + screenX * 16, y + screenY * 9),
-                            BlobbyEngine.getTexture(blockJson.getString("Path")), null);
+
+                    Map<String, Object> blockProperties = new HashMap<>();
+                    blockProperties.put("Texture", BlobbyEngine.getTexture(blockJson.getString("Path")));
+                    Block block = new Block(new Vector2d(x + screenX * 16, y + screenY * 9), blockProperties);
 
                     entities.add(block);
                 }
@@ -73,7 +75,7 @@ public class LevelLoader {
 
                         try {
                             e = BlobbyEngine.instantiateEntity(entityJson.getString("ClassName"), new Vector2d(x + screenX * 16, y + screenY * 9),
-                                    BlobbyEngine.getTexture(entityJson.getString("ClassName")), entityParameters);
+                                    entityParameters);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

@@ -1,7 +1,5 @@
 package de.arnomann.martin.blobby.entity;
 
-import de.arnomann.martin.blobby.core.BlobbyEngine;
-import de.arnomann.martin.blobby.core.Renderer;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
 import org.joml.Vector2d;
@@ -19,10 +17,9 @@ public class Entity implements EventListener {
     /**
      * Creates a new entity. SHOULD NOT BE CALLED.
      * @param position the position.
-     * @param texture the texture.
      * @param parameters the parameters.
      */
-    public Entity(Vector2d position, ITexture texture, Map<String, Object> parameters) {
+    public Entity(Vector2d position, Map<String, Object> parameters) {
         entityCount++;
         this.id = entityCount;
     }

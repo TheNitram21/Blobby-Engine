@@ -118,7 +118,7 @@ public final class BlobbyEngine {
      * @return the created entity.
      * @throws Exception if the entity class is not found, there is no valid constructor or the constructor couldn't be called.
      */
-    public static Entity instantiateEntity(String classname, Vector2d position, ITexture texture, Map<String, Object> properties)
+    public static Entity instantiateEntity(String classname, Vector2d position, Map<String, Object> properties)
             throws Exception { /* We could throw:
                                     ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
                                     But that would be a bit much. */
@@ -137,7 +137,7 @@ public final class BlobbyEngine {
             throw new IllegalStateException("Couldn't find an entity with the classname " + classname + " in 'entities.json'!");
 
         Class<?> entityClass = Class.forName(classnameWithPackage);
-        Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, ITexture.class, Map.class).newInstance(position, texture, properties);
+        Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, Map.class).newInstance(position, properties);
         ListenerManager.registerEventListener(entity);
         return entity;
     }

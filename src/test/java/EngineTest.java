@@ -17,7 +17,9 @@ import org.joml.Vector2d;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -36,9 +38,10 @@ public class EngineTest implements EventListener {
     public void onStart(StartEvent event) {
         BlobbyEngine.debugMode();
 
-        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), BlobbyEngine.getTexture("player"), null));
+        Map<String, Object> playerParameters = new HashMap<>();
+        playerParameters.put("Texture", BlobbyEngine.getTexture("player"));
+        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), playerParameters));
         Player p = BlobbyEngine.getPlayer();
-        p.setTextureToRender(BlobbyEngine.getTexture("player"));
         BlobbyEngine.setLevel(LevelLoader.loadLevel("blobby_debug"));
 
         List<Button> buttons = new ArrayList<>();

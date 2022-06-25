@@ -10,11 +10,10 @@ import java.util.Map;
 public class Portal extends Entity {
 
     private Vector2d position;
-    private ITexture texture;
     private String text;
 
-    public Portal(Vector2d position, ITexture texture, Map<String, Object> parameters) {
-        super(position, texture, parameters);
+    public Portal(Vector2d position, Map<String, Object> parameters) {
+        super(position, parameters);
         this.position = position;
         this.text = (String) parameters.get("Text");
     }

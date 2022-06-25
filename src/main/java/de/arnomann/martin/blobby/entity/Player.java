@@ -1,7 +1,6 @@
 package de.arnomann.martin.blobby.entity;
 
 import de.arnomann.martin.blobby.core.texture.ITexture;
-import de.arnomann.martin.blobby.event.UpdateEvent;
 import org.joml.Vector2d;
 
 import java.util.Map;
@@ -14,10 +13,10 @@ public class Player extends Entity {
     private Vector2d position;
     private ITexture texture;
 
-    public Player(Vector2d pos, ITexture texture, Map<String, Object> parameters) {
-        super(pos, texture, parameters);
+    public Player(Vector2d pos, Map<String, Object> parameters) {
+        super(pos, parameters);
         position = pos;
-        this.texture = texture;
+        this.texture = (ITexture) parameters.get("Texture");
     }
 
     @Override
