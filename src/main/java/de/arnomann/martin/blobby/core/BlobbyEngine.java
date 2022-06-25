@@ -139,7 +139,6 @@ public final class BlobbyEngine {
         Class<?> entityClass = Class.forName(classnameWithPackage);
         Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, ITexture.class, Map.class).newInstance(position, texture, properties);
         ListenerManager.registerEventListener(entity);
-        currentLevel.screens.get(getEntityScreen(entity)).entities.add(entity);
         return entity;
     }
 
