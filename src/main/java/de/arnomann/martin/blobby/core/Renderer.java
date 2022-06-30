@@ -72,9 +72,6 @@ public final class Renderer {
             currentScreen = playerScreen;
         }
 
-        entityOffset.x = currentScreen.x * 16;
-        entityOffset.y = currentScreen.y * 9;
-
         if(playerScreen.x != currentScreen.x || playerScreen.y != currentScreen.y) {
             BlobbyEngine.transitioningScreen = true;
             screenTransition += deltaTime;
@@ -90,11 +87,18 @@ public final class Renderer {
             }
         }
 
-        if(level != null && level.backgroundTexture != null) {
-            render(0, 0, curWindow.getWidth(), curWindow.getHeight(), level.backgroundTexture);
-        }
+        entityOffset.x = currentScreen.x * 16;
+        entityOffset.y = currentScreen.y * 9;
 
         Vector2d finalTransitionOffset = transitionOffset;
+        if(level != null && level.backgroundTexture != null) {
+            Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
+
+            render((int) ((level.getFirstScreenX() - currentScreen.x) * 16 * um - finalTransitionOffset.x),
+                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
+                    level.backgroundTexture);
+        }
+
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
                 if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {

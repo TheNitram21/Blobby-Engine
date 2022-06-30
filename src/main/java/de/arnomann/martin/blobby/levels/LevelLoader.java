@@ -29,14 +29,14 @@ public class LevelLoader {
      * @return the loaded level.
      */
     public static Level loadLevel(String filename) {
-        logger.info("Starting loading level '" + filename + "'...");
-
         try {
             BlobbyEngine.renderPlayer = false;
 
             filename = BlobbyEngine.MAPS_PATH + filename + ".json";
             JSONObject json = BlobbyEngine.loadJSON(new File(filename));
             Level level;
+
+            logger.info("Starting loading level '" + filename + "'...");
 
             Map<Vector2i, Screen> screens = new HashMap<>();
             for (Object screenObj : json.getJSONArray("Screens")) {

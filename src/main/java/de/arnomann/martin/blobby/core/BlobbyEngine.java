@@ -113,7 +113,6 @@ public final class BlobbyEngine {
      * Creates a new entity.
      * @param classname the classname of the entity (as defined in the <i>bin/entities.json</i> file).
      * @param position the position where the entity is created.
-     * @param texture the texture of the entity (it is possible that the entity doesn't use this texture).
      * @param properties the entity properties.
      * @return the created entity.
      * @throws Exception if the entity class is not found, there is no valid constructor or the constructor couldn't be called.

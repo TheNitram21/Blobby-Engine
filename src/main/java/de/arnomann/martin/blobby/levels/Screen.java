@@ -14,6 +14,10 @@ public class Screen {
      */
     public final List<Entity> entities;
 
+    /**
+     * Creates a new screen.
+     * @param entities the entities on this screen. Blocks are entities too.
+     */
     public Screen(List<Entity> entities) {
         this.entities = entities;
     }

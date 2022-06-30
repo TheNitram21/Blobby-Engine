@@ -15,7 +15,7 @@ public class MathUtil {
      * @return {@code true} if the value is inclusively between {@code min} and {@code max}, {@code false} otherwise.
      */
     public static boolean inclusiveBetween(double min, double max, double val) {
-        return Math.max(min, val) == Math.min(max, val);
+        return min <= val && val <= max;
     }
 
     /**
@@ -36,6 +36,24 @@ public class MathUtil {
      */
     public static int booleanToInt(boolean b) {
         return b ? 1 : 0;
+    }
+
+    /**
+     * Scales a number from one area to another area.
+     * @param inMin the minimum value of the input.
+     * @param inMax the maximum value of the input.
+     * @param outMin the minimum value of the output.
+     * @param outMax the maximum value of the output.
+     * @param value the value to scale.
+     * @return the scaled value.
+     */
+    public static float scaleNumber(float inMin, float inMax, float outMin, float outMax, float value) {
+        inMax -= inMin;
+        outMax -= inMin;
+        value -= inMin;
+
+        value *= outMax / inMax;
+        return value + outMin;
     }
 
 }
