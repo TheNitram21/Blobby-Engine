@@ -2,6 +2,8 @@ package de.arnomann.martin.blobby.core.texture;
 
 import org.joml.Vector4f;
 
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * A basic texture.
  */
@@ -10,6 +12,13 @@ public interface ITexture {
      * Binds the texture so that OpenGL knows which texture to render.
      */
     void bind();
+
+    /**
+     * Unbinds the texture.
+     */
+    default void unbind() {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 
     /**
      * Returns the width of the texture in pixels.

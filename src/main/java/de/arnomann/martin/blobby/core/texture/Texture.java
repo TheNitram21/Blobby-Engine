@@ -3,6 +3,7 @@ package de.arnomann.martin.blobby.core.texture;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -149,4 +150,5 @@ public class Texture implements ITexture {
     public String toString() {
         return getClass().getSimpleName() + "[filename=" + filename + "]";
     }
+
 }
