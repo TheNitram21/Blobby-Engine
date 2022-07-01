@@ -15,6 +15,7 @@ import de.arnomann.martin.blobby.sound.SoundPlayer;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
 import org.json.JSONObject;
+import org.lwjgl.PointerBuffer;
 
 import java.io.*;
 import java.lang.Math;
@@ -166,6 +167,15 @@ public final class BlobbyEngine {
 
         json = new JSONObject(jsonTextBuilder.toString());
         return json;
+    }
+
+    /**
+     * Returns the amount of monitors connected to the computer.
+     * @return the monitor count.
+     */
+    public static int getMonitorCount() {
+        PointerBuffer monitors = glfwGetMonitors();
+        return monitors.position() + monitors.remaining();
     }
 
     /**

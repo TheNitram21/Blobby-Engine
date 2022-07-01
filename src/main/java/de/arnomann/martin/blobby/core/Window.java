@@ -42,27 +42,38 @@ public final class Window {
         this.height = runConfig.height;
         this.iconPath = runConfig.iconPath;
 
+        if(runConfig.fullscreen) {
+            GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            this.width = vidMode.width();
+            this.height = vidMode.height();
+        }
+
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        windowId = glfwCreateWindow(width, height, title, 0, 0);
+        windowId = glfwCreateWindow(width, height, title, runConfig.fullscreen ? glfwGetPrimaryMonitor() : 0, 0);
         if(windowId == 0) {
             ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(), new RuntimeException("An unexpected error occurred whilst trying create the window."));
             BlobbyEngine.stop();
         }
 
-        try(MemoryStack stack = MemoryStack.stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1);
-            IntBuffer pHeight = stack.mallocInt(1);
+        glfwSetWindowAspectRatio(windowId, 16, 9);
 
-            glfwGetWindowSize(windowId, pWidth, pHeight);
+        if(!runConfig.fullscreen) {
+            try (MemoryStack stack = MemoryStack.stackPush()) {
+                IntBuffer pWidth = stack.mallocInt(1);
+                IntBuffer pHeight = stack.mallocInt(1);
 
-            GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+                glfwGetWindowSize(windowId, pWidth, pHeight);
 
-            glfwSetWindowPos(windowId,
-                    (vidMode.width() - pWidth.get(0)) / 2,
-                    (vidMode.height() - pHeight.get(0)) / 2);
+                GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+                glfwSetWindowPos(windowId,
+                        (vidMode.width() - pWidth.get(0)) / 2,
+                        (vidMode.height() - pHeight.get(0)) / 2);
+            }
         }
 
         glfwMakeContextCurrent(windowId);

@@ -1,7 +1,6 @@
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
-import de.arnomann.martin.blobby.core.texture.AnimatedTexture;
 import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.sound.Sound;
@@ -31,7 +30,7 @@ public class EngineTest implements EventListener {
     public static void main(String[] args) {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
-        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], "icon"), args);
+        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], "icon", false), args);
     }
 
     @Override
@@ -41,7 +40,6 @@ public class EngineTest implements EventListener {
         Map<String, Object> playerParameters = new HashMap<>();
         playerParameters.put("Texture", BlobbyEngine.getTexture("player"));
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), playerParameters));
-        Player p = BlobbyEngine.getPlayer();
         BlobbyEngine.setLevel(LevelLoader.loadLevel("blobby_debug"));
 
         List<Button> buttons = new ArrayList<>();

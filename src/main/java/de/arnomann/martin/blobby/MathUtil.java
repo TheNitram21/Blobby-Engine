@@ -48,12 +48,7 @@ public class MathUtil {
      * @return the scaled value.
      */
     public static float scaleNumber(float inMin, float inMax, float outMin, float outMax, float value) {
-        inMax -= inMin;
-        outMax -= inMin;
-        value -= inMin;
-
-        value *= outMax / inMax;
-        return value + outMin;
+        return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
     }
 
 }
