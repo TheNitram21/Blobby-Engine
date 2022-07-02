@@ -95,7 +95,7 @@ public final class BlobbyEngine {
 
     private static void checkArguments(String[] arguments) {
         for(String argument : arguments) {
-            String[] split = argument.split(":", 1);
+            String[] split = argument.split(":", 2);
 
             String key = split[0];
             String value = split[1];
