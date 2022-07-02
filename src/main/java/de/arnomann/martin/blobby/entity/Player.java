@@ -1,5 +1,6 @@
 package de.arnomann.martin.blobby.entity;
 
+import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import org.joml.Vector2d;
 
@@ -16,7 +17,11 @@ public class Player extends Entity {
     public Player(Vector2d pos, Map<String, Object> parameters) {
         super(pos, parameters);
         position = pos;
-        this.texture = (ITexture) parameters.get("Texture");
+
+        if(parameters.get("Texture") instanceof ITexture)
+            this.texture = (ITexture) parameters.get("Texture");
+        else if(parameters.get("Texture") instanceof String)
+            this.texture = BlobbyEngine.getTexture((String) parameters.get("Texture"));
     }
 
     @Override
