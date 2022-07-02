@@ -95,18 +95,21 @@ public final class BlobbyEngine {
 
     private static void checkArguments(String[] arguments) {
         for(String argument : arguments) {
-            String[] split = argument.split(":", 2);
+            try {
+                String[] split = argument.split(":", 2);
 
-            String key = split[0];
-            String value = split[1];
+                String key = split[0];
+                String value = split[1];
 
-            switch(key) {
-                case "map":
-                    currentLevel = LevelLoader.loadLevel(value);
-                    break;
-                default:
-                    break;
-            }
+                switch (key) {
+                    case "map":
+                        currentLevel = LevelLoader.loadLevel(value);
+                        break;
+                    default:
+                        break;
+                }
+            } catch(ArrayIndexOutOfBoundsException ignored) {} // Means that this argument is not in Blobby Engine's
+                                                               // argument format. Probably JOML.
         }
     }
 
