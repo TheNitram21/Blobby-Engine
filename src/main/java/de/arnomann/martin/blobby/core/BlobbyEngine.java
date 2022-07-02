@@ -114,6 +114,26 @@ public final class BlobbyEngine {
     }
 
     /**
+     * Parses the given arguments.
+     * @param args the arguments to parse.
+     * @return the parsed arguments.
+     */
+    public static Map<String, String> parseArguments(String[] args) {
+        Map<String, String> arguments = new HashMap<>();
+
+        for(String argument : args) {
+            try {
+                String[] split = argument.split(":", 2);
+
+                arguments.put(split[0], split[1]);
+            } catch(ArrayIndexOutOfBoundsException ignored) {} // Means that this argument is not in Blobby Engine's
+                                                               // argument format. Probably JOML.
+        }
+
+        return arguments;
+    }
+
+    /**
      * Creates a new entity.
      * @param classname the classname of the entity (as defined in the <i>bin/entities.json</i> file).
      * @param position the position where the entity is created.
