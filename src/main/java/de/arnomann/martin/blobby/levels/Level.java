@@ -2,6 +2,7 @@ package de.arnomann.martin.blobby.levels;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.entity.Entity;
 import org.joml.Math;
 import org.joml.Vector2i;
 
@@ -86,6 +87,26 @@ public class Level {
      */
     public int getFirstScreenY() {
         return firstScreen.y;
+    }
+
+    /**
+     * Searches for an entity by parameters.
+     * @param parameter the parameter to search for.
+     * @param value the value to search for.
+     * @return the entity, or null if nothing was found.
+     */
+    public Entity findEntityByParameter(String parameter, String value) {
+        for(Screen screen : screens.values()) {
+            for(Entity entity : screen.entities) {
+                if(entity.getParameters().containsKey(parameter)) {
+                    if(entity.getParameters().get(parameter).equals(value)) {
+                        return entity;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
 }

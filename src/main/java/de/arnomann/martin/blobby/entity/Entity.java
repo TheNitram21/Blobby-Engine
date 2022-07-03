@@ -12,7 +12,9 @@ import java.util.Map;
 public class Entity implements EventListener {
 
     private static int entityCount = 0;
+
     private long id;
+    private final Map<String, String> parameters;
 
     /**
      * Creates a new entity. SHOULD NOT BE CALLED.
@@ -22,6 +24,7 @@ public class Entity implements EventListener {
     public Entity(Vector2d position, Map<String, String> parameters) {
         entityCount++;
         this.id = entityCount;
+        this.parameters = parameters;
     }
 
     /**
@@ -78,6 +81,14 @@ public class Entity implements EventListener {
      */
     public final long getId() {
         return id;
+    }
+
+    /**
+     * Returns the parameters of this entity.
+     * @return the parameters.
+     */
+    public final Map<String, String> getParameters() {
+        return parameters;
     }
 
     /**
