@@ -70,6 +70,9 @@ public class LevelLoader {
                         Iterator<String> keys = entityJson.keys();
                         while (keys.hasNext()) {
                             String key = keys.next();
+                            if(key.equals("X") || key.equals("Y") || key.equals("ClassName"))
+                                continue;
+
                             entityParameters.put(key, entityJson.getString(key));
                         }
 
