@@ -19,7 +19,7 @@ public class Entity implements EventListener {
      * @param position the position.
      * @param parameters the parameters.
      */
-    public Entity(Vector2d position, Map<String, Object> parameters) {
+    public Entity(Vector2d position, Map<String, String> parameters) {
         entityCount++;
         this.id = entityCount;
     }

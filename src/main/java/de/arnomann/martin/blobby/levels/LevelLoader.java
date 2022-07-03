@@ -65,12 +65,12 @@ public class LevelLoader {
                         int y = entityJson.getInt("Y");
                         Entity e = null;
 
-                        Map<String, Object> entityParameters = new HashMap<>();
+                        Map<String, String> entityParameters = new HashMap<>();
 
                         Iterator<String> keys = entityJson.keys();
                         while (keys.hasNext()) {
                             String key = keys.next();
-                            entityParameters.put(key, entityJson.get(key));
+                            entityParameters.put(key, entityJson.getString(key));
                         }
 
                         try {

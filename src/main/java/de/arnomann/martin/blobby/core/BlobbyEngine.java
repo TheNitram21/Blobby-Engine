@@ -141,7 +141,7 @@ public final class BlobbyEngine {
      * @return the created entity.
      * @throws Exception if the entity class is not found, there is no valid constructor or the constructor couldn't be called.
      */
-    public static Entity instantiateEntity(String classname, Vector2d position, Map<String, Object> properties)
+    public static Entity instantiateEntity(String classname, Vector2d position, Map<String, String> properties)
             throws Exception { /* We could throw:
                                     ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
                                     But that would be a bit much. */
