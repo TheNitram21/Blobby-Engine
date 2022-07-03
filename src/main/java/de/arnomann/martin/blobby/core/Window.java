@@ -2,6 +2,7 @@ package de.arnomann.martin.blobby.core;
 
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.texture.Texture;
+import de.arnomann.martin.blobby.event.LateUpdateEvent;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StartEvent;
@@ -111,7 +112,9 @@ public final class Window {
             while(!glfwWindowShouldClose(windowId)) {
                 double curTime = glfwGetTime();
                 float delta = (float) (curTime - lastFrameTime);
+
                 ListenerManager.callEvent(new UpdateEvent(delta, curTime));
+                ListenerManager.callEvent(new LateUpdateEvent(delta, curTime));
 
                 Renderer.render(this, delta);
 

@@ -4,7 +4,6 @@ import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.entity.Block;
 import de.arnomann.martin.blobby.entity.Entity;
-import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.logging.Logger;
 import org.joml.Vector2d;
 import org.joml.Vector2i;
@@ -13,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * A class for loading levels.
@@ -20,6 +20,7 @@ import java.util.*;
 public class LevelLoader {
 
     private static final Logger logger = new Logger();
+    private static boolean loadingLevel = false;
 
     private LevelLoader() {}
 
@@ -28,25 +29,29 @@ public class LevelLoader {
      * @param filename the path of the level.
      * @return the loaded level.
      */
-    public static Level loadLevel(String filename) {
+    public static void loadLevel(String name, Consumer<Level> whenDone) {
+        String filename = BlobbyEngine.MAPS_PATH + name + ".json";
+
+        BlobbyEngine.showLoadingScreen();
+
         try {
             BlobbyEngine.renderPlayer = false;
 
-            filename = BlobbyEngine.MAPS_PATH + filename + ".json";
             JSONObject json = BlobbyEngine.loadJSON(new File(filename));
             Level level;
 
             logger.info("Starting loading level '" + filename + "'...");
+            loadingLevel = true;
 
             Map<Vector2i, Screen> screens = new HashMap<>();
-            for (Object screenObj : json.getJSONArray("Screens")) {
+            for(Object screenObj : json.getJSONArray("Screens")) {
                 JSONObject screenJson = (JSONObject) screenObj;
                 List<Entity> entities = new ArrayList<>();
 
                 int screenX = screenJson.getInt("X");
                 int screenY = screenJson.getInt("Y");
 
-                for (Object blockObj : screenJson.getJSONArray("Blocks")) {
+                for(Object blockObj : screenJson.getJSONArray("Blocks")) {
                     JSONObject blockJson = (JSONObject) blockObj;
                     int x = blockJson.getInt("X");
                     int y = blockJson.getInt("Y");
@@ -59,7 +64,7 @@ public class LevelLoader {
                 }
 
                 try {
-                    for (Object entityObj : screenJson.getJSONArray("Entities")) {
+                    for(Object entityObj : screenJson.getJSONArray("Entities")) {
                         JSONObject entityJson = (JSONObject) entityObj;
                         int x = entityJson.getInt("X");
                         int y = entityJson.getInt("Y");
@@ -70,7 +75,7 @@ public class LevelLoader {
                         Iterator<String> keys = entityJson.keys();
                         while (keys.hasNext()) {
                             String key = keys.next();
-                            if(key.equals("X") || key.equals("Y") || key.equals("ClassName"))
+                            if (key.equals("X") || key.equals("Y") || key.equals("ClassName"))
                                 continue;
 
                             entityParameters.put(key, entityJson.getString(key));
@@ -85,7 +90,8 @@ public class LevelLoader {
 
                         entities.add(e);
                     }
-                } catch(JSONException ignored) {}
+                } catch(JSONException ignored) {
+                }
 
                 screens.put(new Vector2i(screenX, screenY), new Screen(entities));
             }
@@ -105,11 +111,16 @@ public class LevelLoader {
 
             logger.info("Level '" + filename + "' loaded!");
 
-            return level;
+            whenDone.accept(level);
         } catch(JSONException e) {
             e.printStackTrace();
+        } finally {
+            loadingLevel = false;
         }
-        return null;
+    }
+
+    public static boolean isLoadingLevel() {
+        return loadingLevel;
     }
 
 }

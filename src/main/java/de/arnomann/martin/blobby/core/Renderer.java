@@ -145,7 +145,15 @@ public final class Renderer {
         if(BlobbyEngine.showMenu && BlobbyEngine.menu != null)
             renderMenu(BlobbyEngine.menu);
 
-        glfwSwapBuffers(window.getId());
+        finishRendering();
+    }
+
+    public static void setWindow(Window window) {
+        curWindow = window;
+    }
+
+    public static void finishRendering() {
+        glfwSwapBuffers(curWindow.getId());
         queuedTextures.clear();
         queuedUITextures.clear();
 

@@ -17,6 +17,8 @@ import org.joml.*;
 import org.json.JSONObject;
 import org.lwjgl.PointerBuffer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.Math;
 import java.util.HashMap;
@@ -103,7 +105,7 @@ public final class BlobbyEngine {
 
                 switch (key) {
                     case "map":
-                        currentLevel = LevelLoader.loadLevel(value);
+                        LevelLoader.loadLevel(value, BlobbyEngine::setLevel);
                         break;
                     default:
                         break;
@@ -287,6 +289,24 @@ public final class BlobbyEngine {
     }
 
     /**
+     * Loads a texture from a path. DOES NOT cache it.
+     * @param filename the path of the texture.
+     * @return the texture.
+     */
+    private static Texture getInternalTexture(String filename) {
+        Texture texture = null;
+
+        try {
+            InputStream stream = BlobbyEngine.class.getResourceAsStream(filename + ".png");
+            texture = new Texture(ImageIO.read(stream));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return texture;
+    }
+
+    /**
      * Sets the current level.
      * @param level the new current level.
      * @see BlobbyEngine#getCurrentLevel()
@@ -343,6 +363,15 @@ public final class BlobbyEngine {
     public static void stop() {
         if(window != null)
             glfwSetWindowShouldClose(window.getId(), true);
+    }
+
+    /**
+     * Shows a loading screen.
+     */
+    public static void showLoadingScreen() {
+        Renderer.setWindow(window);
+        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), getInternalTexture("loadingScreen"));
+        Renderer.finishRendering();
     }
 
 }
