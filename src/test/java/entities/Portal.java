@@ -12,10 +12,10 @@ public class Portal extends Entity {
     private Vector2d position;
     private String text;
 
-    public Portal(Vector2d position, Map<String, Object> parameters) {
+    public Portal(Vector2d position, Map<String, String> parameters) {
         super(position, parameters);
         this.position = position;
-        this.text = (String) parameters.get("Text");
+        this.text = parameters.get("Text");
     }
 
     @Override

@@ -51,8 +51,8 @@ public class LevelLoader {
                     int x = blockJson.getInt("X");
                     int y = blockJson.getInt("Y");
 
-                    Map<String, Object> blockProperties = new HashMap<>();
-                    blockProperties.put("Texture", BlobbyEngine.getTexture(blockJson.getString("Path")));
+                    Map<String, String> blockProperties = new HashMap<>();
+                    blockProperties.put("Texture", blockJson.getString("Path"));
                     Block block = new Block(new Vector2d(x + screenX * 16, y + screenY * 9), blockProperties);
 
                     entities.add(block);

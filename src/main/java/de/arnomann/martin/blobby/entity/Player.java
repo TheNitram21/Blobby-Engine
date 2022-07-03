@@ -14,14 +14,11 @@ public class Player extends Entity {
     private Vector2d position;
     private ITexture texture;
 
-    public Player(Vector2d pos, Map<String, Object> parameters) {
+    public Player(Vector2d pos, Map<String, String> parameters) {
         super(pos, parameters);
         position = pos;
 
-        if(parameters.get("Texture") instanceof ITexture)
-            this.texture = (ITexture) parameters.get("Texture");
-        else if(parameters.get("Texture") instanceof String)
-            this.texture = BlobbyEngine.getTexture((String) parameters.get("Texture"));
+        this.texture = BlobbyEngine.getTexture(parameters.get("Texture"));
     }
 
     @Override

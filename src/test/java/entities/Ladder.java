@@ -13,7 +13,7 @@ public class Ladder extends Entity {
 
     private Vector2d position;
 
-    public Ladder(Vector2d position, Map<String, Object> parameters) {
+    public Ladder(Vector2d position, Map<String, String> parameters) {
         super(position, parameters);
         this.position = position;
     }
