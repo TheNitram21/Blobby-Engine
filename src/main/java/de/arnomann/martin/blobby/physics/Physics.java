@@ -1,11 +1,11 @@
 package de.arnomann.martin.blobby.physics;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import org.joml.Math;
 import org.joml.Vector2d;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A class for basic physics stuff.
@@ -21,7 +21,10 @@ public class Physics {
      * @return the distance between point a and point b.
      */
     public static double distance(Vector2d a, Vector2d b) {
-        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        double dx = a.x - b.x;
+        double dy = a.y - b.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**

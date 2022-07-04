@@ -233,7 +233,7 @@ public final class BlobbyEngine {
      * @return the screen.
      */
     public static Vector2i getEntityScreen(Entity e) {
-        return new Vector2i((int) Math.floor((e.getPosition().x + e.getWidth() / 2d) / 16), (int) Math.floor((e.getPosition().y + e.getHeight() / 2d) / 9));
+        return new Vector2i((int) Math.floor((e.getPosition().x + e.getWidth() / 2d) / 16), (int) Math.floor((e.getPosition().y - e.getHeight() / 2d) / 9));
     }
 
     /**
