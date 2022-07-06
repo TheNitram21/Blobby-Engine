@@ -3,7 +3,7 @@
         {
             "ClassName": "Ladder",
             "InternalClassName": "entities.Ladder",
-            "Parameters": [],
+            "Parameters": [ "Name" ],
             "EditorTexture": "Ladder.png"
         },
         {

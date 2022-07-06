@@ -112,6 +112,7 @@ public class LevelLoader {
             logger.info("Level '" + filename + "' loaded!");
 
             whenDone.accept(level);
+            level.screens.forEach((pos, screen) -> screen.entities.forEach(Entity::initialize));
         } catch(JSONException e) {
             e.printStackTrace();
         } finally {

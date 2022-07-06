@@ -465,14 +465,22 @@
             ],
             "X": 0,
             "Y": 0,
-            "Entities": [{
-                "Target": "A",
-                "X": 11,
-                "ClassName": "Trigger",
-                "Y": 5,
-                "OnlyOnce": "false",
-                "Method": "a"
-            }]
+            "Entities": [
+                {
+                    "X": 1,
+                    "ClassName": "Ladder",
+                    "Y": 5,
+                    "Name": "E"
+                },
+                {
+                    "Target": "E",
+                    "X": 11,
+                    "ClassName": "Trigger",
+                    "Y": 5,
+                    "OnlyOnce": "false",
+                    "Method": "printMessage"
+                }
+            ]
         }
     ],
     "Name": "Level DEBUGGY"

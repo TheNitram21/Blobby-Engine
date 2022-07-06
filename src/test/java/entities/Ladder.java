@@ -18,6 +18,10 @@ public class Ladder extends Entity {
         this.position = position;
     }
 
+    public void printMessage() {
+        System.out.println("Message printed!");
+    }
+
     @Override
     public Vector2d getPosition() {
         return position;
@@ -40,7 +44,7 @@ public class Ladder extends Entity {
 
     @Override
     public ITexture getTexture() {
-        return BlobbyEngine.getTexture("Ladder");
+        return null;
     }
 
     @Override

@@ -76,6 +76,11 @@ public class Entity implements EventListener {
     }
 
     /**
+     * Called just after level loading has finished.
+     */
+    public void initialize() {}
+
+    /**
      * Returns the id of the entity.
      * @return the id.
      */

@@ -12,7 +12,7 @@ import java.util.Map;
 public class Trigger extends Entity {
 
     private final Vector2d position;
-    private final Entity target;
+    private Entity target;
     private final String method;
     private final boolean onlyOnce;
 
@@ -23,10 +23,6 @@ public class Trigger extends Entity {
         super(position, parameters);
 
         this.position = position;
-        this.target = BlobbyEngine.getCurrentLevel().findEntityByParameter("Name", parameters.get("Target"));
-        if(this.target == null)
-            ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(), new IllegalStateException(
-                    "Can't find entity with 'Name' property of '" + parameters.get("Target") + "'"));
 
         this.method = parameters.get("Method");
         this.onlyOnce = Boolean.parseBoolean(parameters.get("OnlyOnce"));
@@ -48,6 +44,14 @@ public class Trigger extends Entity {
     @Override
     public int getHeight() {
         return 1;
+    }
+
+    @Override
+    public void initialize() {
+        this.target = BlobbyEngine.getCurrentLevel().findEntityByParameter("Name", getParameters().get("Target"));
+        if(this.target == null)
+            ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(), new IllegalStateException(
+                    "Can't find entity with 'Name' property of '" + getParameters().get("Target") + "'"));
     }
 
     @Override
