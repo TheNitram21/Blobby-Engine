@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.physics;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.entity.Player;
 import org.joml.Math;
 import org.joml.Vector2d;
 
@@ -40,16 +41,21 @@ public class Physics {
 
         Rectangle.Double r = new Rectangle.Double(boxStartingPos.x, boxStartingPos.y, boxWidth, boxHeight);
 
-        BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
-            screen.entities.forEach(e -> {
-                if(!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
-                    return;
+        if(entityClassName.equals("Player")) {
+            Player p = BlobbyEngine.getPlayer();
+            return r.intersects(p.getPosition().x, p.getPosition().y, p.getWidth(), p.getHeight());
+        } else {
+            BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
+                screen.entities.forEach(e -> {
+                    if(!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
+                        return;
 
-                if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight())) {
-                    collides.set(true);
-                }
+                    if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight())) {
+                        collides.set(true);
+                    }
+                });
             });
-        });
+        }
 
         return collides.get();
     }
@@ -64,16 +70,21 @@ public class Physics {
     public static boolean objectInCircle(Vector2d circleCenter, double circleRadius, String entityClassName) {
         AtomicBoolean collides = new AtomicBoolean(false);
 
-        BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
-            screen.entities.forEach(e -> {
-                if(!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
-                    return;
+        if(entityClassName.equals("Player")) {
+            Player p = BlobbyEngine.getPlayer();
+            return distance(circleCenter, p.getPosition()) < circleRadius;
+        } else {
+            BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
+                screen.entities.forEach(e -> {
+                    if (!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
+                        return;
 
-                if(distance(circleCenter, e.getPosition()) < circleRadius) {
-                    collides.set(true);
-                }
+                    if (distance(circleCenter, e.getPosition()) < circleRadius) {
+                        collides.set(true);
+                    }
+                });
             });
-        });
+        }
 
         return collides.get();
     }

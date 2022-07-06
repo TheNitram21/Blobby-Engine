@@ -68,10 +68,10 @@ public class Texture implements ITexture {
      */
     public Texture(String filename) {
         BufferedImage bi;
+        this.filename = filename;
         filename = filename + ".png";
 
         try {
-            this.filename = filename;
             bi = ImageIO.read(new File(filename));
             width = bi.getWidth();
             height = bi.getHeight();

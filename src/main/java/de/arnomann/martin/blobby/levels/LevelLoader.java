@@ -26,8 +26,8 @@ public class LevelLoader {
 
     /**
      * Loads a level.
-     * @param filename the path of the level.
-     * @return the loaded level.
+     * @param name the path of the level.
+     * @param whenDone called when the level is loaded.
      */
     public static void loadLevel(String name, Consumer<Level> whenDone) {
         String filename = BlobbyEngine.MAPS_PATH + name + ".json";

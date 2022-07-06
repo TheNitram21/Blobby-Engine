@@ -12,97 +12,12 @@
                 },
                 {
                     "Path": "grass",
+                    "X": 8,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
                     "X": 6,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 2,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 15,
-                    "Y": 5
-                },
-                {
-                    "Path": "dirt",
-                    "X": 15,
-                    "Y": 6
-                },
-                {
-                    "Path": "dirt",
-                    "X": 15,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 15,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 11,
-                    "Y": 5
-                },
-                {
-                    "Path": "dirt",
-                    "X": 11,
-                    "Y": 6
-                },
-                {
-                    "Path": "dirt",
-                    "X": 11,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 11,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 7,
-                    "Y": 5
-                },
-                {
-                    "Path": "grass",
-                    "X": 7,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 3,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 12,
-                    "Y": 5
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 6
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 8,
-                    "Y": 5
-                },
-                {
-                    "Path": "grass",
-                    "X": 8,
                     "Y": 8
                 },
                 {
@@ -112,6 +27,11 @@
                 },
                 {
                     "Path": "grass",
+                    "X": 2,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
                     "X": 0,
                     "Y": 7
                 },
@@ -119,6 +39,21 @@
                     "Path": "dirt",
                     "X": 0,
                     "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 15,
+                    "Y": 5
+                },
+                {
+                    "Path": "dirt",
+                    "X": 15,
+                    "Y": 6
+                },
+                {
+                    "Path": "dirt",
+                    "X": 15,
+                    "Y": 7
                 },
                 {
                     "Path": "grass",
@@ -127,8 +62,18 @@
                 },
                 {
                     "Path": "dirt",
+                    "X": 15,
+                    "Y": 8
+                },
+                {
+                    "Path": "dirt",
                     "X": 13,
                     "Y": 6
+                },
+                {
+                    "Path": "grass",
+                    "X": 11,
+                    "Y": 5
                 },
                 {
                     "Path": "dirt",
@@ -137,12 +82,32 @@
                 },
                 {
                     "Path": "dirt",
+                    "X": 11,
+                    "Y": 6
+                },
+                {
+                    "Path": "dirt",
                     "X": 13,
                     "Y": 8
                 },
                 {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 7
+                },
+                {
                     "Path": "grass",
                     "X": 9,
+                    "Y": 5
+                },
+                {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 7,
                     "Y": 5
                 },
                 {
@@ -157,7 +122,17 @@
                 },
                 {
                     "Path": "grass",
+                    "X": 7,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
                     "X": 5,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 3,
                     "Y": 8
                 },
                 {
@@ -181,9 +156,19 @@
                     "Y": 6
                 },
                 {
+                    "Path": "grass",
+                    "X": 12,
+                    "Y": 5
+                },
+                {
                     "Path": "dirt",
                     "X": 14,
                     "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 6
                 },
                 {
                     "Path": "dirt",
@@ -191,8 +176,23 @@
                     "Y": 8
                 },
                 {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 7
+                },
+                {
                     "Path": "grass",
                     "X": 10,
+                    "Y": 5
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 8,
                     "Y": 5
                 },
                 {
@@ -209,6 +209,116 @@
             "Blocks": [
                 {
                     "Path": "grass",
+                    "X": 6,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 6,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 2,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 2,
+                    "Y": 8
+                },
+                {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 0
+                },
+                {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 1
+                },
+                {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 2
+                },
+                {
+                    "Path": "grass",
+                    "X": 15,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 3
+                },
+                {
+                    "Path": "dirt",
+                    "X": 15,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 11,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 11,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 7,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 7,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
+                    "X": 3,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 3,
+                    "Y": 8
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 0
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 1
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 2
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 3
+                },
+                {
+                    "Path": "grass",
+                    "X": 12,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 12,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
                     "X": 8,
                     "Y": 7
                 },
@@ -223,11 +333,6 @@
                     "Y": 0
                 },
                 {
-                    "Path": "grass",
-                    "X": 6,
-                    "Y": 7
-                },
-                {
                     "Path": "dirt",
                     "X": 0,
                     "Y": 1
@@ -236,11 +341,6 @@
                     "Path": "dirt",
                     "X": 0,
                     "Y": 2
-                },
-                {
-                    "Path": "dirt",
-                    "X": 6,
-                    "Y": 8
                 },
                 {
                     "Path": "grass",
@@ -263,22 +363,12 @@
                     "Y": 8
                 },
                 {
-                    "Path": "grass",
-                    "X": 2,
-                    "Y": 7
-                },
-                {
                     "Path": "dirt",
                     "X": 0,
                     "Y": 5
                 },
                 {
                     "Path": "dirt",
-                    "X": 2,
-                    "Y": 8
-                },
-                {
-                    "Path": "dirt",
                     "X": 0,
                     "Y": 6
                 },
@@ -290,16 +380,6 @@
                 {
                     "Path": "dirt",
                     "X": 0,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 15,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 15,
                     "Y": 8
                 },
                 {
@@ -314,37 +394,12 @@
                 },
                 {
                     "Path": "grass",
-                    "X": 11,
-                    "Y": 6
-                },
-                {
-                    "Path": "dirt",
-                    "X": 11,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 11,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
                     "X": 9,
                     "Y": 7
                 },
                 {
                     "Path": "dirt",
                     "X": 9,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
-                    "X": 7,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 7,
                     "Y": 8
                 },
                 {
@@ -359,16 +414,6 @@
                 },
                 {
                     "Path": "grass",
-                    "X": 3,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 3,
-                    "Y": 8
-                },
-                {
-                    "Path": "grass",
                     "X": 1,
                     "Y": 7
                 },
@@ -378,37 +423,37 @@
                     "Y": 8
                 },
                 {
-                    "Path": "grass",
-                    "X": 14,
-                    "Y": 7
-                },
-                {
                     "Path": "dirt",
-                    "X": 14,
-                    "Y": 8
-                },
-                {
-                    "Path": "grassRightEdge",
-                    "X": 12,
-                    "Y": 6
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 7
-                },
-                {
-                    "Path": "dirt",
-                    "X": 12,
-                    "Y": 8
-                },
-                {
-                    "Path": "grassLeftEdge",
                     "X": 10,
-                    "Y": 6
+                    "Y": 0
                 },
                 {
                     "Path": "dirt",
+                    "X": 10,
+                    "Y": 1
+                },
+                {
+                    "Path": "dirt",
+                    "X": 10,
+                    "Y": 2
+                },
+                {
+                    "Path": "grass",
+                    "X": 14,
+                    "Y": 7
+                },
+                {
+                    "Path": "dirt",
+                    "X": 10,
+                    "Y": 3
+                },
+                {
+                    "Path": "dirt",
+                    "X": 14,
+                    "Y": 8
+                },
+                {
+                    "Path": "grass",
                     "X": 10,
                     "Y": 7
                 },
@@ -421,9 +466,12 @@
             "X": 0,
             "Y": 0,
             "Entities": [{
-                "X": 1,
-                "ClassName": "Ladder",
-                "Y": 2
+                "Target": "A",
+                "X": 11,
+                "ClassName": "Trigger",
+                "Y": 5,
+                "OnlyOnce": "false",
+                "Method": "a"
             }]
         }
     ],

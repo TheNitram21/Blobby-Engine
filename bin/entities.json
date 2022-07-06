@@ -5,6 +5,12 @@
             "InternalClassName": "entities.Ladder",
             "Parameters": [],
             "EditorTexture": "Ladder.png"
+        },
+        {
+            "ClassName": "Trigger",
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Trigger",
+            "Parameters": [ "Target", "Method", "OnlyOnce" ],
+            "EditorTexture": "editor/trigger.png"
         }
     ]
 }
