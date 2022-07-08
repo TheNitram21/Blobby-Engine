@@ -92,8 +92,7 @@ public class Physics {
 
     public static double raycast(Vector2d rayStartingPos, Vector2d rayEndPos, String entityClassName) {
         double distance = -1;
-
-        // TODO: Raycast
+        
         Vector2d step = getDirection(rayStartingPos, rayEndPos).mul(0.1);
         Vector2d pos = new Vector2d(rayStartingPos);
 
