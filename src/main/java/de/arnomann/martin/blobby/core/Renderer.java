@@ -101,15 +101,13 @@ public final class Renderer {
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
-                if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
-                    screen.entities.forEach(entity -> {
-                        if(entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
-                            Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
-                            render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                    (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
-                        }
-                    });
-                }
+                screen.entities.forEach(entity -> {
+                    if(entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                    }
+                });
             });
         }
 
@@ -121,15 +119,13 @@ public final class Renderer {
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
-                if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
-                    screen.entities.forEach(entity -> {
-                        if(entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
-                            Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
-                            render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                    (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                screen.entities.forEach(entity -> {
+                    if(entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
                         }
                     });
-                }
             });
         }
 

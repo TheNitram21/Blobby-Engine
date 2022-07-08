@@ -91,6 +91,8 @@ public class EngineTest implements EventListener {
 
             onGroundLastFrame = playerOnGround;
         }
+
+//        System.out.println(Physics.raycast(p.getPosition(), new Vector2d(p.getPosition()).add(0, 4), "Block"));
     }
 
     Sound hiSound;

@@ -7,6 +7,7 @@ import org.joml.Vector2d;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A class for basic physics stuff.
@@ -87,6 +88,38 @@ public class Physics {
         }
 
         return collides.get();
+    }
+
+    public static double raycast(Vector2d rayStartingPos, Vector2d rayEndPos, String entityClassName) {
+        double distance = -1;
+
+        // TODO: Raycast
+        Vector2d step = getDirection(rayStartingPos, rayEndPos).mul(0.1);
+        Vector2d pos = new Vector2d(rayStartingPos);
+
+        double rayLength = distance(rayStartingPos, rayEndPos);
+        while(distance(rayStartingPos, pos) < rayLength) {
+            pos.add(step);
+
+            if(objectInCircle(pos, 0.05, entityClassName)) {
+                distance = distance(rayStartingPos, pos);
+            }
+        }
+
+        if(distance > rayLength)
+            distance = rayLength;
+
+        return distance;
+    }
+
+    /**
+     * Returns the position from one position to another one.
+     * @param from the beginning position.
+     * @param to the end position.
+     * @return the direction.
+     */
+    public static Vector2d getDirection(Vector2d from, Vector2d to) {
+        return new Vector2d(to).sub(from).normalize();
     }
 
 }
