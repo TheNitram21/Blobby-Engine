@@ -34,6 +34,12 @@ public final class Window {
     private boolean started = false;
 
     /**
+     * The maximum amount of frames rendered each second. Any values above 60 will not affect anything. Negative values
+     * will make the framerate infinite.
+     */
+    public int maxFramerate = 60;
+
+    /**
      * Creates a new window. SHOULD ONLY BE CALLED FROM THE BLOBBY ENGINE CLASS.
      * @param runConfig the run configuration.
      */
@@ -113,14 +119,16 @@ public final class Window {
                 double curTime = glfwGetTime();
                 float delta = (float) (curTime - lastFrameTime);
 
-                ListenerManager.callEvent(new UpdateEvent(delta, curTime));
-                ListenerManager.callEvent(new LateUpdateEvent(delta, curTime));
+                if(maxFramerate < 0 || delta >= (1f / maxFramerate)) {
+                    ListenerManager.callEvent(new UpdateEvent(delta, curTime));
+                    ListenerManager.callEvent(new LateUpdateEvent(delta, curTime));
 
-                Renderer.render(this, delta);
+                    Renderer.render(this, delta);
 
-                lastFrameTime = curTime;
+                    lastFrameTime = curTime;
 
-                glfwPollEvents();
+                    glfwPollEvents();
+                }
             }
 
             if(SoundPlayer.isInitialized())

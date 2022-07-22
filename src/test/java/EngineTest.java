@@ -37,6 +37,8 @@ public class EngineTest implements EventListener {
     public void onStart(StartEvent event) {
         BlobbyEngine.debugMode();
 
+        BlobbyEngine.getWindow().maxFramerate = 60;
+
         Map<String, String> playerParameters = new HashMap<>();
         playerParameters.put("Texture", "player");
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), playerParameters));
