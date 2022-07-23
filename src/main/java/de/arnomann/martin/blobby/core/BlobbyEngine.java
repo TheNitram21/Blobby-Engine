@@ -17,6 +17,7 @@ import org.joml.*;
 import org.json.JSONObject;
 import org.lwjgl.PointerBuffer;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -253,7 +254,7 @@ public final class BlobbyEngine {
      * @param name the path to the texture.
      * @return the texture.
      */
-    public static ITexture getTexture(String name) {
+    public static ITexture getTexture(String name) throws IllegalArgumentException {
         ITexture texture = textures.get(name);
         if(texture == null) {
             texture = loadTexture(name);
@@ -274,7 +275,7 @@ public final class BlobbyEngine {
 
         if(file.exists()) {
             double animTimeSecs = 1;
-            try(BufferedReader r = new BufferedReader(new FileReader(filename + "/animTime.txt"))) {
+            try (BufferedReader r = new BufferedReader(new FileReader(filename + "/animTime.txt"))) {
                 animTimeSecs = Double.parseDouble(r.readLine());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -363,6 +364,14 @@ public final class BlobbyEngine {
     public static void stop() {
         if(window != null)
             glfwSetWindowShouldClose(window.getId(), true);
+    }
+
+    /**
+     * Returns the default window icon for use when no window icon is provided.
+     * @return the default window icon.
+     */
+    public static Texture getDefaultWindowIcon() {
+        return getInternalTexture("defaultIcon");
     }
 
     /**

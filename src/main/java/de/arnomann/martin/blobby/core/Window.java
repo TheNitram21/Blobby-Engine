@@ -14,6 +14,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import javax.imageio.IIOException;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -105,7 +106,13 @@ public final class Window {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            Texture iconTexture = (Texture) BlobbyEngine.getTexture(iconPath);
+            Texture iconTexture;
+
+            if(iconPath != null && !iconPath.isBlank())
+                iconTexture = (Texture) BlobbyEngine.getTexture(iconPath);
+            else
+                iconTexture = BlobbyEngine.getDefaultWindowIcon();
+
             GLFWImage.Buffer iconBuffer = GLFWImage.create(1);
             GLFWImage iconImage = GLFWImage.create().set(iconTexture.getWidth(), iconTexture.getHeight(), iconTexture.getPixels());
             iconBuffer.put(0, iconImage);
