@@ -45,8 +45,8 @@ public class EngineTest implements EventListener {
         LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
-        buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f), BlobbyEngine.getTexture("button"),
-                BlobbyEngine::stop));
+        buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),
+                BlobbyEngine.getTexture("button"), BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
     }
 

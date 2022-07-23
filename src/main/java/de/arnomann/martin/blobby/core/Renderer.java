@@ -176,7 +176,7 @@ public final class Renderer {
     }
 
     public static void renderMenu(Menu menu) {
-        renderUV(new Vector2f(-1f, -1f), new Vector2f(-0.5f, 1f), menu.getBackgroundTexture());
+        renderUV(new Vector2f(-1f, 1f), new Vector2f(-0.5f, -1f), menu.getBackgroundTexture());
         for(Button b : menu.getButtons()) {
             renderUV(b.uvStart, b.uvEnd, b.texture);
         }
