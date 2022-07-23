@@ -47,4 +47,21 @@ public class Button implements EventListener {
             onClick.run();
         }
     }
+
+    /**
+     * Returns the width of the button.
+     * @return the width.
+     */
+    public float getWidth() {
+        return uvEnd.x - uvStart.x;
+    }
+
+    /**
+     * Returns the height of the button.
+     * @return the height.
+     */
+    public float getHeight() {
+        return uvEnd.y - uvStart.y;
+    }
+
 }
