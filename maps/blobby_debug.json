@@ -467,6 +467,18 @@
             "Y": 0,
             "Entities": [
                 {
+                    "X": 6,
+                    "ClassName": "Detail",
+                    "Y": 6,
+                    "Texture": "grass"
+                },
+                {
+                    "X": 5,
+                    "ClassName": "Detail",
+                    "Y": 6,
+                    "Texture": "grass"
+                },
+                {
                     "X": 1,
                     "ClassName": "Ladder",
                     "Y": 5,

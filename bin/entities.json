@@ -1,16 +1,22 @@
 {
     "Entities": [
         {
-            "ClassName": "Ladder",
-            "InternalClassName": "entities.Ladder",
-            "Parameters": [ "Name" ],
-            "EditorTexture": "Ladder.png"
-        },
-        {
             "ClassName": "Trigger",
             "InternalClassName": "de.arnomann.martin.blobby.entity.Trigger",
             "Parameters": [ "Target", "Method", "OnlyOnce" ],
             "EditorTexture": "editor/trigger.png"
+        },
+		{
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Detail",
+            "ClassName": "Detail",
+            "Parameters": [ "Texture" ],
+            "EditorTexture": "editor/detail.png"
+        },
+		{
+            "ClassName": "Ladder",
+            "InternalClassName": "entities.Ladder",
+            "Parameters": [ "Name" ],
+            "EditorTexture": "Ladder.png"
         }
     ]
 }
