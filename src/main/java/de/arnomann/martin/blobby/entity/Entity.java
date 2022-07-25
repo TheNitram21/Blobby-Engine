@@ -1,10 +1,12 @@
 package de.arnomann.martin.blobby.entity;
 
+import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
 import org.joml.Vector2d;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A basic entity.
@@ -34,6 +36,12 @@ public class Entity implements EventListener {
     public Vector2d getPosition() {
         return null;
     }
+
+    /**
+     * Sets the position of the entity. OVERRIDE.
+     * @param position the new position.
+     */
+    public void setPosition(Vector2d position) {}
 
     /**
      * Returns the width of the entity in units. OVERRIDE.
@@ -107,6 +115,17 @@ public class Entity implements EventListener {
         if(!(that instanceof Entity))
             return false;
         return this.getId() == ((Entity) that).getId();
+    }
+
+    public static Entity getEntityById(long id) {
+        AtomicReference<Entity> result = new AtomicReference<>(null);
+
+        BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
+            if(entity.getId() == id)
+                result.set(entity);
+        }));
+
+        return result.get();
     }
 
 }
