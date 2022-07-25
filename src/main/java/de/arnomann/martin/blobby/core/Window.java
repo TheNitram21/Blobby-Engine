@@ -1,5 +1,6 @@
 package de.arnomann.martin.blobby.core;
 
+import de.arnomann.martin.blobby.MathUtil;
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.event.LateUpdateEvent;
@@ -14,7 +15,6 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
-import javax.imageio.IIOException;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -35,10 +35,10 @@ public final class Window {
     private boolean started = false;
 
     /**
-     * The maximum amount of frames rendered each second. Any values above 60 will not affect anything. Negative values
-     * will make the framerate infinite.
+     * The maximum amount of frames rendered each second. Negative values will make the framerate infinite.
      */
     public int maxFramerate = 60;
+    private boolean vSync = false;
 
     /**
      * Creates a new window. SHOULD ONLY BE CALLED FROM THE BLOBBY ENGINE CLASS.
@@ -209,6 +209,26 @@ public final class Window {
         glfwSetWindowSize(windowId, this.width, this.height);
 
         return true;
+    }
+
+    /**
+     * Sets whether VSync should be enabled or not. VSync means that OpenGL will only render as many frames as the
+     * screen can show.
+     * @param vSync whether VSync is enabled or not.
+     * @see Window#isVSyncEnabled()
+     */
+    public void setVSyncEnabled(boolean vSync) {
+        glfwSwapInterval(MathUtil.booleanToInt(vSync));
+        this.vSync = vSync;
+    }
+
+    /**
+     * Returns whether VSync is currently enabled or not.
+     * @return {@code true} if VSync is enabled, {@code false} otherwise.
+     * @see Window#setVSyncEnabled(boolean)
+     */
+    public boolean isVSyncEnabled() {
+        return vSync;
     }
 
     /**

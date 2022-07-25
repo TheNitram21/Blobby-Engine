@@ -37,7 +37,7 @@ public class EngineTest implements EventListener {
     public void onStart(StartEvent event) {
         BlobbyEngine.debugMode();
 
-        BlobbyEngine.getWindow().maxFramerate = 60;
+        BlobbyEngine.getWindow().maxFramerate = -1;
 
         Map<String, String> playerParameters = new HashMap<>();
         playerParameters.put("Texture", "player");
@@ -115,7 +115,11 @@ public class EngineTest implements EventListener {
             if(hiSound == null)
                 hiSound = SoundPlayer.createSound("hi.ogg");
             SoundPlayer.playSound(hiSound);
-        } if(event.key == GLFW_KEY_X)
+        }
+        if(event.key == GLFW_KEY_X)
             SoundPlayer.stopSound(hiSound);
+
+        if(event.key == GLFW_KEY_V)
+            BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());
     }
 }
