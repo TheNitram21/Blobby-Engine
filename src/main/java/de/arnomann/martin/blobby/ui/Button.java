@@ -9,13 +9,26 @@ import de.arnomann.martin.blobby.event.MouseButtonPressedEvent;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
+/**
+ * Represents a UI button.
+ */
 public class Button implements EventListener {
 
+    /** The starting position of the button in UV space. */
     public final Vector2f uvStart;
+    /** The end position of the button in UV space. */
     public final Vector2f uvEnd;
+    /** The texture of the button. */
     public final ITexture texture;
     private final Runnable onClick;
 
+    /**
+     * Creates a new button.
+     * @param uvStart the starting position of the button in UV space.
+     * @param uvEnd the end position of the button in UV space.
+     * @param texture the texture of the button.
+     * @param onClick what happens when the button is clicked.
+     */
     public Button(Vector2f uvStart, Vector2f uvEnd, ITexture texture, Runnable onClick) {
         this.uvStart = new Vector2f(uvStart.x * 2 - 1, -(uvStart.y * 2 - 1));
         this.uvEnd = new Vector2f(uvEnd.x * 2 - 1, -(uvEnd.y * 2 - 1));
@@ -34,4 +47,21 @@ public class Button implements EventListener {
             onClick.run();
         }
     }
+
+    /**
+     * Returns the width of the button.
+     * @return the width.
+     */
+    public float getWidth() {
+        return uvEnd.x - uvStart.x;
+    }
+
+    /**
+     * Returns the height of the button.
+     * @return the height.
+     */
+    public float getHeight() {
+        return uvEnd.y - uvStart.y;
+    }
+
 }

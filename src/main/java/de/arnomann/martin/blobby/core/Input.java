@@ -14,11 +14,17 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * A class for managing input.
+ */
 public class Input {
 
     private static List<Integer> keys = new ArrayList<>();
     private static boolean initialized = false;
 
+    /**
+     * Initializes the input.
+     */
     public static void initialize() {
         initialized = true;
 
@@ -48,6 +54,11 @@ public class Input {
         BlobbyEngine.getLogger().info("Initialized input");
     }
 
+    /**
+     * Checks whether a specific key is pressed or not.
+     * @param keyCode the key code. Use {@link org.lwjgl.glfw.GLFW} key codes.
+     * @return {@code true} if the key is pressed, {@code false} otherwise.
+     */
     public static boolean keyPressed(int keyCode) {
         return keys.contains(keyCode);
     }

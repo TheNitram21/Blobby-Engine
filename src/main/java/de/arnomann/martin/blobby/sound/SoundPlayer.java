@@ -17,6 +17,9 @@ import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
+/**
+ * A class for playing sound. Sound has to be in the <i>OGG Vorbis</i> format.
+ */
 public class SoundPlayer {
 
     private static boolean initialized = false;
@@ -31,6 +34,9 @@ public class SoundPlayer {
 
     private SoundPlayer() {}
 
+    /**
+     * Initializes the sound player.
+     */
     public static void initialize() {
         if(!initialized) {
             sounds = new ArrayList<>();
@@ -48,6 +54,11 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Creates a new instance of the sound class.
+     * @param name the path to the sound file.
+     * @return the created sound file.
+     */
     public static Sound createSound(String name) {
         name = BlobbyEngine.SOUNDS_PATH + name;
 
@@ -79,6 +90,11 @@ public class SoundPlayer {
         return new Sound(name, sourcePointer, bufferPointer);
     }
 
+    /**
+     * Plays a sound from a path.
+     * @param name the path.
+     * @return the played sound.
+     */
     public static Sound playSound(String name) {
         Sound sound = createSound(name);
         name = BlobbyEngine.SOUNDS_PATH + name;
@@ -87,27 +103,45 @@ public class SoundPlayer {
         return sound;
     }
 
+    /**
+     * Plays a sound from a sound instance.
+     * @param sound the sound to play.
+     */
     public static void playSound(Sound sound) {
         alSourcei(sound.getSourcePointer(), AL_BUFFER, sound.getBufferPointer());
         alSourcePlay(sound.getSourcePointer());
     }
 
+    /**
+     * Stops all sounds.
+     */
     public static void stopAllSounds() {
         for(Sound sound : sounds) {
             stopAndDeleteSound(sound);
         }
     }
 
+    /**
+     * Stops a specific sound.
+     * @param sound the sound to stop.
+     */
     public static void stopSound(Sound sound) {
         alSourceStop(sound.getSourcePointer());
     }
 
+    /**
+     * Stops a specific sound. It can not be played again afterwards.
+     * @param sound the sound to stop and delete.
+     */
     public static void stopAndDeleteSound(Sound sound) {
         stopSound(sound);
         alDeleteSources(sound.getSourcePointer());
         sounds.remove(sound);
     }
 
+    /**
+     * Destroys the sound player. This will stop all sounds.
+     */
     public static void destroy() {
         if(initialized) {
             for(Sound sound : sounds) {
@@ -122,6 +156,10 @@ public class SoundPlayer {
         }
     }
 
+    /**
+     * Returns whether the sound player is initialized or not.
+     * @return {@code true} if the sound player is initialized, {@code false} otherwise.
+     */
     public static boolean isInitialized() {
         return initialized;
     }

@@ -7,16 +7,16 @@ import org.joml.Vector2d;
 import java.util.Map;
 
 /**
- * A basic block entity.
+ * A simple detail. Like a different type of block.
  */
-public class Block extends Entity {
+public class Detail extends Entity {
 
     private final Vector2d pos;
     public final ITexture texture;
 
-    public Block(Vector2d pos, Map<String, String> parameters) {
-        super(pos, parameters);
-        this.pos = pos;
+    public Detail(Vector2d position, Map<String, String> parameters) {
+        super(position, parameters);
+        this.pos = position;
         this.texture = BlobbyEngine.getTexture(parameters.get("Texture"));
     }
 
@@ -39,4 +39,5 @@ public class Block extends Entity {
     public ITexture getTexture() {
         return texture;
     }
+
 }
