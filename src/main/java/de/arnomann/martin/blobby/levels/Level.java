@@ -2,6 +2,7 @@ package de.arnomann.martin.blobby.levels;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import org.joml.Math;
 import org.joml.Vector2i;
@@ -26,6 +27,8 @@ public class Level {
      * The background texture.
      */
     public final ITexture backgroundTexture;
+    /** The precalculated light map texture used for lighting. */
+    public final ITexture lightMapTexture;
 
     private final Vector2i size;
     private final Vector2i firstScreen;
@@ -36,10 +39,11 @@ public class Level {
      * @param screens the screens in the level.
      * @param backgroundTexture the texture displayed as the background.
      */
-    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture) {
+    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, Texture lightMapTexture) {
         this.title = title;
         this.screens = screens;
         this.backgroundTexture = backgroundTexture;
+        this.lightMapTexture = lightMapTexture;
 
         size = new Vector2i();
         firstScreen = new Vector2i();

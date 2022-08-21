@@ -203,7 +203,20 @@
             ],
             "X": 1,
             "Y": 0,
-            "Entities": []
+            "Entities": [
+                {
+                    "Radius": "2",
+                    "X": 10,
+                    "ClassName": "Light",
+                    "Y": 3
+                },
+                {
+                    "Radius": "2",
+                    "X": 6,
+                    "ClassName": "Light",
+                    "Y": 3
+                }
+            ]
         },
         {
             "Blocks": [
@@ -473,6 +486,12 @@
                     "Texture": "grass"
                 },
                 {
+                    "Radius": "1",
+                    "X": 2,
+                    "ClassName": "Light",
+                    "Y": 2
+                },
+                {
                     "X": 5,
                     "ClassName": "Detail",
                     "Y": 6,
@@ -491,9 +510,18 @@
                     "Y": 5,
                     "OnlyOnce": "false",
                     "Method": "printMessage"
+                },
+                {
+                    "Radius": "3",
+                    "X": 8,
+                    "ClassName": "Light",
+                    "Y": 5
                 }
             ]
         }
     ],
-    "Name": "Level DEBUGGY"
+    "Name": "Level DEBUGGY",
+    "EditorSettings": {
+        "LightMapScale": 4
+    }
 }

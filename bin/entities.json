@@ -13,6 +13,11 @@
             "EditorTexture": "editor/detail.png"
         },
 		{
+            "ClassName": "Light",
+            "Parameters": [ "Radius" ],
+            "EditorTexture": "editor/detail.png"
+        },
+		{
             "ClassName": "Ladder",
             "InternalClassName": "entities.Ladder",
             "Parameters": [ "Name" ],

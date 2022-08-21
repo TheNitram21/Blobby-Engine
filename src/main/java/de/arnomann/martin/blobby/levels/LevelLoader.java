@@ -2,6 +2,7 @@ package de.arnomann.martin.blobby.levels;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Block;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.logging.Logger;
@@ -88,7 +89,8 @@ public class LevelLoader {
                             ex.printStackTrace();
                         }
 
-                        entities.add(e);
+                        if(e != null)
+                            entities.add(e);
                     }
                 } catch(JSONException ignored) {
                 }
@@ -105,9 +107,11 @@ public class LevelLoader {
                 backgroundTexture = BlobbyEngine.getTexture(json.getString("BackgroundTexture"));
             } catch(JSONException ignored) {}
 
+            Texture lightMapTexture = new Texture(BlobbyEngine.MAPS_PATH + name);
+
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens, backgroundTexture);
+            level = new Level(title, screens, backgroundTexture, lightMapTexture);
 
             logger.info("Level '" + filename + "' loaded!");
 

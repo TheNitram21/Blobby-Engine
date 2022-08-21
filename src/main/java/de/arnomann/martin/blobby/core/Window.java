@@ -67,8 +67,6 @@ public final class Window {
             BlobbyEngine.stop();
         }
 
-        glfwSetWindowAspectRatio(windowId, 16, 9);
-
         if(!runConfig.fullscreen) {
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 IntBuffer pWidth = stack.mallocInt(1);
@@ -123,6 +121,9 @@ public final class Window {
 
             double lastFrameTime = glfwGetTime();
             while(!glfwWindowShouldClose(windowId)) {
+                if(maxFramerate <= 0)
+                    maxFramerate = -1;
+
                 double curTime = glfwGetTime();
                 float delta = (float) (curTime - lastFrameTime);
 

@@ -129,6 +129,14 @@ public final class Renderer {
             });
         }
 
+        if(level != null && level.lightMapTexture != null) {
+            Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
+
+            render((int) ((level.getFirstScreenX() - currentScreen.x) * 16 * um - finalTransitionOffset.x),
+                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
+                    level.lightMapTexture);
+        }
+
         for(Particle particle : Particle.getParticles()) {
             Vector2d particlePos = new Vector2d(particle.getPosition()).mul(um);
             render((int) (particlePos.x - entityOffset.x * um - finalTransitionOffset.x),

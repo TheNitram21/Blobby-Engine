@@ -14,12 +14,11 @@ import de.arnomann.martin.blobby.logging.Logger;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.lwjgl.PointerBuffer;
 
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.Math;
 import java.util.HashMap;
@@ -155,7 +154,11 @@ public final class BlobbyEngine {
             JSONObject entityJSON = (JSONObject) entityObj;
 
             if(entityJSON.getString("ClassName").equals(classname)) {
-                classnameWithPackage = entityJSON.getString("InternalClassName");
+                try {
+                    classnameWithPackage = entityJSON.getString("InternalClassName");
+                } catch(JSONException e) {
+                    return null;
+                }
             }
         }
 

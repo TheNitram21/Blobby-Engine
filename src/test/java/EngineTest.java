@@ -14,6 +14,7 @@ import de.arnomann.martin.blobby.ui.Menu;
 import de.arnomann.martin.blobby.ui.UI;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,8 @@ public class EngineTest implements EventListener {
     public static void main(String[] args) {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
-        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], null, false), args);
+        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], null,
+                false), args);
     }
 
     @Override
@@ -121,5 +123,22 @@ public class EngineTest implements EventListener {
 
         if(event.key == GLFW_KEY_V)
             BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());
+
+        if(event.key == GLFW_KEY_L) {
+            BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
+                if(!entity.getClass().getSimpleName().equals("Block"))
+                    return;
+                Vector4f color = entity.getTexture().getColorModifiers();
+                entity.getTexture().setColorModifiers(color.x + 0.005f, color.y + 0.005f, color.z + 0.005f, 1f);
+            }));
+        }
+        if(event.key == GLFW_KEY_K) {
+            BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
+                if(!entity.getClass().getSimpleName().equals("Block"))
+                    return;
+                Vector4f color = entity.getTexture().getColorModifiers();
+                entity.getTexture().setColorModifiers(color.x - 0.005f, color.y - 0.005f, color.z - 0.005f, 1f);
+            }));
+        }
     }
 }
