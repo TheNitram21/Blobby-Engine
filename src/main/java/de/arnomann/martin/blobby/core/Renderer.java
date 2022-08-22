@@ -1,7 +1,10 @@
 package de.arnomann.martin.blobby.core;
 
 import de.arnomann.martin.blobby.core.texture.ITexture;
+import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
+import de.arnomann.martin.blobby.event.ListenerManager;
+import de.arnomann.martin.blobby.event.MainRenderDoneEvent;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
@@ -14,6 +17,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static de.arnomann.martin.blobby.MathUtil.booleanToInt;
 
+/**
+ * An <b>INTERNAL</b> class for rendering.
+ */
 public final class Renderer {
 
     private static Map<Vector4i, ITexture> queuedTextures = new HashMap<>();
@@ -39,6 +45,14 @@ public final class Renderer {
         queuedUITextures.put(new Vector4f(uvStart.x, uvStart.y, uvEnd.x, uvEnd.y), texture);
     }
 
+    /**
+     * Queues a texture for rendering.
+     * @param x the x position in pixels from the left of the window.
+     * @param y the y position in pixels from the top of the window.
+     * @param width the width in pixels.
+     * @param height the height in pixels.
+     * @param texture the texture to queue for rendering.
+     */
     public static void queueTexture(int x, int y, int width, int height, ITexture texture) {
         queuedTextures.put(new Vector4i(x, y, width, height), texture);
     }
@@ -60,9 +74,6 @@ public final class Renderer {
             currentScreen = playerScreen;
         }
 
-        entityOffset.x = currentScreen.x * 16;
-        entityOffset.y = currentScreen.y * 9;
-
         if(playerScreen.x != currentScreen.x || playerScreen.y != currentScreen.y) {
             BlobbyEngine.transitioningScreen = true;
             screenTransition += deltaTime;
@@ -78,22 +89,27 @@ public final class Renderer {
             }
         }
 
-        if(level != null && level.backgroundTexture != null) {
-            render(0, 0, curWindow.getWidth(), curWindow.getHeight(), level.backgroundTexture);
-        }
+        entityOffset.x = currentScreen.x * 16;
+        entityOffset.y = currentScreen.y * 9;
 
         Vector2d finalTransitionOffset = transitionOffset;
+        if(level != null && level.backgroundTexture != null) {
+            Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
+
+            render((int) ((level.getFirstScreenX() - currentScreen.x) * 16 * um - finalTransitionOffset.x),
+                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
+                    level.backgroundTexture);
+        }
+
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
-                if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
-                    screen.entities.forEach(entity -> {
-                        if (entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
-                            Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
-                            render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                    (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
-                        }
-                    });
-                }
+                screen.entities.forEach(entity -> {
+                    if(entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                    }
+                });
             });
         }
 
@@ -105,16 +121,30 @@ public final class Renderer {
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
-                if(screenPos.equals(playerScreen) || BlobbyEngine.transitioningScreen) {
-                    screen.entities.forEach(entity -> {
-                        if (entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
-                            Vector2d entityPos = new Vector2d(entity.getPosition()).mul(um);
-                            render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                    (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                screen.entities.forEach(entity -> {
+                    if(entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
                         }
                     });
-                }
             });
+        }
+
+        if(level != null && level.lightMapTexture != null) {
+            Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
+
+            render((int) ((level.getFirstScreenX() - currentScreen.x) * 16 * um - finalTransitionOffset.x),
+                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
+                    level.lightMapTexture);
+        }
+
+        ListenerManager.callEvent(new MainRenderDoneEvent());
+
+        for(Particle particle : Particle.getParticles()) {
+            Vector2d particlePos = new Vector2d(particle.getPosition()).mul(um);
+            render((int) (particlePos.x - entityOffset.x * um - finalTransitionOffset.x),
+                    (int) (particlePos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, particle);
         }
 
         queuedTextures.forEach((pos, tex) -> render(pos.x, pos.y, pos.z, pos.w, tex));
@@ -123,9 +153,19 @@ public final class Renderer {
         if(BlobbyEngine.showMenu && BlobbyEngine.menu != null)
             renderMenu(BlobbyEngine.menu);
 
-        glfwSwapBuffers(window.getId());
+        finishRendering();
+    }
+
+    public static void setWindow(Window window) {
+        curWindow = window;
+    }
+
+    public static void finishRendering() {
+        glfwSwapBuffers(curWindow.getId());
         queuedTextures.clear();
         queuedUITextures.clear();
+
+        Particle.updateParticleList();
     }
 
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture) {
@@ -148,7 +188,7 @@ public final class Renderer {
     }
 
     public static void renderMenu(Menu menu) {
-        renderUV(new Vector2f(-1f, -1f), new Vector2f(-0.5f, 1f), menu.getBackgroundTexture());
+        renderUV(new Vector2f(-1f, 1f), new Vector2f(-0.5f, -1f), menu.getBackgroundTexture());
         for(Button b : menu.getButtons()) {
             renderUV(b.uvStart, b.uvEnd, b.texture);
         }

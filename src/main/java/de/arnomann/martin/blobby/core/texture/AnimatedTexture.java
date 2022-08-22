@@ -10,15 +10,58 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 
+/**
+ * Represents a texture that has animations.
+ */
 public class AnimatedTexture implements ITexture {
 
     private final String filename;
     private final List<Texture> textures;
     private final double animationTimeSecs;
 
+    private double startingTime;
+    private boolean playAnimation = false;
     private boolean flipped = false;
 
+    private int textureIndex;
+
+    /**
+     * Creates a new animated texture.
+     * @param animationTimeSecs the time the animation will take.
+     * @param path the path to the textures.
+     */
     public AnimatedTexture(double animationTimeSecs, String path) {
+        this(animationTimeSecs, path, true, 0);
+    }
+
+    /**
+     * Creates a new animated texture.
+     * @param animationTimeSecs the time the animation will take.
+     * @param path the path to the textures.
+     * @param playOnStart whether the animation should start right away or not.
+     */
+    public AnimatedTexture(double animationTimeSecs, String path, boolean playOnStart) {
+        this(animationTimeSecs, path, playOnStart, 0);
+    }
+
+    /**
+     * Creates a new animated texture.
+     * @param animationTimeSecs the time the animation will take.
+     * @param path the path to the textures.
+     * @param startingFrame the frame id on which the animation should start.
+     */
+    public AnimatedTexture(double animationTimeSecs, String path, int startingFrame) {
+        this(animationTimeSecs, path, true, startingFrame);
+    }
+
+    /**
+     * Creates a new animated texture.
+     * @param animationTimeSecs the time the animation will take.
+     * @param path the path to the textures.
+     * @param playOnStart whether the animation should start right away or not.
+     * @param startingFrame the frame id on which the animation should start.
+     */
+    public AnimatedTexture(double animationTimeSecs, String path, boolean playOnStart, int startingFrame) {
         filename = path;
         Texture[] textures = new Texture[new File(path).list().length - 1];
         for(int i = 0; i < textures.length; i++) {
@@ -36,15 +79,22 @@ public class AnimatedTexture implements ITexture {
         }
 
         this.animationTimeSecs = animationTimeSecs;
+
+        if(playOnStart)
+            startAnimation();
+
+        startingTime -= (animationTimeSecs / this.textures.size()) * startingFrame;
     }
 
     @Override
     public void bind() {
-        double time = glfwGetTime();
-        double timeBetweenTextures = animationTimeSecs / textures.size();
-        int texIndex = (int) Math.floor((time % animationTimeSecs) / timeBetweenTextures);
+        if(playAnimation) {
+            calculateTextureIndex();
 
-        glBindTexture(GL_TEXTURE_2D, textures.get(texIndex).id);
+            glBindTexture(GL_TEXTURE_2D, textures.get(textureIndex).id);
+        } else {
+            glBindTexture(GL_TEXTURE_2D, textures.get(0).id);
+        }
     }
 
     @Override
@@ -71,6 +121,64 @@ public class AnimatedTexture implements ITexture {
     @Override
     public boolean isFlipped() {
         return flipped;
+    }
+
+    /**
+     * Starts the animation on the first frame.
+     * @see AnimatedTexture#startAnimation(int)
+     * @see AnimatedTexture#stopAnimation()
+     */
+    public void startAnimation() {
+        startingTime = glfwGetTime();
+        playAnimation = true;
+    }
+
+    /**
+     * Starts the animation on a specified frame.
+     * @param frame the frame on which the animation should start.
+     * @see AnimatedTexture#startAnimation()
+     * @see AnimatedTexture#stopAnimation()
+     */
+    public void startAnimation(int frame) {
+        startAnimation();
+
+        startingTime -= (animationTimeSecs / this.textures.size()) * frame;
+    }
+
+    /**
+     * Stops the animation.
+     * @see AnimatedTexture#startAnimation()
+     * @see AnimatedTexture#startAnimation(int)
+     */
+    public void stopAnimation() {
+        playAnimation = false;
+    }
+
+    /**
+     * Returns the current texture index. This will not be calculated in this method.
+     * @return the texture index.
+     * @see AnimatedTexture#calculateTextureIndex()
+     */
+    public int getTextureIndex() {
+        return textureIndex;
+    }
+
+    /**
+     * Returns the amount of frames in the animation.
+     * @return the frame count.
+     */
+    public int getFrameCount() {
+        return textures.size();
+    }
+
+    /**
+     * Calculates the texture index. Will be stored in a private variable.
+     * @see AnimatedTexture#getTextureIndex()
+     */
+    private void calculateTextureIndex() {
+        double time = glfwGetTime() - startingTime;
+        double timeBetweenTextures = animationTimeSecs / textures.size();
+        textureIndex = (int) Math.floor((time % animationTimeSecs) / timeBetweenTextures);
     }
 
 }

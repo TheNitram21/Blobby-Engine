@@ -6,15 +6,19 @@ import org.joml.Vector2d;
 
 import java.util.Map;
 
+/**
+ * Represents a player.
+ */
 public class Player extends Entity {
 
     private Vector2d position;
     private ITexture texture;
 
-    public Player(Vector2d pos, ITexture texture, Map<String, Object> parameters) {
-        super(pos, texture, parameters);
+    public Player(Vector2d pos, Map<String, String> parameters) {
+        super(pos, parameters);
         position = pos;
-        this.texture = texture;
+
+        this.texture = BlobbyEngine.getTexture(parameters.get("Texture"));
     }
 
     @Override
@@ -22,10 +26,19 @@ public class Player extends Entity {
         return position;
     }
 
+    /**
+     * Sets the player's position.
+     * @param x the new x.
+     * @param y the new y.
+     */
     public void setPosition(double x, double y) {
         position = new Vector2d(x, y);
     }
 
+    /**
+     * Sets the player's position.
+     * @param v the new position.
+     */
     public void setPosition(Vector2d v) {
         position = v;
     }
@@ -40,6 +53,10 @@ public class Player extends Entity {
         return 2;
     }
 
+    /**
+     * Sets the player's texture.
+     * @param texture the new texture.
+     */
     public void setTextureToRender(ITexture texture) {
         this.texture = texture;
     }
@@ -49,7 +66,4 @@ public class Player extends Entity {
         return texture;
     }
 
-    void bind() {
-        texture.bind();
-    }
 }

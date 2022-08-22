@@ -1,6 +1,7 @@
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
+import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.sound.Sound;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
@@ -13,9 +14,12 @@ import de.arnomann.martin.blobby.ui.Menu;
 import de.arnomann.martin.blobby.ui.UI;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -27,26 +31,30 @@ public class EngineTest implements EventListener {
     public static void main(String[] args) {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
-        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], "icon"), args);
+        BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], null,
+                false), args);
     }
 
     @Override
     public void onStart(StartEvent event) {
         BlobbyEngine.debugMode();
 
-        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), BlobbyEngine.getTexture("player"), null));
-        Player p = BlobbyEngine.getPlayer();
-        p.setTextureToRender(BlobbyEngine.getTexture("player"));
-        BlobbyEngine.setLevel(LevelLoader.loadLevel("blobby_debug"));
+        BlobbyEngine.getWindow().maxFramerate = -1;
+
+        Map<String, String> playerParameters = new HashMap<>();
+        playerParameters.put("Texture", "player");
+        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), playerParameters));
+        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
-        buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f), BlobbyEngine.getTexture("button"),
-                BlobbyEngine::stop));
+        buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),
+                BlobbyEngine.getTexture("button"), BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
     }
 
     private double playerYVelocity = 0;
     private final double fallSpeed = 9.81f;
+    private boolean onGroundLastFrame = false;
 
     @Override
     public void onUpdate(UpdateEvent event) {
@@ -57,6 +65,10 @@ public class EngineTest implements EventListener {
             Player p = BlobbyEngine.getPlayer();
             boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, 0), 0.5, 0.05,
                     "Block");
+
+            if(playerOnGround && !onGroundLastFrame) {
+                new Particle("dust", new Vector2d(p.getPosition()).sub(0, 1));
+            }
 
             Vector2d move = new Vector2d();
 
@@ -80,7 +92,11 @@ public class EngineTest implements EventListener {
             if(!playerOnGround || playerYVelocity < 0)
                 move.add(0, playerYVelocity);
             p.setPosition(p.getPosition().add(move));
+
+            onGroundLastFrame = playerOnGround;
         }
+
+//        System.out.println(Physics.raycast(p.getPosition(), new Vector2d(p.getPosition()).add(0, 4), "Block"));
     }
 
     Sound hiSound;
@@ -101,7 +117,28 @@ public class EngineTest implements EventListener {
             if(hiSound == null)
                 hiSound = SoundPlayer.createSound("hi.ogg");
             SoundPlayer.playSound(hiSound);
-        } if(event.key == GLFW_KEY_X)
+        }
+        if(event.key == GLFW_KEY_X)
             SoundPlayer.stopSound(hiSound);
+
+        if(event.key == GLFW_KEY_V)
+            BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());
+
+        if(event.key == GLFW_KEY_L) {
+            BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
+                if(!entity.getClass().getSimpleName().equals("Block"))
+                    return;
+                Vector4f color = entity.getTexture().getColorModifiers();
+                entity.getTexture().setColorModifiers(color.x + 0.005f, color.y + 0.005f, color.z + 0.005f, 1f);
+            }));
+        }
+        if(event.key == GLFW_KEY_K) {
+            BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
+                if(!entity.getClass().getSimpleName().equals("Block"))
+                    return;
+                Vector4f color = entity.getTexture().getColorModifiers();
+                entity.getTexture().setColorModifiers(color.x - 0.005f, color.y - 0.005f, color.z - 0.005f, 1f);
+            }));
+        }
     }
 }
