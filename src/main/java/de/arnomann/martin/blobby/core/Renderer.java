@@ -3,6 +3,8 @@ package de.arnomann.martin.blobby.core;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
+import de.arnomann.martin.blobby.event.ListenerManager;
+import de.arnomann.martin.blobby.event.MainRenderDoneEvent;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
@@ -136,6 +138,8 @@ public final class Renderer {
                     (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
                     level.lightMapTexture);
         }
+
+        ListenerManager.callEvent(new MainRenderDoneEvent());
 
         for(Particle particle : Particle.getParticles()) {
             Vector2d particlePos = new Vector2d(particle.getPosition()).mul(um);
