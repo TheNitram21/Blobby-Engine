@@ -29,6 +29,7 @@ public final class Renderer {
     private static Window curWindow;
 
     private static Vector2d entityOffset = new Vector2d();
+    private static Vector2d transitionOffset = new Vector2d();
     private static Vector2i currentScreen;
     private static double screenTransition = 0d;
 
@@ -70,7 +71,7 @@ public final class Renderer {
 
         double um = BlobbyEngine.unitMultiplier();
 
-        Vector2d transitionOffset = new Vector2d();
+        transitionOffset = new Vector2d();
         if(currentScreen == null) {
             currentScreen = playerScreen;
         }
@@ -185,6 +186,10 @@ public final class Renderer {
         y = MathUtil.scaleNumber(0, 9, 1, -1, y);
         width = MathUtil.scaleNumber(0, 8, 0, 1, width);
         height = MathUtil.scaleNumber(0, 9, -1, 1, height);
+
+        x -= entityOffset.x / 8 + transitionOffset.x / 8 / BlobbyEngine.unitMultiplier();
+        y += entityOffset.y / 4.5 + transitionOffset.y / 4.5 / BlobbyEngine.unitMultiplier();
+        System.out.printf("X: %f | Y: %f%n", x, y);
 
         glBegin(GL_QUADS);
         glColor4f(texture.getColorModifiers().x, texture.getColorModifiers().y, texture.getColorModifiers().z, texture.getColorModifiers().w);
