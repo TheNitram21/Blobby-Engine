@@ -185,7 +185,7 @@ public final class Renderer {
         x = MathUtil.scaleNumber(0, 16, -1, 1, x);
         y = MathUtil.scaleNumber(0, 9, 1, -1, y);
         width = MathUtil.scaleNumber(0, 8, 0, 1, width);
-        height = MathUtil.scaleNumber(0, 9, -1, 1, height);
+        height = -MathUtil.scaleNumber(0, 4.5f, 0, 1, height);
 
         x -= entityOffset.x / 8 + transitionOffset.x / 8 / BlobbyEngine.unitMultiplier();
         y += entityOffset.y / 4.5 + transitionOffset.y / 4.5 / BlobbyEngine.unitMultiplier();
