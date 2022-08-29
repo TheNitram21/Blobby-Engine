@@ -189,7 +189,6 @@ public final class Renderer {
 
         x -= entityOffset.x / 8 + transitionOffset.x / 8 / BlobbyEngine.unitMultiplier();
         y += entityOffset.y / 4.5 + transitionOffset.y / 4.5 / BlobbyEngine.unitMultiplier();
-        System.out.printf("X: %f | Y: %f%n", x, y);
 
         glBegin(GL_QUADS);
         glColor4f(texture.getColorModifiers().x, texture.getColorModifiers().y, texture.getColorModifiers().z, texture.getColorModifiers().w);
