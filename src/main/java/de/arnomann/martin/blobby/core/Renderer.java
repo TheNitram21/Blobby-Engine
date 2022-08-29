@@ -1,10 +1,11 @@
 package de.arnomann.martin.blobby.core;
 
+import de.arnomann.martin.blobby.MathUtil;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.event.ListenerManager;
-import de.arnomann.martin.blobby.event.MainRenderDoneEvent;
+import de.arnomann.martin.blobby.event.RenderStepDoneEvent;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
@@ -100,6 +101,7 @@ public final class Renderer {
                     (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
                     level.backgroundTexture);
         }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_BACKGROUND));
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
@@ -112,12 +114,14 @@ public final class Renderer {
                 });
             });
         }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_BEHIND_PLAYER));
 
         if(BlobbyEngine.renderPlayer) {
             render((int) (um * (player.getPosition().x - entityOffset.x) - finalTransitionOffset.x),
                     (int) (um * (player.getPosition().y - entityOffset.y) - finalTransitionOffset.y - um * 2),
                     (int) um, (int) um * 2, player.getTexture());
         }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PLAYER));
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
@@ -126,10 +130,11 @@ public final class Renderer {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
                         render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
                                 (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
-                        }
-                    });
+                    }
+                });
             });
         }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_IN_FRONT_OF_PLAYER));
 
         if(level != null && level.lightMapTexture != null) {
             Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
@@ -138,20 +143,23 @@ public final class Renderer {
                     (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
                     level.lightMapTexture);
         }
-
-        ListenerManager.callEvent(new MainRenderDoneEvent());
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_LIGHT_MAP));
 
         for(Particle particle : Particle.getParticles()) {
             Vector2d particlePos = new Vector2d(particle.getPosition()).mul(um);
             render((int) (particlePos.x - entityOffset.x * um - finalTransitionOffset.x),
                     (int) (particlePos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, particle);
         }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PARTICLES));
 
         queuedTextures.forEach((pos, tex) -> render(pos.x, pos.y, pos.z, pos.w, tex));
         queuedUITextures.forEach((uvs, tex) -> renderUV(new Vector2f(uvs.x, uvs.y), new Vector2f(uvs.z, uvs.w), tex));
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_QUEUED_TEXTURES));
 
-        if(BlobbyEngine.showMenu && BlobbyEngine.menu != null)
+        if(BlobbyEngine.showMenu && BlobbyEngine.menu != null) {
             renderMenu(BlobbyEngine.menu);
+            ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_MENU));
+        }
 
         finishRendering();
     }
@@ -166,6 +174,30 @@ public final class Renderer {
         queuedUITextures.clear();
 
         Particle.updateParticleList();
+    }
+
+    public static void renderOnUnits(float x, float y, float width, float height, ITexture texture) {
+        texture.bind();
+
+        boolean flipped = texture.isFlipped();
+
+        x = MathUtil.scaleNumber(0, 16, -1, 1, x);
+        y = MathUtil.scaleNumber(0, 9, 1, -1, y);
+        width = MathUtil.scaleNumber(0, 8, 0, 1, width);
+        height = MathUtil.scaleNumber(0, 9, -1, 1, height);
+
+        glBegin(GL_QUADS);
+        glColor4f(texture.getColorModifiers().x, texture.getColorModifiers().y, texture.getColorModifiers().z, texture.getColorModifiers().w);
+        glTexCoord2f(booleanToInt(flipped), 0);
+        glVertex2f(x, y);
+        glTexCoord2f(booleanToInt(!flipped), 0);
+        glVertex2f(x + width, y);
+        glTexCoord2f(booleanToInt(!flipped), 1);
+        glVertex2f(x + width, y + height);
+        glTexCoord2f(booleanToInt(flipped), 1);
+        glVertex2f(x, y + height);
+        glColor4f(1, 1, 1, 1);
+        glEnd();
     }
 
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture) {

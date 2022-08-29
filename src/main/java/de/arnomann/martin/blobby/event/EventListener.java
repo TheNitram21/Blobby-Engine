@@ -18,6 +18,6 @@ public interface EventListener {
     /** Called when a mouse button is pressed. */
     default void onMouseButtonPressed(MouseButtonPressedEvent event) {}
     /** Called after rendering blocks and the player, but before UI. */
-    default void onMainRenderDone(MainRenderDoneEvent event) {}
+    default void onRenderStepDone(RenderStepDoneEvent event) {}
 
 }
