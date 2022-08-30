@@ -68,7 +68,8 @@ public class EngineTest implements EventListener {
                     "Block");
 
             if(playerOnGround && !onGroundLastFrame) {
-                new Particle("dust", new Vector2d(p.getPosition()).sub(0, 1));
+                new Particle("dust", new Vector2d(p.getPosition()).sub(0, 1)).setOnDone(
+                        () -> System.out.println("Dust particle removed"));
             }
 
             Vector2d move = new Vector2d();

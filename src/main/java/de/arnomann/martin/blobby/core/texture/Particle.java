@@ -3,6 +3,8 @@ package de.arnomann.martin.blobby.core.texture;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import org.joml.Vector2d;
 
+import javax.security.auth.callback.Callback;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Particle implements ITexture {
 
     private final Vector2d position;
     private final AnimatedTexture animTex;
+    private Runnable onDone;
 
     /**
      * Creates a new particle.
@@ -24,8 +27,18 @@ public class Particle implements ITexture {
      */
     public Particle(String filename, Vector2d position) {
         this.animTex = (AnimatedTexture) BlobbyEngine.getTextureWithoutCaching(filename);
+        animTex.textures.add(new Texture(new BufferedImage(animTex.getWidth(), animTex.getHeight(),
+                BufferedImage.TYPE_INT_ARGB)));
         this.position = position;
         particles.add(this);
+    }
+
+    /**
+     * Sets what should happen when the particle is removed.
+     * @param onDone what should happen.
+     */
+    public void setOnDone(Runnable onDone) {
+        this.onDone = onDone;
     }
 
     @Override
@@ -34,6 +47,7 @@ public class Particle implements ITexture {
 
         if(animTex.getTextureIndex() == animTex.getFrameCount() - 1) {
             particlesToRemove.add(this);
+            onDone.run();
         }
     }
 

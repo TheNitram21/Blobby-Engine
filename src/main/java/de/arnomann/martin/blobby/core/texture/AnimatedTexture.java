@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 public class AnimatedTexture implements ITexture {
 
     private final String filename;
-    private final List<Texture> textures;
+    protected final List<Texture> textures;
     private final double animationTimeSecs;
 
     private double startingTime;
