@@ -13,12 +13,16 @@ public class Player extends Entity {
 
     private Vector2d position;
     private ITexture texture;
+    private int width = 1;
+    private int height = 2;
 
     public Player(Vector2d pos, Map<String, String> parameters) {
         super(pos, parameters);
         position = pos;
 
         this.texture = BlobbyEngine.getTexture(parameters.get("Texture"));
+        this.width = Integer.parseInt(parameters.getOrDefault("Width", "1"));
+        this.height = Integer.parseInt(parameters.getOrDefault("Height", "2"));
     }
 
     @Override
@@ -45,12 +49,28 @@ public class Player extends Entity {
 
     @Override
     public int getWidth() {
-        return 1;
+        return width;
     }
 
     @Override
     public int getHeight() {
-        return 2;
+        return height;
+    }
+
+    /**
+     * Sets this entity's width.
+     * @param width the new width.
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    /**
+     * Sets this entity's height.
+     * @param height the new height.
+     */
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     /**

@@ -99,8 +99,8 @@ public final class Renderer {
             Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
 
             render((int) ((level.getFirstScreenX() - currentScreen.x) * 16 * um - finalTransitionOffset.x),
-                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
-                    level.backgroundTexture);
+                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x,
+                    backgroundSize.y, level.backgroundTexture);
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_BACKGROUND));
 
@@ -110,7 +110,8 @@ public final class Renderer {
                     if(entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
                         render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) (entity.getWidth() * um),
+                                (int) (entity.getHeight() * um), entity.getTexture());
                     }
                 });
             });
@@ -119,8 +120,8 @@ public final class Renderer {
 
         if(BlobbyEngine.renderPlayer) {
             render((int) (um * (player.getPosition().x - entityOffset.x) - finalTransitionOffset.x),
-                    (int) (um * (player.getPosition().y - entityOffset.y) - finalTransitionOffset.y - um * 2),
-                    (int) um, (int) um * 2, player.getTexture());
+                    (int) (um * (player.getPosition().y - entityOffset.y) - finalTransitionOffset.y - um * player.getHeight()),
+                    (int) (player.getWidth() * um), (int) (player.getHeight() * um), player.getTexture());
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PLAYER));
 
@@ -130,7 +131,8 @@ public final class Renderer {
                     if(entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
                         render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
-                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) um, (int) um, entity.getTexture());
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) (entity.getWidth() * um),
+                                (int) (entity.getHeight() * um), entity.getTexture());
                     }
                 });
             });
@@ -138,11 +140,11 @@ public final class Renderer {
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_IN_FRONT_OF_PLAYER));
 
         if(level != null && level.lightMapTexture != null) {
-            Vector2i backgroundSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
+            Vector2i lightMapSize = new Vector2i((int) (level.getWidthInScreens() * 16 * um), (int) (level.getHeightInScreens() * 9 * um));
 
             render((int) ((level.getFirstScreenX() - currentScreen.x) * 16 * um - finalTransitionOffset.x),
-                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), backgroundSize.x, backgroundSize.y,
-                    level.lightMapTexture);
+                    (int) ((level.getFirstScreenY() - currentScreen.y) * 9 * um - finalTransitionOffset.y), lightMapSize.x,
+                    lightMapSize.y, level.lightMapTexture);
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_LIGHT_MAP));
 

@@ -42,9 +42,7 @@ public class EngineTest implements EventListener {
 
         BlobbyEngine.getWindow().maxFramerate = 60;
 
-        Map<String, String> playerParameters = new HashMap<>();
-        playerParameters.put("Texture", "player");
-        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), playerParameters));
+        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player")));
         LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
@@ -64,7 +62,8 @@ public class EngineTest implements EventListener {
 
         if(!BlobbyEngine.paused) {
             Player p = BlobbyEngine.getPlayer();
-            boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, 0), 0.5, 0.05,
+            boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, 0),
+                    p.getWidth() / 2, 0.05,
                     "Block");
 
             if(playerOnGround && !onGroundLastFrame) {
@@ -76,10 +75,10 @@ public class EngineTest implements EventListener {
 
             if(!BlobbyEngine.isTransitioningBetweenScreens()) {
                 if (Input.keyPressed(GLFW_KEY_A) && !Physics.objectInBox(new Vector2d(p.getPosition()).add(-p.getWidth() / 5, -p.getHeight()),
-                        0.05, 1.5, "Block"))
+                        0.05, p.getHeight() * 0.75, "Block"))
                     move.add(-5 * event.deltaTime, 0);
                 else if (Input.keyPressed(GLFW_KEY_D) && !Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth(), -p.getHeight()),
-                        0.05, 1.5, "Block"))
+                        0.05, p.getHeight() * 0.75, "Block"))
                     move.add(5 * event.deltaTime, 0);
 
                 if (Input.keyPressed(GLFW_KEY_SPACE) && playerOnGround)
