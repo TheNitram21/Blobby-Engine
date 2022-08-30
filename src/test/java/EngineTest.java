@@ -1,3 +1,4 @@
+import de.arnomann.martin.blobby.MathUtil;
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
@@ -18,7 +19,6 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class EngineTest implements EventListener {
 
         BlobbyEngine.getWindow().maxFramerate = 60;
 
-        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player")));
+        BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player", "Width", "1")));
         LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
@@ -51,8 +51,11 @@ public class EngineTest implements EventListener {
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
     }
 
-    private double playerYVelocity = 0;
-    private final double fallSpeed = 9.81f;
+    public static Vector2d playerVelocity = new Vector2d();
+    public static final float fallSpeed = 20f;
+    public static final float jumpHeight = 7f;
+    public static final float maxSpeed = 6.25f;
+    public static final float speedFalloff = 1f;
     private boolean onGroundLastFrame = false;
 
     @Override
@@ -60,41 +63,63 @@ public class EngineTest implements EventListener {
         BlobbyEngine.getWindow().setTitle("Blobby Engine Test - " + (int) Math.floor(event.fps) + " FPS");
         UI.drawUI(new Vector2f(0.025f, 0.025f), new Vector2f(0.3f, 0.15f), BlobbyEngine.getTexture("uiTopLeft"));
 
-        if(!BlobbyEngine.paused) {
+        if(!BlobbyEngine.paused && !BlobbyEngine.isTransitioningBetweenScreens()) {
             Player p = BlobbyEngine.getPlayer();
+
             boolean playerOnGround = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, 0),
-                    p.getWidth() / 2, 0.05,
-                    "Block");
+                    p.getWidth() * 0.25, 0.05, "Block");
+            boolean headCollision = Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth() / 4d, -p.getHeight()),
+                    p.getWidth() * 0.25, 0.05, "Block");
 
-            if(playerOnGround && !onGroundLastFrame) {
-                new Particle("dust", new Vector2d(p.getPosition()).sub(0, 1)).setOnDone(
-                        () -> System.out.println("Dust particle removed"));
-            }
-
-            Vector2d move = new Vector2d();
+            boolean canGoRight = !Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth(), -p.getHeight() * 0.9),
+                    0.05, p.getHeight() * 0.75, "Block");
+            boolean canGoLeft = !Physics.objectInBox(new Vector2d(p.getPosition()).add(0, -p.getHeight() * 0.9),
+                    0.05, p.getHeight() * 0.75, "Block");
 
             if(!BlobbyEngine.isTransitioningBetweenScreens()) {
-                if (Input.keyPressed(GLFW_KEY_A) && !Physics.objectInBox(new Vector2d(p.getPosition()).add(-p.getWidth() / 5, -p.getHeight()),
-                        0.05, p.getHeight() * 0.75, "Block"))
-                    move.add(-5 * event.deltaTime, 0);
-                else if (Input.keyPressed(GLFW_KEY_D) && !Physics.objectInBox(new Vector2d(p.getPosition()).add(p.getWidth(), -p.getHeight()),
-                        0.05, p.getHeight() * 0.75, "Block"))
-                    move.add(5 * event.deltaTime, 0);
+                if(Input.keyPressed(GLFW_KEY_A) && canGoLeft) {
+                    playerVelocity.x = -maxSpeed;
+                } else if(Input.keyPressed(GLFW_KEY_D) && canGoRight) {
+                    playerVelocity.x = maxSpeed;
+                }
 
-                if (Input.keyPressed(GLFW_KEY_SPACE) && playerOnGround)
-                    playerYVelocity = .01f * -fallSpeed;
+                if(Input.keyPressed(GLFW_KEY_SPACE) && playerOnGround) {
+                    playerVelocity.y = -jumpHeight;
+                }
             }
 
-            if(playerOnGround && playerYVelocity > 0) {
-                playerYVelocity = 0;
+            if((playerVelocity.x > 0 && !canGoRight) || (playerVelocity.x < 0 && !canGoLeft)) {
+                playerVelocity.x = 0;
             }
 
-            playerYVelocity = playerYVelocity + .02f * fallSpeed * event.deltaTime;
-            if(!playerOnGround || playerYVelocity < 0)
-                move.add(0, playerYVelocity);
-            p.setPosition(p.getPosition().add(move));
+            if(playerVelocity.x > 0) {
+                p.getTexture().setFlipped(true);
+            } else if(playerVelocity.x < 0) {
+                p.getTexture().setFlipped(false);
+            }
 
-            onGroundLastFrame = playerOnGround;
+            if(playerOnGround && (BlobbyEngine.isTransitioningBetweenScreens() || (!Input.keyPressed(GLFW_KEY_A) &&
+                    !Input.keyPressed(GLFW_KEY_D)))) {
+                if(playerVelocity.x < -speedFalloff) {
+                    playerVelocity.x = playerVelocity.x * speedFalloff * 0.75;
+                } else if(playerVelocity.x > speedFalloff) {
+                    playerVelocity.x = playerVelocity.x * speedFalloff * 0.75;
+                } else if(MathUtil.inclusiveBetween(-speedFalloff, speedFalloff, playerVelocity.x)) {
+                    playerVelocity.x = 0;
+                }
+            }
+
+            if(!playerOnGround) {
+                playerVelocity.y += fallSpeed * event.deltaTime;
+            } else if(playerVelocity.y > 0) {
+                playerVelocity.y = 0;
+            }
+
+            if(headCollision && playerVelocity.y < 0) {
+                playerVelocity.y = 0;
+            }
+
+            p.getPosition().add(playerVelocity.x * event.deltaTime, playerVelocity.y * event.deltaTime);
         }
 
 //        System.out.println(Physics.raycast(p.getPosition(), new Vector2d(p.getPosition()).add(0, 4), "Block"));
