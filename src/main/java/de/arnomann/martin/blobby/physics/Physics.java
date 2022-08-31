@@ -6,6 +6,7 @@ import org.joml.Math;
 import org.joml.Vector2d;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,21 +35,21 @@ public class Physics {
      * @param boxStartingPos the starting position of the box.
      * @param boxWidth the width of the box.
      * @param boxHeight the height of the box.
-     * @param entityClassName the class of entities to search for.
-     * @return {@code true} if an entity with the class {@code entityClassName} is in the box, {@code false} otherwise.
+     * @param entityClassNames the classes of entities to search for.
+     * @return {@code true} if an entity with any of the classes {@code entityClassNames} is in the box, {@code false} otherwise.
      */
-    public static boolean objectInBox(Vector2d boxStartingPos, double boxWidth, double boxHeight, String entityClassName) {
+    public static boolean objectInBox(Vector2d boxStartingPos, double boxWidth, double boxHeight, String... entityClassNames) {
         AtomicBoolean collides = new AtomicBoolean(false);
 
         Rectangle.Double r = new Rectangle.Double(boxStartingPos.x, boxStartingPos.y, boxWidth, boxHeight);
 
-        if(entityClassName.equals("Player")) {
+        if(Arrays.asList(entityClassNames).contains("Player")) {
             Player p = BlobbyEngine.getPlayer();
-            return r.intersects(p.getPosition().x, p.getPosition().y, p.getWidth(), p.getHeight());
+            collides.set(r.intersects(p.getPosition().x, p.getPosition().y, p.getWidth(), p.getHeight()));
         } else {
             BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
                 screen.entities.forEach(e -> {
-                    if(!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
+                    if(!Arrays.asList(entityClassNames).contains(e.getClass().getSimpleName()))
                         return;
 
                     if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight())) {
@@ -65,22 +66,22 @@ public class Physics {
      * Basic collision detection.
      * @param circleCenter the center of the circle.
      * @param circleRadius the radius of the circle.
-     * @param entityClassName the class of entities to search for.
-     * @return {@code true} if an entity with the class {@code entityClassName} is in the circle, {@code false} otherwise.
+     * @param entityClassNames the classes of entities to search for.
+     * @return {@code true} if an entity with any of the classes {@code entityClassNames} is in the circle, {@code false} otherwise.
      */
-    public static boolean objectInCircle(Vector2d circleCenter, double circleRadius, String entityClassName) {
+    public static boolean objectInCircle(Vector2d circleCenter, double circleRadius, String... entityClassNames) {
         AtomicBoolean collides = new AtomicBoolean(false);
 
-        if(entityClassName.equals("Player")) {
+        if(Arrays.asList(entityClassNames).contains("Player")) {
             Player p = BlobbyEngine.getPlayer();
-            return distance(circleCenter, p.getPosition()) < circleRadius;
+            collides.set(distance(circleCenter, p.getPosition()) < circleRadius);
         } else {
             BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
                 screen.entities.forEach(e -> {
-                    if (!e.getClass().getSimpleName().equalsIgnoreCase(entityClassName))
+                    if(!Arrays.asList(entityClassNames).contains(e.getClass().getSimpleName()))
                         return;
 
-                    if (distance(circleCenter, e.getPosition()) < circleRadius) {
+                    if(distance(circleCenter, e.getPosition()) < circleRadius) {
                         collides.set(true);
                     }
                 });
