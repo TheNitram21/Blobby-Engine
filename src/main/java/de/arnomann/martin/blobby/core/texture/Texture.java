@@ -1,5 +1,6 @@
 package de.arnomann.martin.blobby.core.texture;
 
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
@@ -143,6 +144,21 @@ public class Texture implements ITexture {
     @Override
     public boolean isFlipped() {
         return flipped;
+    }
+
+    Vector4f colorModifiers = new Vector4f(1, 1, 1, 1);
+
+    @Override
+    public void setColorModifiers(float red, float green, float blue, float alpha) {
+        colorModifiers.x = red;
+        colorModifiers.y = green;
+        colorModifiers.z = blue;
+        colorModifiers.w = alpha;
+    }
+
+    @Override
+    public Vector4f getColorModifiers() {
+        return colorModifiers;
     }
 
     @Override

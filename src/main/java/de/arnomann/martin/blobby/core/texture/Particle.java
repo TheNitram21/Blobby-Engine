@@ -2,6 +2,7 @@ package de.arnomann.martin.blobby.core.texture;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import org.joml.Vector2d;
+import org.joml.Vector4f;
 
 import javax.security.auth.callback.Callback;
 import java.awt.image.BufferedImage;
@@ -83,6 +84,21 @@ public class Particle implements ITexture {
     @Override
     public boolean isFlipped() {
         return animTex.isFlipped();
+    }
+
+    Vector4f colorModifiers = new Vector4f(1, 1, 1, 1);
+
+    @Override
+    public void setColorModifiers(float red, float green, float blue, float alpha) {
+        colorModifiers.x = red;
+        colorModifiers.y = green;
+        colorModifiers.z = blue;
+        colorModifiers.w = alpha;
+    }
+
+    @Override
+    public Vector4f getColorModifiers() {
+        return colorModifiers;
     }
 
     /**

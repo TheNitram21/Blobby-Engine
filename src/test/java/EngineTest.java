@@ -3,6 +3,7 @@ import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
 import de.arnomann.martin.blobby.core.Renderer;
+import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.sound.Sound;
@@ -123,6 +124,16 @@ public class EngineTest implements EventListener {
         }
 
 //        System.out.println(Physics.raycast(p.getPosition(), new Vector2d(p.getPosition()).add(0, 4), "Block"));
+    }
+
+    @Override
+    public void onRenderStepDone(RenderStepDoneEvent event) {
+        if(event.step != RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_IN_FRONT_OF_PLAYER)
+            return;
+
+        ITexture texture = BlobbyEngine.getTexture("grassRightEdge");
+        texture.setColorModifiers(1, 0.5f, 0.2f, 1f);
+        Renderer.renderOnUnits(5, 1, 1, 1, texture);
     }
 
     Sound hiSound;

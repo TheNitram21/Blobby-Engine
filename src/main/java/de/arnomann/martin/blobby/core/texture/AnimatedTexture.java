@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.core.texture;
 
 import org.joml.Vector2i;
+import org.joml.Vector4f;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -121,6 +122,21 @@ public class AnimatedTexture implements ITexture {
     @Override
     public boolean isFlipped() {
         return flipped;
+    }
+
+    Vector4f colorModifiers = new Vector4f(1, 1, 1, 1);
+
+    @Override
+    public void setColorModifiers(float red, float green, float blue, float alpha) {
+        colorModifiers.x = red;
+        colorModifiers.y = green;
+        colorModifiers.z = blue;
+        colorModifiers.w = alpha;
+    }
+
+    @Override
+    public Vector4f getColorModifiers() {
+        return colorModifiers;
     }
 
     /**

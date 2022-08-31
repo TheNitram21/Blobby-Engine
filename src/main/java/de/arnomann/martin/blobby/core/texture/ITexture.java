@@ -53,8 +53,6 @@ public interface ITexture {
      */
     boolean isFlipped();
 
-    Vector4f colorModifiers = new Vector4f(1f, 1f, 1f, 1f);
-
     /**
      * Sets the color modifiers of the texture.
      * @param red the red channel.
@@ -63,18 +61,12 @@ public interface ITexture {
      * @param alpha the alpha channel.
      * @see ITexture#getColorModifiers()
      */
-    default void setColorModifiers(float red, float green, float blue, float alpha) {
-        colorModifiers.x = red;
-        colorModifiers.y = green;
-        colorModifiers.z = blue;
-        colorModifiers.w = alpha;
-    }
+    void setColorModifiers(float red, float green, float blue, float alpha);
 
     /**
      * Returns the color modifiers set with {@link ITexture#setColorModifiers(float, float, float, float)}.
      * @return the color modifiers.
      */
-    default Vector4f getColorModifiers() {
-        return colorModifiers;
-    }
+    Vector4f getColorModifiers();
+
 }
