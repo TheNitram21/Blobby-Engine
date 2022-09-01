@@ -146,8 +146,8 @@ public class SoundPlayer {
         if(initialized) {
             for(Sound sound : sounds) {
                 alDeleteSources(sound.getSourcePointer());
-                sounds.remove(sound);
             }
+            sounds.clear();
 
             alcDestroyContext(context);
             alcCloseDevice(deviceId);
