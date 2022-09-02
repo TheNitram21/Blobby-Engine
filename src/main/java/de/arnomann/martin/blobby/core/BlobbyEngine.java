@@ -316,7 +316,10 @@ public final class BlobbyEngine {
      * @see BlobbyEngine#getCurrentLevel()
      */
     public static void setLevel(Level level) {
-        currentLevel.screens.forEach((screenPos, screen) -> screen.entities.forEach(ListenerManager::removeEventListener));
+        try {
+            currentLevel.screens.forEach((screenPos, screen) -> screen.entities.forEach(ListenerManager::removeEventListener));
+        } catch(NullPointerException ignored) {} // No level is loaded yet
+
         currentLevel = level;
     }
 
