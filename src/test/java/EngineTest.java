@@ -4,7 +4,6 @@ import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
 import de.arnomann.martin.blobby.core.Renderer;
 import de.arnomann.martin.blobby.core.texture.ITexture;
-import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.sound.Sound;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
@@ -41,7 +40,7 @@ public class EngineTest implements EventListener {
     public void onStart(StartEvent event) {
         BlobbyEngine.debugMode();
 
-        BlobbyEngine.getWindow().maxFramerate = 60;
+        BlobbyEngine.getWindow().maxFramerate = -1;
 
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player", "Width", "1")));
         LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);

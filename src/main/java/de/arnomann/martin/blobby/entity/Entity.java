@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A basic entity.
  */
-public class Entity implements EventListener {
+public abstract class Entity implements EventListener {
 
     private static int entityCount = 0;
 
@@ -33,9 +33,7 @@ public class Entity implements EventListener {
      * Returns the position of the entity. OVERRIDE.
      * @return the position.
      */
-    public Vector2d getPosition() {
-        return null;
-    }
+    public abstract Vector2d getPosition();
 
     /**
      * Sets the position of the entity. OVERRIDE.
@@ -47,17 +45,13 @@ public class Entity implements EventListener {
      * Returns the width of the entity in units. OVERRIDE.
      * @return the width.
      */
-    public int getWidth() {
-        return 0;
-    }
+    public abstract int getWidth();
 
     /**
      * Returns the height of the entity in units. OVERRIDE.
      * @return the height.
      */
-    public int getHeight() {
-        return 0;
-    }
+    public abstract int getHeight();
 
     /**
      * Returns the offset of the texture when rendering in units. OVERRIDE.
@@ -87,6 +81,11 @@ public class Entity implements EventListener {
      * Called just after level loading has finished.
      */
     public void initialize() {}
+
+    /**
+     * Called just before unloading a level.
+     */
+    public void destroy() {}
 
     /**
      * Returns the id of the entity.

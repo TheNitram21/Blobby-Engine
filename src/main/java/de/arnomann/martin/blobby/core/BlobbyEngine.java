@@ -311,11 +311,12 @@ public final class BlobbyEngine {
     }
 
     /**
-     * Sets the current level.
+     * Sets the current level. The old level has to be reloaded if you want to use it again.
      * @param level the new current level.
      * @see BlobbyEngine#getCurrentLevel()
      */
     public static void setLevel(Level level) {
+        currentLevel.screens.forEach((screenPos, screen) -> screen.entities.forEach(ListenerManager::removeEventListener));
         currentLevel = level;
     }
 
