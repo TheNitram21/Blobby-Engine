@@ -12,6 +12,12 @@
             "Parameters": [ "Texture" ],
             "EditorTexture": "editor/detail.png"
         },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.LevelChange",
+            "ClassName": "LevelChange",
+            "Parameters": [ "Name", "NextLevel" ],
+            "EditorTexture": "editor/levelChange.png"
+        },
 		{
             "ClassName": "Light",
             "Parameters": [ "Radius" ],

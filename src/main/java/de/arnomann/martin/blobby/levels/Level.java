@@ -113,4 +113,8 @@ public class Level {
         return null;
     }
 
+    @Override
+    public int hashCode() {
+        return title.hashCode() * screens.hashCode() * backgroundTexture.hashCode() * lightMapTexture.hashCode();
+    }
 }

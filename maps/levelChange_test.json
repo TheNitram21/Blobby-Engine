@@ -1,0 +1,174 @@
+{
+    "EditorSettings": {"LightMapScale": 1},
+    "PlayerStartY": 8,
+    "BackgroundTexture": "background",
+    "PlayerStartX": 2,
+    "Screens": [{
+        "Blocks": [
+            {
+                "Path": "grass",
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 0
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 1
+            },
+            {
+                "Path": "grass",
+                "X": 6,
+                "Y": 8
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 2
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 3
+            },
+            {
+                "Path": "grass",
+                "X": 4,
+                "Y": 8
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 4
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 5
+            },
+            {
+                "Path": "grass",
+                "X": 2,
+                "Y": 8
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 6
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 7
+            },
+            {
+                "Path": "dirt",
+                "X": 0,
+                "Y": 8
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 0
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 1
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 2
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 3
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 4
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 5
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 6
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 7
+            },
+            {
+                "Path": "dirt",
+                "X": 15,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 13,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 11,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 9,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 7,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 5,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 3,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 1,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 14,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 12,
+                "Y": 8
+            },
+            {
+                "Path": "grass",
+                "X": 10,
+                "Y": 8
+            }
+        ],
+        "X": 0,
+        "Y": 0,
+        "Entities": []
+    }],
+    "Name": "LevelChange Test"
+}

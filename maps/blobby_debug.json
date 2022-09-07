@@ -1,6 +1,6 @@
 {
     "EditorSettings": {"LightMapScale": 16},
-    "PlayerStartY": 6,
+    "PlayerStartY": 7,
     "BackgroundTexture": "background",
     "PlayerStartX": 3,
     "Screens": [
@@ -10,11 +10,6 @@
                     "Path": "grass",
                     "X": 6,
                     "Y": 5
-                },
-                {
-                    "Path": "grass",
-                    "X": 8,
-                    "Y": 8
                 },
                 {
                     "Path": "grass",
@@ -112,11 +107,6 @@
                     "Y": 5
                 },
                 {
-                    "Path": "grass",
-                    "X": 9,
-                    "Y": 8
-                },
-                {
                     "Path": "grassLeftEdge",
                     "X": 5,
                     "Y": 5
@@ -195,21 +185,31 @@
                     "Path": "grass",
                     "X": 8,
                     "Y": 5
-                },
-                {
-                    "Path": "grass",
-                    "X": 10,
-                    "Y": 8
                 }
             ],
             "X": 1,
             "Y": 0,
             "Entities": [
                 {
+                    "Target": "LevelChanger",
+                    "X": 9,
+                    "ClassName": "Trigger",
+                    "Y": 8,
+                    "OnlyOnce": "1",
+                    "Method": "changeLevel"
+                },
+                {
                     "Radius": "2",
                     "X": 10,
                     "ClassName": "Light",
                     "Y": 3
+                },
+                {
+                    "X": 10,
+                    "ClassName": "LevelChange",
+                    "Y": 6,
+                    "NextLevel": "levelChange_test",
+                    "Name": "LevelChanger"
                 },
                 {
                     "Radius": "2",
@@ -526,10 +526,22 @@
             "Y": 0,
             "Entities": [
                 {
+                    "X": 6,
+                    "ClassName": "Detail",
+                    "Y": 6,
+                    "Texture": "grass"
+                },
+                {
                     "Radius": "1",
                     "X": 2,
                     "ClassName": "Light",
                     "Y": 2
+                },
+                {
+                    "X": 5,
+                    "ClassName": "Detail",
+                    "Y": 6,
+                    "Texture": "grass"
                 },
                 {
                     "X": 1,

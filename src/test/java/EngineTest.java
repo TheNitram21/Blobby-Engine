@@ -49,6 +49,8 @@ public class EngineTest implements EventListener {
         buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),
                 BlobbyEngine.getTexture("button"), BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
+
+        Renderer.setScreenTransitionDuration(0.5);
     }
 
     public static Vector2d playerVelocity = new Vector2d();
@@ -123,16 +125,6 @@ public class EngineTest implements EventListener {
         }
 
 //        System.out.println(Physics.raycast(p.getPosition(), new Vector2d(p.getPosition()).add(0, 4), "Block"));
-    }
-
-    @Override
-    public void onRenderStepDone(RenderStepDoneEvent event) {
-        if(event.step != RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_IN_FRONT_OF_PLAYER)
-            return;
-
-        ITexture texture = BlobbyEngine.getTexture("grassRightEdge");
-        texture.setColorModifiers(1, 0.5f, 0.2f, 1f);
-        Renderer.renderOnUnits(5, 1, 1, 1, texture);
     }
 
     Sound hiSound;

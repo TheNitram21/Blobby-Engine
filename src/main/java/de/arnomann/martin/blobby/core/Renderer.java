@@ -32,6 +32,7 @@ public final class Renderer {
     private static Vector2d transitionOffset = new Vector2d();
     private static Vector2i currentScreen;
     private static double screenTransition = 0d;
+    private static int levelHash = 0;
 
     private static double screenTransitionDuration = 1d; // seconds
 
@@ -79,12 +80,16 @@ public final class Renderer {
         if(playerScreen.x != currentScreen.x || playerScreen.y != currentScreen.y) {
             BlobbyEngine.transitioningScreen = true;
             screenTransition += deltaTime;
+
+            double screenTransitionPercentage;
+            if(BlobbyEngine.getCurrentLevel().hashCode() != levelHash)
+                screenTransition = screenTransitionDuration;
             if(screenTransition >= screenTransitionDuration) {
                 screenTransition = 0;
                 currentScreen = playerScreen;
                 BlobbyEngine.transitioningScreen = false;
             } else {
-                double screenTransitionPercentage = screenTransition / screenTransitionDuration;
+                screenTransitionPercentage = screenTransition / screenTransitionDuration;
                 transitionOffset = new Vector2d( (playerScreen.x - currentScreen.x) * screenTransitionPercentage,
                         (playerScreen.y - currentScreen.y) * screenTransitionPercentage);
                 transitionOffset.mul(16 * um, 9 * um);
@@ -164,6 +169,7 @@ public final class Renderer {
             ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_MENU));
         }
 
+        levelHash = BlobbyEngine.getCurrentLevel().hashCode();
         finishRendering();
     }
 
@@ -253,6 +259,10 @@ public final class Renderer {
 
     public static void setScreenTransitionDuration(double duration) {
         screenTransitionDuration = duration;
+    }
+
+    public static double getScreenTransitionDuration() {
+        return screenTransitionDuration;
     }
 
     public static float windowXToVertexX(int x) {
