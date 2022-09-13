@@ -25,7 +25,7 @@ public class Trigger extends Entity {
         this.position = position;
 
         this.method = parameters.get("Method");
-        this.onlyOnce = Boolean.parseBoolean(parameters.get("OnlyOnce"));
+        this.onlyOnce = parameters.get("OnlyOnce").equalsIgnoreCase("YES");
 
         this.triggered = false;
         this.triggeredLastFrame = false;
