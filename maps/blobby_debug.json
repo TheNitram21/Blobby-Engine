@@ -544,18 +544,19 @@
                     "Texture": "grass"
                 },
                 {
-                    "X": 1,
-                    "ClassName": "Ladder",
-                    "Y": 5,
-                    "Name": "E"
+                    "X": 11,
+                    "ClassName": "Sound",
+                    "Y": 4,
+                    "Sound": "sound.ogg",
+                    "Name": "Sound"
                 },
                 {
-                    "Target": "E",
+                    "Target": "Sound",
                     "X": 11,
                     "ClassName": "Trigger",
                     "Y": 5,
                     "OnlyOnce": "false",
-                    "Method": "printMessage"
+                    "Method": "playSound"
                 },
                 {
                     "Radius": "3",

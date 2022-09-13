@@ -57,7 +57,7 @@ public class Trigger extends Entity {
     @Override
     public void onUpdate(UpdateEvent event) {
         if(!onlyOnce || !triggered) {
-            if(Physics.objectInBox(new Vector2d(getPosition()).add(0, 1), getWidth(), getHeight(),
+            if(Physics.objectInBox(new Vector2d(getPosition()).add(0, 2), getWidth(), getHeight(),
                     "Player")) {
                 if(!triggeredLastFrame) {
                     try {

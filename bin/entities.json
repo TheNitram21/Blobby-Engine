@@ -23,6 +23,13 @@
             "Parameters": [ "Radius" ],
             "EditorTexture": "editor/light.png"
         },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Sound",
+            "ClassName": "Sound",
+            "Parameters": [ "Name", "Sound" ],
+            "EditorTexture": "editor/sound.png"
+        },
+
 		{
             "ClassName": "Ladder",
             "InternalClassName": "entities.Ladder",
