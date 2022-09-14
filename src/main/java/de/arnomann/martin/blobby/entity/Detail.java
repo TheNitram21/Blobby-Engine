@@ -13,11 +13,16 @@ public class Detail extends Entity {
 
     private final Vector2d pos;
     public final ITexture texture;
+    private final int width;
+    private final int height;
 
     public Detail(Vector2d position, Map<String, String> parameters) {
         super(position, parameters);
         this.pos = position;
         this.texture = BlobbyEngine.getTexture(parameters.get("Texture"));
+        
+        this.width = Integer.parseInt(parameters.get("Width"));
+        this.height = Integer.parseInt(parameters.get("Height"));
     }
 
     @Override
@@ -27,12 +32,12 @@ public class Detail extends Entity {
 
     @Override
     public int getWidth() {
-        return 1;
+        return width;
     }
 
     @Override
     public int getHeight() {
-        return 1;
+        return height;
     }
 
     @Override
