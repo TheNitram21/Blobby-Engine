@@ -15,6 +15,7 @@ public class Detail extends Entity {
     public final ITexture texture;
     private final int width;
     private final int height;
+    private final boolean inFrontOfPlayer;
 
     public Detail(Vector2d position, Map<String, String> parameters) {
         super(position, parameters);
@@ -23,6 +24,7 @@ public class Detail extends Entity {
         
         this.width = Integer.parseInt(parameters.get("Width"));
         this.height = Integer.parseInt(parameters.get("Height"));
+        this.inFrontOfPlayer = parameters.get("InFrontOfPlayer").equalsIgnoreCase("YES");
     }
 
     @Override
@@ -45,4 +47,8 @@ public class Detail extends Entity {
         return texture;
     }
 
+    @Override
+    public boolean renderInFrontOfPlayer() {
+        return inFrontOfPlayer;
+    }
 }

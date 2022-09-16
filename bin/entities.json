@@ -9,7 +9,7 @@
 		{
             "InternalClassName": "de.arnomann.martin.blobby.entity.Detail",
             "ClassName": "Detail",
-            "Parameters": [ "Texture", "Width", "Height" ],
+            "Parameters": [ "Texture", "Width", "Height", "InFrontOfPlayer" ],
             "EditorTexture": "editor/detail.png"
         },
         {
