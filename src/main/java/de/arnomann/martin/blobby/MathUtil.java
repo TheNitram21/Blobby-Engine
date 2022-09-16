@@ -1,5 +1,7 @@
 package de.arnomann.martin.blobby;
 
+import org.joml.Math;
+
 /**
  * A utility class for maths.
  */
@@ -49,6 +51,20 @@ public class MathUtil {
      */
     public static float scaleNumber(float inMin, float inMax, float outMin, float outMax, float value) {
         return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+    }
+
+    /**
+     * Rounds <code>value</code>. If the difference of the original value and the rounded value is more than <code>maxDiff</code>,
+     * the original value will be returned.
+     * @param value the number to round.
+     * @param maxDiff the maximum difference between the original value and the rounded value.
+     * @return the rounded value, or the original value if the difference is more than <code>maxDiff</code>.
+     */
+    public static float roundWithMaxDifference(float value, float maxDiff) {
+        float rounded = Math.round(value);
+        if(Math.abs(rounded - value) > maxDiff)
+            return value;
+        return rounded;
     }
 
 }
