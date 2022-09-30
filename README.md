@@ -12,6 +12,9 @@ The blobby engine is a 2D level-based easily moddable game engine.
 4. [License](#license)
 
 ## Features
+### NPCs
+Blobby Engine's scripted NPCs allow for creating an immersive and interactive world for the player to explore.
+
 ### Lighting
 Blobby Engine supports lighting using precalculated light maps.<br>
 <img src="https://user-images.githubusercontent.com/49786755/186373213-d2fb3c38-a154-4d0b-9827-cd28f7b8be75.png" width="720">
