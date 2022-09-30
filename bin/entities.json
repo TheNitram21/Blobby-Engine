@@ -29,12 +29,24 @@
             "Parameters": [ "Name", "Sound" ],
             "EditorTexture": "editor/sound.png"
         },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Scene",
+            "ClassName": "Scene",
+            "Parameters": [ "Name", "NPCName", "SceneFile" ],
+            "EditorTexture": "editor/scene.png"
+        },
 
 		{
             "ClassName": "Ladder",
             "InternalClassName": "entities.Ladder",
             "Parameters": [ "Name" ],
             "EditorTexture": "Ladder.png"
+        },
+        {
+            "InternalClassName": "entities.TestNPC",
+            "ClassName": "TestNPC",
+            "Parameters": [ "Name" ],
+            "EditorTexture": "player.png"
         }
     ]
 }
