@@ -37,15 +37,18 @@ public final class BlobbyEngine {
     public static final String MAPS_PATH = "maps/";
     /** The path to sounds. */
     public static final String SOUNDS_PATH = "sounds/";
+    /** The path to scripts. **/
+    public static final String SCRIPTS_PATH = "scripts/";
 
     private static Window window;
     private static Map<String, ITexture> textures;
     private static Logger logger;
     private static Level currentLevel;
+    private static Thread mainThread;
 
     /** The currently shown menu. */
     public static Menu menu;
-    /** Whether the menu {@link BlobbyEngine#menu} should be visible or not. */
+    /** Whether the {@link BlobbyEngine#menu} should be visible or not. */
     public static boolean showMenu = false;
 
     private static double unitMultiplier;
@@ -71,6 +74,7 @@ public final class BlobbyEngine {
     public static void run(RunConfigurations runConfig, String[] arguments) {
         textures = new HashMap<>();
         logger = new Logger();
+        mainThread = Thread.currentThread();
         consoleArguments = arguments;
 
         if(runConfig.width / 16 != runConfig.height / 9) {
@@ -150,19 +154,19 @@ public final class BlobbyEngine {
         JSONObject entitiesJSON = loadJSON(new File("bin/entities.json"));
         String classnameWithPackage = "";
 
-        for(Object entityObj : entitiesJSON.getJSONArray("Entities")) {
+        for (Object entityObj : entitiesJSON.getJSONArray("Entities")) {
             JSONObject entityJSON = (JSONObject) entityObj;
 
-            if(entityJSON.getString("ClassName").equals(classname)) {
+            if (entityJSON.getString("ClassName").equals(classname)) {
                 try {
                     classnameWithPackage = entityJSON.getString("InternalClassName");
-                } catch(JSONException e) {
+                } catch (JSONException e) {
                     return null;
                 }
             }
         }
 
-        if(classnameWithPackage.equals(""))
+        if (classnameWithPackage.equals(""))
             throw new IllegalStateException("Couldn't find an entity with the classname " + classname + " in 'entities.json'!");
 
         Class<?> entityClass = Class.forName(classnameWithPackage);
@@ -172,30 +176,36 @@ public final class BlobbyEngine {
     }
 
     /**
-     * Loads a JSON from a file.
-     * @param path the path to the JSON file.
-     * @return the loaded JSON.
+     * Reads the content of a file.
+     * @param path the path to the file.
+     * @return the file content.
      */
-    public static JSONObject loadJSON(File path) {
-        JSONObject json;
-
+    public static String readFile(File path) {
         if(!path.exists()) {
             ErrorManagement.showErrorMessage(logger, new FileNotFoundException("File " + path + " doesn't exist!"));
         }
 
-        StringBuilder jsonTextBuilder = new StringBuilder();
+        StringBuilder textBuilder = new StringBuilder();
 
         try(BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                jsonTextBuilder.append(line).append("\n");
+                textBuilder.append(line).append("\n");
             }
         } catch(IOException e) {
             ErrorManagement.showErrorMessage(logger, e);
         }
 
-        json = new JSONObject(jsonTextBuilder.toString());
-        return json;
+        return textBuilder.toString();
+    }
+
+    /**
+     * Loads a JSON from a file.
+     * @param path the path to the JSON file.
+     * @return the loaded JSON.
+     */
+    public static JSONObject loadJSON(File path) {
+        return new JSONObject(readFile(path));
     }
 
     /**
@@ -363,6 +373,14 @@ public final class BlobbyEngine {
      */
     public static Logger getLogger() {
         return logger;
+    }
+
+    /**
+     * Returns the main thread used for rendering.
+     * @return the main thread.
+     */
+    public static Thread getMainThread() {
+        return mainThread;
     }
 
     /**
