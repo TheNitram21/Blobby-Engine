@@ -534,6 +534,16 @@
             "Y": 0,
             "Entities": [
                 {
+                    "Target": "Sound",
+                    "X": 1,
+                    "ClassName": "Trigger",
+                    "Y": 0,
+                    "OnlyOnce": "No",
+                    "Height": "7",
+                    "Method": "stopSound",
+                    "Width": "9"
+                },
+                {
                     "Radius": "1",
                     "X": 2,
                     "ClassName": "Light",
@@ -572,6 +582,7 @@
                     "ClassName": "Sound",
                     "Y": 4,
                     "Sound": "sound.ogg",
+                    "Looping": "Yes",
                     "Name": "Sound"
                 },
                 {

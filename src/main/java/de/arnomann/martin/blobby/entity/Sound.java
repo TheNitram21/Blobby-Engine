@@ -10,6 +10,7 @@ public class Sound extends Entity {
     private final Vector2d position;
     private final String name;
     private final de.arnomann.martin.blobby.sound.Sound sound;
+    private final boolean looping;
 
     public Sound(Vector2d position, Map<String, String> parameters) {
         super(position, parameters);
@@ -17,6 +18,7 @@ public class Sound extends Entity {
 
         this.name = parameters.get("Name");
         this.sound = SoundPlayer.createSound(parameters.get("Sound"));
+        this.looping = parameters.get("Looping").equalsIgnoreCase("YES");
     }
 
     @Override
@@ -35,7 +37,7 @@ public class Sound extends Entity {
     }
 
     public void playSound() {
-        SoundPlayer.playSound(sound);
+        SoundPlayer.playSound(sound, looping);
     }
 
     public void stopSound() {

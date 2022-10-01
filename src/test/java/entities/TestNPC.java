@@ -23,7 +23,7 @@ public class TestNPC extends BaseNPC {
     @Override
     public void say(String text) {
         System.out.println(text);
-        SoundPlayer.playSound("sound.ogg");
+        SoundPlayer.playSound("sound.ogg", false);
     }
 
     @Override
