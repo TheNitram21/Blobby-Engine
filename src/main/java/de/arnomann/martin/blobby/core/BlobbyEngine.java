@@ -6,7 +6,6 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
-import de.arnomann.martin.blobby.entity.Sound;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;

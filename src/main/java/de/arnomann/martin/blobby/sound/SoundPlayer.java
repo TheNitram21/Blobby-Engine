@@ -98,7 +98,6 @@ public class SoundPlayer {
     public static Sound playSound(String name, boolean looping) {
         Sound sound = createSound(name);
         name = BlobbyEngine.SOUNDS_PATH + name;
-        sounds.add(sound);
         playSound(sound, looping);
         return sound;
     }
@@ -108,6 +107,7 @@ public class SoundPlayer {
      * @param sound the sound to play.
      */
     public static void playSound(Sound sound, boolean looping) {
+        sounds.add(sound);
         alSourcei(sound.getSourcePointer(), AL_BUFFER, sound.getBufferPointer());
         alSourcei(sound.getSourcePointer(), AL_LOOPING, looping ? 1 : 0);
         alSourcePlay(sound.getSourcePointer());
