@@ -3,7 +3,7 @@
         {
             "ClassName": "Trigger",
             "InternalClassName": "de.arnomann.martin.blobby.entity.Trigger",
-            "Parameters": [ "Target", "Method", "OnlyOnce" ],
+            "Parameters": [ "Target", "Method", "OnlyOnce", "Width", "Height" ],
             "EditorTexture": "editor/trigger.png"
         },
 		{

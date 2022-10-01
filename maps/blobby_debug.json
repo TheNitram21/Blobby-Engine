@@ -192,11 +192,13 @@
             "Entities": [
                 {
                     "Target": "LevelChanger",
-                    "X": 9,
+                    "X": 8,
                     "ClassName": "Trigger",
                     "Y": 8,
-                    "OnlyOnce": "1",
-                    "Method": "changeLevel"
+                    "OnlyOnce": "Yes",
+                    "Height": "1",
+                    "Method": "changeLevel",
+                    "Width": "3"
                 },
                 {
                     "Radius": "2",
@@ -526,22 +528,38 @@
             "Y": 0,
             "Entities": [
                 {
-                    "X": 6,
-                    "ClassName": "Detail",
-                    "Y": 6,
-                    "Texture": "grass"
-                },
-                {
                     "Radius": "1",
                     "X": 2,
                     "ClassName": "Light",
                     "Y": 2
                 },
                 {
+                    "X": 6,
+                    "ClassName": "Detail",
+                    "Y": 6,
+                    "Height": "1",
+                    "Texture": "grassRightEdge",
+                    "Width": "1",
+                    "InFrontOfPlayer": "Yes"
+                },
+                {
                     "X": 5,
                     "ClassName": "Detail",
                     "Y": 6,
-                    "Texture": "grass"
+                    "Height": "1",
+                    "Texture": "grassLeftEdge",
+                    "Width": "1",
+                    "InFrontOfPlayer": "Yes"
+                },
+                {
+                    "Target": "Sound",
+                    "X": 13,
+                    "ClassName": "Trigger",
+                    "Y": 0,
+                    "OnlyOnce": "No",
+                    "Height": "7",
+                    "Method": "playSound",
+                    "Width": "1"
                 },
                 {
                     "X": 11,
@@ -549,14 +567,6 @@
                     "Y": 4,
                     "Sound": "sound.ogg",
                     "Name": "Sound"
-                },
-                {
-                    "Target": "Sound",
-                    "X": 11,
-                    "ClassName": "Trigger",
-                    "Y": 5,
-                    "OnlyOnce": "false",
-                    "Method": "playSound"
                 },
                 {
                     "Radius": "3",

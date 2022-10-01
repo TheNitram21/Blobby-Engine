@@ -12,6 +12,9 @@ import java.util.Map;
 public class Trigger extends Entity {
 
     private final Vector2d position;
+    private final int width;
+    private final int height;
+
     private Entity target;
     private final String method;
     private final boolean onlyOnce;
@@ -23,6 +26,8 @@ public class Trigger extends Entity {
         super(position, parameters);
 
         this.position = position;
+        this.width = Integer.parseInt(parameters.get("Width"));
+        this.height = Integer.parseInt(parameters.get("Height"));
 
         this.method = parameters.get("Method");
         this.onlyOnce = parameters.get("OnlyOnce").equalsIgnoreCase("YES");
@@ -38,12 +43,12 @@ public class Trigger extends Entity {
 
     @Override
     public int getWidth() {
-        return 1;
+        return width;
     }
 
     @Override
     public int getHeight() {
-        return 1;
+        return height;
     }
 
     @Override
