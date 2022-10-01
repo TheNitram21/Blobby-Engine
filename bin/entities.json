@@ -35,6 +35,12 @@
             "Parameters": [ "Name", "NPCName", "SceneFile" ],
             "EditorTexture": "editor/scene.png"
         },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.PlayerTeleport",
+            "ClassName": "PlayerTeleport",
+            "Parameters": [ "Name" ],
+            "EditorTexture": "editor/playerTeleport.png"
+        },
 
 		{
             "ClassName": "Ladder",
