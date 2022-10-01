@@ -19,6 +19,8 @@ public class Sound extends Entity {
         this.name = parameters.get("Name");
         this.sound = SoundPlayer.createSound(parameters.get("Sound"));
         this.looping = parameters.get("Looping").equalsIgnoreCase("YES");
+
+        sound.setVolume(Float.parseFloat(parameters.get("Volume")));
     }
 
     @Override

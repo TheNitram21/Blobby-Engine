@@ -578,6 +578,7 @@
                     "Width": "1"
                 },
                 {
+                    "Volume": "0.5",
                     "X": 11,
                     "ClassName": "Sound",
                     "Y": 4,

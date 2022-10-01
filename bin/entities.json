@@ -26,7 +26,7 @@
         {
             "InternalClassName": "de.arnomann.martin.blobby.entity.Sound",
             "ClassName": "Sound",
-            "Parameters": [ "Name", "Sound", "Looping" ],
+            "Parameters": [ "Name", "Sound", "Looping", "Volume" ],
             "EditorTexture": "editor/sound.png"
         },
         {

@@ -1,5 +1,7 @@
 package de.arnomann.martin.blobby.sound;
 
+import static org.lwjgl.openal.AL11.*;
+
 /**
  * Represents a basic sound. Sound has to be in the <i>OGG Vorbis</i> format.
  */
@@ -43,6 +45,14 @@ public class Sound {
      */
     public int getBufferPointer() {
         return bufferPointer;
+    }
+
+    /**
+     * Sets the volume of this sound.
+     * @param volume the new volume.
+     */
+    public void setVolume(float volume) {
+        alSourcef(sourcePointer, AL_GAIN, volume);
     }
 
 }
