@@ -6,6 +6,7 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
+import de.arnomann.martin.blobby.entity.Sound;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
@@ -329,6 +330,7 @@ public final class BlobbyEngine {
         try {
             currentLevel.screens.forEach((screenPos, screen) -> screen.entities.forEach(ListenerManager::removeEventListener));
         } catch(NullPointerException ignored) {} // No level is loaded yet
+        SoundPlayer.stopAllSounds();
 
         currentLevel = level;
     }
