@@ -2,3 +2,6 @@ moveTo(1, 1, 5)
 wait(2)
 say(Text)
 moveTo(5, 5, 5)
+
+wait(3)
+moveTo(3, 3, 5)

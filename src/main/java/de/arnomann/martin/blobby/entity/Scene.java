@@ -7,6 +7,7 @@ import org.joml.Vector2d;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Map;
 
 public class Scene extends Entity {
@@ -15,8 +16,6 @@ public class Scene extends Entity {
 
     private BaseNPC npc;
     private String sceneFileContent;
-
-    private double startTime;
     private boolean sceneRunning = false;
 
     public Scene(Vector2d position, Map<String, String> parameters) { // NPCName, SceneFile
@@ -24,7 +23,7 @@ public class Scene extends Entity {
 
         this.position = position;
         this.sceneFileContent = BlobbyEngine.readFile(new File(BlobbyEngine.SCRIPTS_PATH + "npcs/" +
-                parameters.get("SceneFile") + ".txt"));
+                parameters.get("SceneFile") + ".txt")).replaceAll("\n\n", "\n");
     }
 
     public void start() {
@@ -41,8 +40,7 @@ public class Scene extends Entity {
                     sceneLineWithoutMethod = sceneLineWithoutMethod.substring(0, sceneLineWithoutMethod.length() - 1);
                     String[] parameters = sceneLineWithoutMethod.split(", ");
                     Class<?>[] parameterClasses = new Class<?>[parameters.length];
-                    for(int i = 0; i < parameterClasses.length; i++)
-                        parameterClasses[i] = String.class;
+                    Arrays.fill(parameterClasses, String.class);
 
                     try {
                         Class<? extends BaseNPC> npcClass = npc.getClass();
