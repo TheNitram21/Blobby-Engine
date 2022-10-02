@@ -117,8 +117,8 @@ public class SoundPlayer {
      * Stops all sounds.
      */
     public static void stopAllSounds() {
-        for(Sound sound : sounds) {
-            stopAndDeleteSound(sound);
+        for(int i = sounds.size() - 1; i >= 0; i--) {
+            stopAndDeleteSound(sounds.get(i));
         }
     }
 

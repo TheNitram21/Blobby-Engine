@@ -191,13 +191,13 @@
             "Y": 0,
             "Entities": [
                 {
-                    "Target": "Teleport",
+                    "Target": "LevelChanger",
                     "X": 8,
                     "ClassName": "Trigger",
                     "Y": 8,
                     "OnlyOnce": "No",
                     "Height": "1",
-                    "Method": "teleportPlayer",
+                    "Method": "changeLevel",
                     "Width": "3"
                 },
                 {
