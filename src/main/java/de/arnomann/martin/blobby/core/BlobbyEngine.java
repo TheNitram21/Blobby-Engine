@@ -328,7 +328,10 @@ public final class BlobbyEngine {
      */
     public static void setLevel(Level level) {
         try {
-            currentLevel.screens.forEach((screenPos, screen) -> screen.entities.forEach(ListenerManager::removeEventListener));
+            currentLevel.screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
+                ListenerManager.removeEventListener(entity);
+                entity.destroy();
+            }));
         } catch(NullPointerException ignored) {} // No level is loaded yet
         SoundPlayer.stopAllSounds();
 

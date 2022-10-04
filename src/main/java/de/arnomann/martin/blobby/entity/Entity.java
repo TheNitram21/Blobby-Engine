@@ -5,6 +5,7 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
 import org.joml.Vector2d;
 
+import java.sql.Blob;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -85,7 +86,9 @@ public abstract class Entity implements EventListener {
     /**
      * Called just before unloading a level.
      */
-    public void destroy() {}
+    public final void destroy() {
+        BlobbyEngine.getCurrentLevel().screens.get(BlobbyEngine.getEntityScreen(this)).entities.remove(this);
+    }
 
     /**
      * Returns the id of the entity.
