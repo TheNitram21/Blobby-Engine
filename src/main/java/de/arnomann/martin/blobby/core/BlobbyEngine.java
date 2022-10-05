@@ -65,6 +65,8 @@ public final class BlobbyEngine {
 
     private static String[] consoleArguments;
 
+    private static Texture loadingScreenTexture;
+
     private BlobbyEngine() {}
 
     /**
@@ -405,8 +407,11 @@ public final class BlobbyEngine {
      * Shows a loading screen.
      */
     public static void showLoadingScreen() {
+        if(loadingScreenTexture == null)
+            loadingScreenTexture = getInternalTexture("loadingScreen");
+
         Renderer.setWindow(window);
-        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), getInternalTexture("loadingScreen"));
+        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), loadingScreenTexture);
         Renderer.finishRendering();
     }
 

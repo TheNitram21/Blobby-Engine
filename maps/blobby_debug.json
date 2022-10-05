@@ -191,14 +191,24 @@
             "Y": 0,
             "Entities": [
                 {
-                    "Target": "LevelChanger",
+                    "Target": "Teleport",
                     "X": 8,
                     "ClassName": "Trigger",
                     "Y": 8,
                     "OnlyOnce": "No",
-                    "Height": "1",
+                    "Height": "5",
+                    "Method": "teleportPlayer",
+                    "Width": "1"
+                },
+                {
+                    "Target": "LevelChanger",
+                    "X": 15,
+                    "ClassName": "Trigger",
+                    "Y": 0,
+                    "OnlyOnce": "No",
+                    "Height": "5",
                     "Method": "changeLevel",
-                    "Width": "3"
+                    "Width": "1"
                 },
                 {
                     "X": 9,
@@ -216,7 +226,7 @@
                     "X": 10,
                     "ClassName": "LevelChange",
                     "Y": 6,
-                    "NextLevel": "levelChange_test",
+                    "NextLevel": "blobby_debug",
                     "Name": "LevelChanger"
                 },
                 {
@@ -585,7 +595,7 @@
                     "Key": "ExampleSetting"
                 },
                 {
-                    "Volume": "0.5",
+                    "Volume": "0.1",
                     "X": 11,
                     "ClassName": "Sound",
                     "Y": 4,
