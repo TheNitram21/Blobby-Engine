@@ -8,6 +8,7 @@ import org.joml.Math;
 import org.joml.Vector2i;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,6 +33,7 @@ public class Level {
 
     private final Vector2i size;
     private final Vector2i firstScreen;
+    private Map<String, String> settings;
 
     /**
      * Creates a new level.
@@ -44,6 +46,7 @@ public class Level {
         this.screens = screens;
         this.backgroundTexture = backgroundTexture;
         this.lightMapTexture = lightMapTexture;
+        this.settings = new HashMap<>();
 
         size = new Vector2i();
         firstScreen = new Vector2i();
@@ -59,6 +62,23 @@ public class Level {
         });
 
         size.add(1, 1);
+    }
+
+    /**
+     * Set a specific setting in this level.
+     * @param key the name of the setting.
+     * @param value the value.
+     */
+    public void setSetting(String key, String value) {
+        settings.put(key, value);
+    }
+
+    /**
+     * Returns the settings of this level.
+     * @return the settings.
+     */
+    public Map<String, String> getSettings() {
+        return settings;
     }
 
     /**

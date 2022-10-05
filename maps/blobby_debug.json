@@ -578,6 +578,13 @@
                     "Width": "1"
                 },
                 {
+                    "X": 9,
+                    "ClassName": "MapSettings",
+                    "Value": "Yes",
+                    "Y": 0,
+                    "Key": "ExampleSetting"
+                },
+                {
                     "Volume": "0.5",
                     "X": 11,
                     "ClassName": "Sound",

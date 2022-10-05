@@ -41,6 +41,12 @@
             "Parameters": [ "Name" ],
             "EditorTexture": "editor/playerTeleport.png"
         },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.MapSettings",
+            "ClassName": "MapSettings",
+            "Parameters": [ "Key", "Value" ],
+            "EditorTexture": "editor/mapSettings.png"
+        },
 
 		{
             "ClassName": "Ladder",
