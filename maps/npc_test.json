@@ -176,6 +176,12 @@
                 "Name": "NPC"
             },
             {
+                "X": 8,
+                "ClassName": "PlayerTeleport",
+                "Y": 2,
+                "Name": "Teleporter"
+            },
+            {
                 "NPCName": "NPC",
                 "SceneFile": "PlayerNPC",
                 "X": 8,
@@ -189,7 +195,9 @@
                 "ClassName": "Trigger",
                 "Y": 6,
                 "OnlyOnce": "No",
-                "Method": "start"
+                "Height": "1",
+                "Method": "start",
+                "Width": "1"
             }
         ]
     }],
