@@ -129,9 +129,9 @@ public final class Renderer {
                 screen.entities.forEach(entity -> {
                     if(entity instanceof Block && entity.getTexture() != null) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
-                        renderOnUnits((int) ((entityPos.x - entityOffset.x - finalTransitionOffset.x) / um),
-                                (int) ((entityPos.y - entityOffset.y - finalTransitionOffset.y * um) / um), 1,
-                                1, entity.getTexture());
+                        render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
+                                (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) (entity.getWidth() * um),
+                                (int) (entity.getHeight() * um), entity.getTexture());
                     }
                 });
             });
