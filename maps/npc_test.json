@@ -131,6 +131,11 @@
                 "Y": 8
             },
             {
+                "Path": "dirt",
+                "X": 1,
+                "Y": 1
+            },
+            {
                 "Path": "grass",
                 "X": 7,
                 "Y": 8
@@ -174,6 +179,15 @@
                 "ClassName": "TestNPC",
                 "Y": 7,
                 "Name": "NPC"
+            },
+            {
+                "X": 5,
+                "ClassName": "Detail",
+                "Y": 5,
+                "Height": "1",
+                "Texture": "dirt",
+                "Width": "1",
+                "InFrontOfPlayer": "No"
             },
             {
                 "X": 8,

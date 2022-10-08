@@ -3,6 +3,7 @@ package de.arnomann.martin.blobby.core;
 import de.arnomann.martin.blobby.MathUtil;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Particle;
+import de.arnomann.martin.blobby.entity.Block;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.RenderStepDoneEvent;
@@ -112,7 +113,7 @@ public final class Renderer {
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
                 screen.entities.forEach(entity -> {
-                    if(entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
+                    if(!(entity instanceof Block) && entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
                         render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
                                 (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) (entity.getWidth() * um),
@@ -122,6 +123,20 @@ public final class Renderer {
             });
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_BEHIND_PLAYER));
+
+        if(level != null) {
+            level.screens.forEach((screenPos, screen) -> {
+                screen.entities.forEach(entity -> {
+                    if(entity instanceof Block && entity.getTexture() != null) {
+                        Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
+                        renderOnUnits((int) ((entityPos.x - entityOffset.x - finalTransitionOffset.x) / um),
+                                (int) ((entityPos.y - entityOffset.y - finalTransitionOffset.y * um) / um), 1,
+                                1, entity.getTexture());
+                    }
+                });
+            });
+        }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_BLOCKS));
 
         if(BlobbyEngine.renderPlayer) {
             render((int) (um * (player.getPosition().x - entityOffset.x) - finalTransitionOffset.x),
@@ -133,7 +148,7 @@ public final class Renderer {
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
                 screen.entities.forEach(entity -> {
-                    if(entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
+                    if(!(entity instanceof Block) && entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset()).mul(um);
                         render((int) (entityPos.x - entityOffset.x * um - finalTransitionOffset.x),
                                 (int) (entityPos.y - entityOffset.y * um - finalTransitionOffset.y), (int) (entity.getWidth() * um),

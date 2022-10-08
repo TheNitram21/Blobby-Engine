@@ -1,8 +1,10 @@
 package entities;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.core.Renderer;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.entity.BaseNPC;
+import de.arnomann.martin.blobby.event.RenderStepDoneEvent;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
 import org.joml.Vector2d;
 
@@ -49,7 +51,15 @@ public class TestNPC extends BaseNPC {
 
     @Override
     public ITexture getTexture() {
-        return BlobbyEngine.getTexture("player");
+        return null;
     }
 
+    @Override
+    public void onRenderStepDone(RenderStepDoneEvent event) {
+        if(event.step != RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_BEHIND_PLAYER)
+            return;
+
+        Renderer.renderOnUnits((float) getPosition().x, (float) getPosition().y, getWidth(), getHeight(),
+                BlobbyEngine.getTexture("player"));
+    }
 }

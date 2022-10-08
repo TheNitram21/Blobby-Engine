@@ -12,6 +12,8 @@ public class RenderStepDoneEvent extends Event {
     public enum RenderStep {
         /** Renderer has rendered the background. */
         RENDER_BACKGROUND,
+        /** Renderer has rendered blocks. */
+        RENDER_BLOCKS,
         /** Renderer has rendered entities that are behind the player. */
         RENDER_ENTITIES_BEHIND_PLAYER,
         /** Renderer has rendered the player. */
