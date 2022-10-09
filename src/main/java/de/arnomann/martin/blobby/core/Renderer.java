@@ -124,6 +124,13 @@ public final class Renderer {
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_BEHIND_PLAYER));
 
+        if(BlobbyEngine.renderPlayer) {
+            render((int) (um * (player.getPosition().x - entityOffset.x) - finalTransitionOffset.x),
+                    (int) (um * (player.getPosition().y - entityOffset.y) - finalTransitionOffset.y - um * player.getHeight()),
+                    (int) (player.getWidth() * um), (int) (player.getHeight() * um), player.getTexture());
+        }
+        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PLAYER));
+
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
                 screen.entities.forEach(entity -> {
@@ -137,13 +144,6 @@ public final class Renderer {
             });
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_BLOCKS));
-
-        if(BlobbyEngine.renderPlayer) {
-            render((int) (um * (player.getPosition().x - entityOffset.x) - finalTransitionOffset.x),
-                    (int) (um * (player.getPosition().y - entityOffset.y) - finalTransitionOffset.y - um * player.getHeight()),
-                    (int) (player.getWidth() * um), (int) (player.getHeight() * um), player.getTexture());
-        }
-        ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PLAYER));
 
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
