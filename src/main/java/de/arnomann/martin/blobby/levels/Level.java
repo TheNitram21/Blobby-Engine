@@ -30,6 +30,8 @@ public class Level {
     public final ITexture backgroundTexture;
     /** The precalculated light map texture used for lighting. */
     public final ITexture lightMapTexture;
+    /** The name of the level file (not including <code>maps/</code>, but including <code>.json</code>) */
+    public final String fileName;
 
     private final Vector2i size;
     private final Vector2i firstScreen;
@@ -41,11 +43,13 @@ public class Level {
      * @param screens the screens in the level.
      * @param backgroundTexture the texture displayed as the background.
      */
-    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, Texture lightMapTexture) {
+    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, Texture lightMapTexture,
+                 String fileName) {
         this.title = title;
         this.screens = screens;
         this.backgroundTexture = backgroundTexture;
         this.lightMapTexture = lightMapTexture;
+        this.fileName = fileName;
         this.settings = new HashMap<>();
 
         size = new Vector2i();

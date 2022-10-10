@@ -31,17 +31,17 @@ public class LevelLoader {
      * @param whenDone called when the level is loaded.
      */
     public static void loadLevel(String name, Consumer<Level> whenDone) {
-        String filename = BlobbyEngine.MAPS_PATH + name + ".json";
+        String fileName = BlobbyEngine.MAPS_PATH + name + ".json";
 
         BlobbyEngine.showLoadingScreen();
 
         try {
             BlobbyEngine.renderPlayer = false;
 
-            JSONObject json = BlobbyEngine.loadJSON(new File(filename));
+            JSONObject json = BlobbyEngine.loadJSON(new File(fileName));
             Level level;
 
-            logger.info("Starting loading level '" + filename + "'...");
+            logger.info("Starting loading level '" + fileName + "'...");
             loadingLevel = true;
 
             Map<Vector2i, Screen> screens = new HashMap<>();
@@ -111,9 +111,9 @@ public class LevelLoader {
 
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens, backgroundTexture, lightMapTexture);
+            level = new Level(title, screens, backgroundTexture, lightMapTexture, name);
 
-            logger.info("Level '" + filename + "' loaded!");
+            logger.info("Level '" + fileName + "' loaded!");
 
             whenDone.accept(level);
             level.screens.forEach((pos, screen) -> screen.entities.forEach(Entity::initialize));
