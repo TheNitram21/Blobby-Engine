@@ -111,7 +111,7 @@ public class LevelLoader {
 
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens, backgroundTexture, lightMapTexture, name);
+            level = new Level(title, screens, backgroundTexture, lightMapTexture, name + ".json");
 
             logger.info("Level '" + fileName + "' loaded!");
 
