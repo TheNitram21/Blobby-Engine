@@ -67,6 +67,9 @@ public final class BlobbyEngine {
 
     private static Texture loadingScreenTexture;
 
+    private static Profiler profiler;
+    private static boolean debugMode = false;
+
     private BlobbyEngine() {}
 
     /**
@@ -240,8 +243,27 @@ public final class BlobbyEngine {
      * Enables the debug mode.
      */
     public static void debugMode() {
+        debugMode = true;
         logger.enable(Logger.LoggingType.DEBUG);
         logger.debug("Debug mode activated");
+        profiler = new Profiler();
+    }
+
+    /**
+     * Returns the engine profiler. Will be <code>null</code> if debug mode is deactivated.
+     * @return the profiler.
+     * @see BlobbyEngine#debugMode()
+     */
+    public static Profiler getProfiler() {
+        return profiler;
+    }
+
+    /**
+     * Returns whether the engine is in debug mode.
+     * @return <code>true</code> if the engine is in debug mode, <code>false</code> otherwise.
+     */
+    public static boolean isDebugMode() {
+        return debugMode;
     }
 
     /**

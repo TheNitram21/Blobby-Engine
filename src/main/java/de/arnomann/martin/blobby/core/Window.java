@@ -124,16 +124,32 @@ public final class Window {
                 if(maxFramerate <= 0)
                     maxFramerate = -1;
 
+                boolean debugMode = BlobbyEngine.isDebugMode();
+
                 double curTime = glfwGetTime();
                 float delta = (float) (curTime - lastFrameTime);
 
                 if(maxFramerate < 0 || delta >= (1f / maxFramerate)) {
+                    double updateStartTime = 0;
+
+                    if(debugMode)
+                        updateStartTime = glfwGetTime();
                     ListenerManager.callEvent(new UpdateEvent(delta, curTime));
                     ListenerManager.callEvent(new LateUpdateEvent(delta, curTime));
+                    if(debugMode)
+                        BlobbyEngine.getProfiler().updateUpdateTime((float) (glfwGetTime() - updateStartTime));
 
+                    double renderStartTime = 0;
+
+                    if(debugMode)
+                        renderStartTime = glfwGetTime();
                     Renderer.render(this, delta);
+                    if(debugMode)
+                        BlobbyEngine.getProfiler().updateRenderTime((float) (glfwGetTime() - renderStartTime));
 
                     lastFrameTime = curTime;
+                    if(debugMode)
+                        BlobbyEngine.getProfiler().updateFrameTime(delta);
 
                     glfwPollEvents();
                 }
@@ -143,12 +159,15 @@ public final class Window {
                 SoundPlayer.destroy();
 
             close();
+            if(BlobbyEngine.isDebugMode())
+                BlobbyEngine.getProfiler().destroy();
 
             glfwTerminate();
         }
     }
 
     void close() {
+        BlobbyEngine.getLogger().info("Shutting down engine...");
         hide();
         glfwDestroyWindow(windowId);
     }
