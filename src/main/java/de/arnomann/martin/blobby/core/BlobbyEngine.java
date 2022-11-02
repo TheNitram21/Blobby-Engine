@@ -6,7 +6,6 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
-import de.arnomann.martin.blobby.entity.Sound;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
@@ -22,6 +21,7 @@ import org.lwjgl.PointerBuffer;
 import javax.imageio.ImageIO;
 import java.io.*;
 import java.lang.Math;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +40,8 @@ public final class BlobbyEngine {
     public static final String SOUNDS_PATH = "sounds/";
     /** The path to scripts. **/
     public static final String SCRIPTS_PATH = "scripts/";
+    /** The path to shaders. */
+    public static final String SHADERS_PATH = "shaders/";
 
     private static Window window;
     private static Map<String, ITexture> textures;
@@ -113,7 +115,7 @@ public final class BlobbyEngine {
                 String key = split[0];
                 String value = split[1];
 
-                switch (key) {
+                switch(key) {
                     case "map":
                         LevelLoader.loadLevel(value, BlobbyEngine::setLevel);
                         break;
@@ -121,7 +123,7 @@ public final class BlobbyEngine {
                         break;
                 }
             } catch(ArrayIndexOutOfBoundsException ignored) {} // Means that this argument is not in Blobby Engine's
-                                                               // argument format. Probably JOML.
+                                                               // argument format. Could be JOML.
         }
     }
 
@@ -203,6 +205,22 @@ public final class BlobbyEngine {
         }
 
         return textBuilder.toString();
+    }
+
+    static String readInternalFile(String filename) {
+        try {
+            String line;
+            BufferedReader reader = new BufferedReader(new FileReader(new File(BlobbyEngine.class
+                    .getResource(filename).toURI())));
+            StringBuilder content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+
+            return content.toString();
+        } catch(URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -327,12 +345,7 @@ public final class BlobbyEngine {
         return texture;
     }
 
-    /**
-     * Loads a texture from a path. DOES NOT cache it.
-     * @param filename the path of the texture.
-     * @return the texture.
-     */
-    private static Texture getInternalTexture(String filename) {
+    static Texture getInternalTexture(String filename) {
         Texture texture = null;
 
         try {
@@ -357,6 +370,8 @@ public final class BlobbyEngine {
         SoundPlayer.stopAllSounds();
 
         currentLevel = level;
+        Renderer.defaultCamera.setPosition(new Vector2f(getEntityScreen(player).x * Renderer.defaultCamera.getWidth(),
+                getEntityScreen(player).y * Renderer.defaultCamera.getHeight()));
     }
 
     /**
@@ -433,7 +448,7 @@ public final class BlobbyEngine {
             loadingScreenTexture = getInternalTexture("loadingScreen");
 
         Renderer.setWindow(window);
-        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), loadingScreenTexture);
+        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), loadingScreenTexture, Renderer.uiShader);
         Renderer.finishRendering();
     }
 

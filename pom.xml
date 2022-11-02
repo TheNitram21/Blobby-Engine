@@ -6,7 +6,7 @@
 
     <groupId>de.arnomann.martin</groupId>
     <artifactId>BlobbyEngine</artifactId>
-    <version>2.2.0</version>
+    <version>3.0.0</version>
 
     <name>Blobby Engine</name>
     <description>A 2d level-based game engine</description>
@@ -25,7 +25,6 @@
 
         <lwjgl.version>3.3.1</lwjgl.version>
         <joml.version>1.10.4</joml.version>
-        <lwjgl.natives>natives-macos</lwjgl.natives>
     </properties>
 
     <build>

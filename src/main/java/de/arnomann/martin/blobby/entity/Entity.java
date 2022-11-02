@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.entity;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.core.Shader;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
 import org.joml.Vector2d;
@@ -67,6 +68,14 @@ public abstract class Entity implements EventListener {
      * @return the texture.
      */
     public ITexture getTexture() {
+        return null;
+    }
+
+    /**
+     * Returns the shader which should be used for rendering this entity.
+     * @return the shader.
+     */
+    public Shader getShader() {
         return null;
     }
 

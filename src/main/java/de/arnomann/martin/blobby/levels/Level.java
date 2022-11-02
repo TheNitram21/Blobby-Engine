@@ -7,9 +7,7 @@ import de.arnomann.martin.blobby.entity.Entity;
 import org.joml.Math;
 import org.joml.Vector2i;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a level.
@@ -28,8 +26,6 @@ public class Level {
      * The background texture.
      */
     public final ITexture backgroundTexture;
-    /** The precalculated light map texture used for lighting. */
-    public final ITexture lightMapTexture;
     /** The name of the level file (not including <code>maps/</code>, but including <code>.json</code>) */
     public final String fileName;
 
@@ -43,12 +39,10 @@ public class Level {
      * @param screens the screens in the level.
      * @param backgroundTexture the texture displayed as the background.
      */
-    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, Texture lightMapTexture,
-                 String fileName) {
+    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, String fileName) {
         this.title = title;
         this.screens = screens;
         this.backgroundTexture = backgroundTexture;
-        this.lightMapTexture = lightMapTexture;
         this.fileName = fileName;
         this.settings = new HashMap<>();
 
@@ -83,6 +77,16 @@ public class Level {
      */
     public Map<String, String> getSettings() {
         return settings;
+    }
+
+    /**
+     * Returns a list of all entities.
+     * @return all entities.
+     */
+    public List<Entity> getAllEntities() {
+        List<Entity> entities = new ArrayList<>();
+        screens.forEach((pos, screen) -> entities.addAll(screen.entities));
+        return entities;
     }
 
     /**
@@ -139,6 +143,6 @@ public class Level {
 
     @Override
     public int hashCode() {
-        return title.hashCode() * screens.hashCode() * backgroundTexture.hashCode() * lightMapTexture.hashCode();
+        return title.hashCode() * screens.hashCode() * backgroundTexture.hashCode();
     }
 }

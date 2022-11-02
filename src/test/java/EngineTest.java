@@ -41,9 +41,10 @@ public class EngineTest implements EventListener {
         BlobbyEngine.debugMode();
 
         BlobbyEngine.getWindow().maxFramerate = -1;
+        BlobbyEngine.getWindow().setVSyncEnabled(false);
 
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player", "Width", "1")));
-        LevelLoader.loadLevel("npc_test", BlobbyEngine::setLevel);
+        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
         buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),
@@ -79,9 +80,9 @@ public class EngineTest implements EventListener {
                     0.05, p.getHeight() * 0.75, "Block");
 
             if(!BlobbyEngine.isTransitioningBetweenScreens()) {
-                if(Input.keyPressed(GLFW_KEY_A) && canGoLeft) {
+                if(Input.keyPressed(GLFW_KEY_A) && !Input.keyPressed(GLFW_KEY_D) && canGoLeft) {
                     playerVelocity.x = -maxSpeed;
-                } else if(Input.keyPressed(GLFW_KEY_D) && canGoRight) {
+                } else if(Input.keyPressed(GLFW_KEY_D) && !Input.keyPressed(GLFW_KEY_A) && canGoRight) {
                     playerVelocity.x = maxSpeed;
                 }
 
@@ -115,6 +116,8 @@ public class EngineTest implements EventListener {
                 playerVelocity.y += fallSpeed * event.deltaTime;
             } else if(playerVelocity.y > 0) {
                 playerVelocity.y = 0;
+                p.getPosition().set(p.getPosition().x, MathUtil.roundWithMaxDifference((float) p.getPosition().y,
+                        0.3f));
             }
 
             if(headCollision && playerVelocity.y < 0) {
@@ -141,22 +144,5 @@ public class EngineTest implements EventListener {
 
         if(event.key == GLFW_KEY_V)
             BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());
-
-        if(event.key == GLFW_KEY_L) {
-            BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
-                if(!entity.getClass().getSimpleName().equals("Block"))
-                    return;
-                Vector4f color = entity.getTexture().getColorModifiers();
-                entity.getTexture().setColorModifiers(color.x + 0.005f, color.y + 0.005f, color.z + 0.005f, 1f);
-            }));
-        }
-        if(event.key == GLFW_KEY_K) {
-            BlobbyEngine.getCurrentLevel().screens.forEach((screenPos, screen) -> screen.entities.forEach(entity -> {
-                if(!entity.getClass().getSimpleName().equals("Block"))
-                    return;
-                Vector4f color = entity.getTexture().getColorModifiers();
-                entity.getTexture().setColorModifiers(color.x - 0.005f, color.y - 0.005f, color.z - 0.005f, 1f);
-            }));
-        }
     }
 }

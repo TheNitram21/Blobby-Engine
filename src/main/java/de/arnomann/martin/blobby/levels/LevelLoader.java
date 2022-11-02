@@ -107,11 +107,9 @@ public class LevelLoader {
                 backgroundTexture = BlobbyEngine.getTexture(json.getString("BackgroundTexture"));
             } catch(JSONException ignored) {}
 
-            Texture lightMapTexture = new Texture(BlobbyEngine.MAPS_PATH + name);
-
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens, backgroundTexture, lightMapTexture, name + ".json");
+            level = new Level(title, screens, backgroundTexture, name + ".json");
 
             logger.info("Level '" + fileName + "' loaded!");
 

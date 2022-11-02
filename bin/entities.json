@@ -19,6 +19,7 @@
             "EditorTexture": "editor/levelChange.png"
         },
 		{
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Light",
             "ClassName": "Light",
             "Parameters": [ "Radius" ],
             "EditorTexture": "editor/light.png"

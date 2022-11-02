@@ -2,7 +2,7 @@
     "EditorSettings": {"LightMapScale": 16},
     "PlayerStartY": 7,
     "BackgroundTexture": "background",
-    "PlayerStartX": 3,
+    "PlayerStartX": 17,
     "Screens": [
         {
             "Blocks": [
@@ -217,23 +217,11 @@
                     "Name": "Teleport"
                 },
                 {
-                    "Radius": "2",
-                    "X": 10,
-                    "ClassName": "Light",
-                    "Y": 3
-                },
-                {
                     "X": 10,
                     "ClassName": "LevelChange",
                     "Y": 6,
                     "NextLevel": "blobby_debug",
                     "Name": "LevelChanger"
-                },
-                {
-                    "Radius": "2",
-                    "X": 6,
-                    "ClassName": "Light",
-                    "Y": 3
                 }
             ]
         },
@@ -554,7 +542,7 @@
                     "Width": "9"
                 },
                 {
-                    "Radius": "1",
+                    "Radius": "4",
                     "X": 2,
                     "ClassName": "Light",
                     "Y": 2
@@ -602,12 +590,6 @@
                     "Sound": "sound.ogg",
                     "Looping": "Yes",
                     "Name": "Sound"
-                },
-                {
-                    "Radius": "3",
-                    "X": 8,
-                    "ClassName": "Light",
-                    "Y": 5
                 }
             ]
         }

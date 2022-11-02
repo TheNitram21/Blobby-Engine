@@ -20,8 +20,6 @@ public class RenderStepDoneEvent extends Event {
         RENDER_BLOCKS,
         /** Renderer has rendered entities that are in front of the player. */
         RENDER_ENTITIES_IN_FRONT_OF_PLAYER,
-        /** Renderer has rendered the light map. */
-        RENDER_LIGHT_MAP,
         /** Renderer has rendered the particles. */
         RENDER_PARTICLES,
         /** Renderer has rendered the queued textures. */

@@ -19,6 +19,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
 
 /**
  * Represents a basic window.
@@ -33,6 +34,8 @@ public final class Window {
     private final String iconPath;
 
     private boolean started = false;
+
+    private Framebuffer framebuffer;
 
     /**
      * The maximum amount of frames rendered each second. Negative values will make the framerate infinite.
@@ -100,9 +103,12 @@ public final class Window {
             glClearColor(0.2f, 0.3f, 1f, 0f);
 
             glEnable(GL_TEXTURE_2D);
-
+            glEnable(GL_MULTISAMPLE);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            framebuffer = new Framebuffer(width, height);
+            framebuffer.unbind();
 
             Texture iconTexture;
 
@@ -227,8 +233,17 @@ public final class Window {
         this.height = height;
 
         glfwSetWindowSize(windowId, this.width, this.height);
+        framebuffer.resize(this.width, this.height);
 
         return true;
+    }
+
+    /**
+     * Returns an alternate framebuffer.
+     * @return the framebuffer.
+     */
+    public Framebuffer getFramebuffer() {
+        return framebuffer;
     }
 
     /**
