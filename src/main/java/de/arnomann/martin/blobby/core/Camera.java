@@ -17,15 +17,19 @@ public class Camera {
     private float rotation = 0f;
 
     public Camera(float left, float right, float bottom, float top) {
-        this.left = left;
-        this.right = right;
-        this.bottom = bottom;
-        this.top = top;
+        try {
+            this.left = left;
+            this.right = right;
+            this.bottom = bottom;
+            this.top = top;
 
-        projectionMatrix = new Matrix4f().ortho(left, right, bottom, top, -1f, 1f);
-        viewMatrix = new Matrix4f();
+            projectionMatrix = new Matrix4f().ortho(left, right, bottom, top, -1f, 1f);
+            viewMatrix = new Matrix4f();
 
-        viewProjectionMatrix = new Matrix4f(projectionMatrix).mul(viewMatrix);
+            viewProjectionMatrix = new Matrix4f(projectionMatrix).mul(viewMatrix);
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Vector2f getPosition() {
