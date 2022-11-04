@@ -50,8 +50,7 @@ public final class Renderer {
     private static final Camera uiCamera = new Camera(-1.6f, 1.6f, -0.9f, 0.9f);
     public static Camera activeCamera = defaultCamera;
 
-    private static Float[] lightPositions = new Float[] {};
-    private static Float[] lightRadii = new Float[] {};
+    private static Float[] lights = new Float[] {};
 
     private Renderer() {}
 
@@ -87,28 +86,22 @@ public final class Renderer {
 
         Vector2i playerScreen = BlobbyEngine.getEntityScreen(player);
 
-        List<Float> lightPositions = new ArrayList<>();
-        List<Float> lightRadii = new ArrayList<>();
+        List<Float> lights = new ArrayList<>();
         if(level != null) {
             for (Entity entity : level.getAllEntities()) {
                 if (!(entity instanceof Light))
                     continue;
 
-                lightPositions.add((float) (entity.getPosition().x + 0.5f));
-                lightPositions.add((float) (entity.getPosition().y + 0.5f));
-                lightRadii.add(Float.valueOf(entity.getParameters().get("Radius")));
+                lights.add((float) (entity.getPosition().x + 0.5f));
+                lights.add((float) (entity.getPosition().y + 0.5f));
+                lights.add(Float.valueOf(entity.getParameters().get("Radius")));
             }
 
-            Renderer.lightPositions = new Float[lightPositions.size()];
-            for(int i = 0; i < lightPositions.size(); i++)
-                Renderer.lightPositions[i] = lightPositions.get(i);
-
-            Renderer.lightRadii = new Float[lightRadii.size()];
-            for(int i = 0; i < lightRadii.size(); i++)
-                Renderer.lightRadii[i] = lightRadii.get(i);
+            Renderer.lights = new Float[lights.size()];
+            for(int i = 0; i < lights.size(); i++)
+                Renderer.lights[i] = lights.get(i);
         } else {
-            Renderer.lightPositions = new Float[] {};
-            Renderer.lightRadii = new Float[] {};
+            Renderer.lights = new Float[] {};
         }
 
         if(currentScreen == null) {
@@ -237,16 +230,12 @@ public final class Renderer {
         activeCamera.getViewProjectionMatrix().get(matrixBuffer);
         glUniformMatrix4fv(glGetUniformLocation(shader.id, "viewProjectionMatrix"), false, matrixBuffer);
 
-        for(int i = 0; i < lightPositions.length; i += 2) {
-            glUniform2f(glGetUniformLocation(shader.id, "lightPositions[" + i + "]"), lightPositions[i],
-                    lightPositions[i + 1]);
+        for(int i = 0; i < lights.length; i += 3) {
+            glUniform3f(glGetUniformLocation(shader.id, "lights[" + i + "]"), lights[i],
+                    lights[i + 1], lights[i + 2]);
         }
 
-        for(int i = 0; i < lightRadii.length; i++) {
-            glUniform1f(glGetUniformLocation(shader.id, "lightRadii[" + i + "]"), lightRadii[i]);
-        }
-
-        glUniform1i(glGetUniformLocation(shader.id, "lightCount"), lightRadii.length);
+        glUniform1i(glGetUniformLocation(shader.id, "lightCount"), lights.length / 3);
         glUniform1f(glGetUniformLocation(shader.id, "unitMultiplier"), (float) BlobbyEngine.unitMultiplier());
 
         glUniform1f(glGetUniformLocation(shader.id, "cameraWidth"), activeCamera.getWidth());

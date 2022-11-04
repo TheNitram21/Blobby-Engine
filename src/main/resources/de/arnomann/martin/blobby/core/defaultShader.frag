@@ -10,8 +10,7 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewProjectionMatrix;
 
-uniform vec2 lightPositions[MAX_LIGHTS];
-uniform float lightRadii[MAX_LIGHTS];
+uniform vec3 lights[MAX_LIGHTS]; // XY is the light position, Z is the radius
 uniform int lightCount;
 uniform float unitMultiplier;
 
@@ -30,9 +29,9 @@ void main() {
         if(i >= lightCount)
             break;
 
-        vec4 lightPosition = viewMatrix * vec4(lightPositions[i].x / (16.0 / 3.0), lightPositions[i].y / 3.0, 0.0, 1.0);
+        vec4 lightPosition = viewMatrix * vec4(lights[i].x / (16.0 / 3.0), lights[i].y / 3.0, 0.0, 1.0);
         float distance = distance(lightPosition.xy * vec2(-unitMultiplier * (16.0 / 3.0), unitMultiplier * 3.0),
-                vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lightRadii[i];
+                vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lights[i].z;
         smallestDistance = min(smallestDistance, distance);
     }
 

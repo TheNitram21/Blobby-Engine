@@ -1,10 +1,6 @@
 package de.arnomann.martin.blobby.core;
 
-import org.lwjgl.BufferUtils;
-
 import java.io.File;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
