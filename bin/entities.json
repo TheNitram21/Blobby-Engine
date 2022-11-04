@@ -48,6 +48,12 @@
             "Parameters": [ "Key", "Value" ],
             "EditorTexture": "editor/mapSettings.png"
         },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Button",
+            "ClassName": "Button",
+            "Parameters": [ "Target", "Method", "OnlyOnce", "Width", "Height", "Texture" ],
+            "EditorTexture": "editor/button.png"
+        },
 
 		{
             "ClassName": "Ladder",
