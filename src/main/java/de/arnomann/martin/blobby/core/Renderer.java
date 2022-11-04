@@ -41,10 +41,8 @@ public final class Renderer {
 
     private static double screenTransitionDuration = 1d; // seconds
 
-    public static final Shader defaultShader = new Shader(BlobbyEngine.readInternalFile("defaultShader.vert"),
-            BlobbyEngine.readInternalFile("defaultShader.frag"));
-    public static final Shader uiShader = new Shader(BlobbyEngine.readInternalFile("uiShader.vert"),
-            BlobbyEngine.readInternalFile("uiShader.frag"));
+    public static final Shader defaultShader = new Shader(Shader.DEFAULT_VERTEX, Shader.DEFAULT_FRAGMENT);
+    public static final Shader uiShader = new Shader(Shader.UI_VERTEX, Shader.UI_FRAGMENT);
 
     public static final Camera defaultCamera = new Camera(-1.6f, 1.6f, -0.9f, 0.9f);
     private static final Camera uiCamera = new Camera(-1.6f, 1.6f, -0.9f, 0.9f);
