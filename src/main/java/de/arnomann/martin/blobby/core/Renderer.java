@@ -303,9 +303,7 @@ public final class Renderer {
         renderUV(new Vector2f(-1f, 1f), new Vector2f(-0.5f, -1f), menu.getBackgroundTexture(), uiShader);
         for(Button b : menu.getButtons()) {
             if(b.isVisible()) {
-                System.out.println("(" + b.uvStart.x + " " + b.uvStart.y + ") (" + b.uvEnd.x + " " + b.uvEnd.y + ")");
                 renderUV(b.uvStart, b.uvEnd, b.texture, uiShader);
-//                renderUV(new Vector2f(-0.25f, 0.5f), new Vector2f(0.25f, -0.5f), b.texture, uiShader);
             }
         }
     }
