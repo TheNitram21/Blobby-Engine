@@ -21,6 +21,7 @@ public class Button implements EventListener {
     /** The texture of the button. */
     public final ITexture texture;
     private final Runnable onClick;
+    private boolean visible;
 
     /**
      * Creates a new button.
@@ -34,6 +35,7 @@ public class Button implements EventListener {
         this.uvEnd = new Vector2f(uvEnd.x * 2 - 1, -(uvEnd.y * 2 - 1));
         this.texture = texture;
         this.onClick = onClick;
+        this.visible = false;
         ListenerManager.registerEventListener(this);
     }
 
@@ -42,8 +44,8 @@ public class Button implements EventListener {
         double clickXPos = (event.pos.x / BlobbyEngine.getWindow().getWidth()) * 2 - 1;
         double clickYPos = -((event.pos.y / BlobbyEngine.getWindow().getHeight()) * 2 - 1);
 
-        if(event.key == GLFW.GLFW_MOUSE_BUTTON_LEFT && (MathUtil.inclusiveBetween(uvStart.x, uvEnd.x, clickXPos) &&
-                MathUtil.inclusiveBetween(uvEnd.y, uvStart.y, clickYPos))) {
+        if(visible && event.key == GLFW.GLFW_MOUSE_BUTTON_LEFT && (MathUtil.inclusiveBetween(uvStart.x, uvEnd.x,
+                clickXPos) && MathUtil.inclusiveBetween(uvEnd.y, uvStart.y, clickYPos))) {
             onClick.run();
         }
     }
@@ -62,6 +64,22 @@ public class Button implements EventListener {
      */
     public float getHeight() {
         return uvEnd.y - uvStart.y;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void show() {
+        setVisible(true);
+    }
+
+    public void hide() {
+        setVisible(false);
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
 }

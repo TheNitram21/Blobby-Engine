@@ -126,18 +126,16 @@ public class EngineTest implements EventListener {
 
             p.getPosition().add(playerVelocity.x * event.deltaTime, playerVelocity.y * event.deltaTime);
         }
-
-//        System.out.println(Physics.raycast(p.getPosition(), new Vector2d(p.getPosition()).add(0, 4), "Block"));
     }
 
     @Override
     public void onKeyPressed(KeyPressedEvent event) {
         if(event.key == GLFW_KEY_ESCAPE) {
-            if(BlobbyEngine.showMenu) {
-                BlobbyEngine.showMenu = false;
+            if(BlobbyEngine.isMenuShown()) {
+                BlobbyEngine.hideMenu();
                 BlobbyEngine.paused = false;
             } else {
-                BlobbyEngine.showMenu = true;
+                BlobbyEngine.showMenu();
                 BlobbyEngine.paused = true;
             }
         }

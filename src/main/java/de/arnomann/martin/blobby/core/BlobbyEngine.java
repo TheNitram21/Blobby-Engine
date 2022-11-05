@@ -12,6 +12,7 @@ import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.logging.Logger;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
+import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
 import org.json.JSONException;
@@ -51,8 +52,7 @@ public final class BlobbyEngine {
 
     /** The currently shown menu. */
     public static Menu menu;
-    /** Whether the {@link BlobbyEngine#menu} should be visible or not. */
-    public static boolean showMenu = false;
+    private static boolean showMenu = false;
 
     private static double unitMultiplier;
 
@@ -356,6 +356,20 @@ public final class BlobbyEngine {
         }
 
         return texture;
+    }
+
+    public static void showMenu() {
+        showMenu = true;
+        menu.getButtons().forEach(Button::show);
+    }
+
+    public static void hideMenu() {
+        showMenu = false;
+        menu.getButtons().forEach(Button::hide);
+    }
+
+    public static boolean isMenuShown() {
+        return showMenu;
     }
 
     /**

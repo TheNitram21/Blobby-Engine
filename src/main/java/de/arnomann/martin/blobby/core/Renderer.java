@@ -194,7 +194,7 @@ public final class Renderer {
         queuedUITextures.forEach((uvs, tex) -> renderUV(new Vector2f(uvs.x, uvs.y), new Vector2f(uvs.z, uvs.w), tex, uiShader));
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_QUEUED_TEXTURES));
 
-        if(BlobbyEngine.showMenu && BlobbyEngine.menu != null) {
+        if(BlobbyEngine.isMenuShown() && BlobbyEngine.menu != null) {
             renderMenu(BlobbyEngine.menu);
             ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_MENU));
         }
@@ -276,16 +276,18 @@ public final class Renderer {
 
         boolean flipped = texture.isFlipped();
 
-        uvStart.x = MathUtil.scaleNumber(-1, 1, uiCamera.getLeft(), uiCamera.getRight(), uvStart.x);
-        uvStart.y = MathUtil.scaleNumber(-1, 1, uiCamera.getBottom(), uiCamera.getTop(), uvStart.y);
-        uvEnd.x = MathUtil.scaleNumber(-1, 1, uiCamera.getLeft(), uiCamera.getRight(), uvEnd.x);
-        uvEnd.y = MathUtil.scaleNumber(-1, 1, uiCamera.getBottom(), uiCamera.getTop(), uvEnd.y);
+        Vector2f renderUVStart = new Vector2f(uvStart);
+        Vector2f renderUVEnd = new Vector2f(uvEnd);
+        renderUVStart.x = MathUtil.scaleNumber(-1, 1, uiCamera.getLeft(), uiCamera.getRight(), renderUVStart.x);
+        renderUVStart.y = MathUtil.scaleNumber(-1, 1, uiCamera.getBottom(), uiCamera.getTop(), renderUVStart.y);
+        renderUVEnd.x = MathUtil.scaleNumber(-1, 1, uiCamera.getLeft(), uiCamera.getRight(), renderUVEnd.x);
+        renderUVEnd.y = MathUtil.scaleNumber(-1, 1, uiCamera.getBottom(), uiCamera.getTop(), renderUVEnd.y);
 
         new VertexArray(new float[] {
-                uvStart.x, uvStart.y, // top left
-                uvEnd.x, uvStart.y,  // top right
-                uvEnd.x, uvEnd.y, // bottom right
-                uvStart.x, uvEnd.y // bottom left
+                renderUVStart.x, renderUVStart.y, // top left
+                renderUVEnd.x, renderUVStart.y,  // top right
+                renderUVEnd.x, renderUVEnd.y, // bottom right
+                renderUVStart.x, renderUVEnd.y // bottom left
         }, new int[] {
                 booleanToInt(flipped), 0,
                 booleanToInt(!flipped), 0,
@@ -300,7 +302,11 @@ public final class Renderer {
     public static void renderMenu(Menu menu) {
         renderUV(new Vector2f(-1f, 1f), new Vector2f(-0.5f, -1f), menu.getBackgroundTexture(), uiShader);
         for(Button b : menu.getButtons()) {
-            renderUV(b.uvStart, b.uvEnd, b.texture, uiShader);
+            if(b.isVisible()) {
+                System.out.println("(" + b.uvStart.x + " " + b.uvStart.y + ") (" + b.uvEnd.x + " " + b.uvEnd.y + ")");
+                renderUV(b.uvStart, b.uvEnd, b.texture, uiShader);
+//                renderUV(new Vector2f(-0.25f, 0.5f), new Vector2f(0.25f, -0.5f), b.texture, uiShader);
+            }
         }
     }
 
