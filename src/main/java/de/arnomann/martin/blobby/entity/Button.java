@@ -43,6 +43,8 @@ public class Button extends Trigger {
                 triggered = true;
                 triggeredLastFrame = true;
             } else {
+                couldTrigger = false;
+
                 if(!triggered)
                     triggeredLastFrame = false;
                 triggered = false;
