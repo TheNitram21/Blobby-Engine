@@ -35,8 +35,8 @@ public class Shader {
             "    float smallestDistance = 1.0;\n" +
             "    for(int i = 0; i < MAX_LIGHTS; i++) {\n" +
             "        if(i >= lightCount) break;\n" +
-            "        vec4 lightPosition = viewMatrix * vec4(lights[i].x / (16.0 / 3.0), lights[i].y / 3.0, 0.0, 1.0);\n" +
-            "        float distance = distance(lightPosition.xy * vec2(-unitMultiplier * (16.0 / 3.0), unitMultiplier * 3.0),\n" +
+            "        vec4 lightPosition = viewMatrix * vec4(lights[i].x / (16.0 / 3.0), lights[i].y / -4.5, 0.0, 1.0);\n" +
+            "        float distance = distance(lightPosition.xy * vec2(-unitMultiplier * (16.0 / 3.0), unitMultiplier * -4.5),\n" +
             "                vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lights[i].z;\n" +
             "        smallestDistance = min(smallestDistance, distance);\n" +
             "    }\n" +

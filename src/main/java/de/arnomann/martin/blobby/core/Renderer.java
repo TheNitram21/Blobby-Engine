@@ -118,14 +118,14 @@ public final class Renderer {
 
             if(screenTransition >= screenTransitionDuration) {
                 defaultCamera.setPosition(new Vector2f(playerScreen.x * defaultCamera.getWidth(),
-                        playerScreen.y * defaultCamera.getHeight()));
+                        playerScreen.y * defaultCamera.getHeight() * -1));
                 screenTransition = 0;
                 currentScreen = playerScreen;
                 BlobbyEngine.transitioningScreen = false;
             } else {
                 Vector2i screenDiff = new Vector2i(playerScreen).sub(currentScreen);
                 defaultCamera.setPosition(cameraPositionAtScreenTransitionStart.add(new Vector2f(
-                        defaultCamera.getWidth() * screenDiff.x, defaultCamera.getHeight() * screenDiff.y)
+                        defaultCamera.getWidth() * screenDiff.x, defaultCamera.getHeight() * screenDiff.y * -1)
                         .mul((float) (deltaTime / screenTransitionDuration))));
             }
         }
@@ -229,8 +229,8 @@ public final class Renderer {
         glUniformMatrix4fv(glGetUniformLocation(shader.id, "viewProjectionMatrix"), false, matrixBuffer);
 
         for(int i = 0; i < lights.length; i += 3) {
-            glUniform3f(glGetUniformLocation(shader.id, "lights[" + i + "]"), lights[i],
-                    lights[i + 1], lights[i + 2]);
+            glUniform3f(glGetUniformLocation(shader.id, "lights[" + i / 3 + "]"), lights[i], lights[i + 1],
+                    lights[i + 2]);
         }
 
         glUniform1i(glGetUniformLocation(shader.id, "lightCount"), lights.length / 3);

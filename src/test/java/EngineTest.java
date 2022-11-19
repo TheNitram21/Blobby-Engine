@@ -51,7 +51,7 @@ public class EngineTest implements EventListener {
                 BlobbyEngine.getTexture("button"), BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
 
-        Renderer.setScreenTransitionDuration(0.5);
+        Renderer.setScreenTransitionDuration(10);
     }
 
     public static Vector2d playerVelocity = new Vector2d();
