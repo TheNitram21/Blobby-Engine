@@ -385,7 +385,7 @@ public final class BlobbyEngine {
 
         currentLevel = level;
         Renderer.defaultCamera.setPosition(new Vector2f(getEntityScreen(player).x * Renderer.defaultCamera.getWidth(),
-                getEntityScreen(player).y * Renderer.defaultCamera.getHeight()));
+                -getEntityScreen(player).y * Renderer.defaultCamera.getHeight()));
     }
 
     /**
