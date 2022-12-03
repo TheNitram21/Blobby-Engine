@@ -125,6 +125,9 @@ public final class Window {
             ListenerManager.callEvent(new StartEvent());
             BlobbyEngine.onWindowOpen();
 
+            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
+
             double lastFrameTime = glfwGetTime();
             while(!glfwWindowShouldClose(windowId)) {
                 if(maxFramerate <= 0)
@@ -167,6 +170,9 @@ public final class Window {
             close();
             if(BlobbyEngine.isDebugMode())
                 BlobbyEngine.getProfiler().destroy();
+
+            glDisableVertexAttribArray(0);
+            glDisableVertexAttribArray(1);
 
             glfwTerminate();
         }

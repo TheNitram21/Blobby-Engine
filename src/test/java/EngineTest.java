@@ -38,7 +38,7 @@ public class EngineTest implements EventListener {
 
     @Override
     public void onStart(StartEvent event) {
-        BlobbyEngine.debugMode();
+//        BlobbyEngine.debugMode();
 
         BlobbyEngine.getWindow().maxFramerate = -1;
         BlobbyEngine.getWindow().setVSyncEnabled(false);
@@ -51,7 +51,7 @@ public class EngineTest implements EventListener {
                 BlobbyEngine.getTexture("button"), BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
 
-        Renderer.setScreenTransitionDuration(10);
+        Renderer.setScreenTransitionDuration(0.5);
     }
 
     public static Vector2d playerVelocity = new Vector2d();

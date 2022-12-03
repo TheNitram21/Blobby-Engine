@@ -50,6 +50,21 @@ public final class Renderer {
 
     private static Float[] lights = new Float[] {};
 
+    private static final int[] QUAD_TEXTURE_COORDS = new int[] {
+            0, 0, // top left
+            1, 0, // top right
+            1, 1, // bottom right
+            0, 1  // bottom left
+    };
+
+    private static final int[] QUAD_INDICES = new int[] {
+            0, 1, 2,
+            2, 3, 0
+    };
+
+    private static final VertexArray VERTEX_ARRAY = new VertexArray().setTextureCoords(QUAD_TEXTURE_COORDS)
+            .setIndices(QUAD_INDICES);
+
     private Renderer() {}
 
     /* ONLY FOR INTERNAL USE */
@@ -218,63 +233,50 @@ public final class Renderer {
     public static void renderOnUnits(float x, float y, float width, float height, ITexture texture, Shader shader) {
         texture.bind(0);
         shader.bind();
-        glUniform1i(glGetUniformLocation(shader.id, "texture"), 0);
+        shader.setUniform1i("texture", 0);
 
-        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-        activeCamera.getViewMatrix().get(matrixBuffer);
-        glUniformMatrix4fv(glGetUniformLocation(shader.id, "viewMatrix"), false, matrixBuffer);
-        activeCamera.getProjectionMatrix().get(matrixBuffer);
-        glUniformMatrix4fv(glGetUniformLocation(shader.id, "projectionMatrix"), false, matrixBuffer);
-        activeCamera.getViewProjectionMatrix().get(matrixBuffer);
-        glUniformMatrix4fv(glGetUniformLocation(shader.id, "viewProjectionMatrix"), false, matrixBuffer);
+        shader.setUniformMatrix4f("viewMatrix", activeCamera.getViewMatrix());
+        shader.setUniformMatrix4f("projectionMatrix", activeCamera.getProjectionMatrix());
+        shader.setUniformMatrix4f("viewProjectionMatrix", activeCamera.getViewProjectionMatrix());
 
         for(int i = 0; i < lights.length; i += 3) {
-            glUniform3f(glGetUniformLocation(shader.id, "lights[" + i / 3 + "]"), lights[i], lights[i + 1],
-                    lights[i + 2]);
+            shader.setUniform3f("lights[" + i / 3 + "]", lights[i], lights[i + 1], lights[i + 2]);
         }
 
-        glUniform1i(glGetUniformLocation(shader.id, "lightCount"), lights.length / 3);
-        glUniform1f(glGetUniformLocation(shader.id, "unitMultiplier"), (float) BlobbyEngine.unitMultiplier());
+        shader.setUniform1i("lightCount", lights.length / 3);
+        shader.setUniform1f("unitMultiplier", (float) BlobbyEngine.unitMultiplier());
 
-        glUniform1f(glGetUniformLocation(shader.id, "cameraWidth"), activeCamera.getWidth());
-        glUniform1f(glGetUniformLocation(shader.id, "cameraHeight"), activeCamera.getHeight());
+        shader.setUniform1f("cameraWidth", activeCamera.getWidth());
+        shader.setUniform1f("cameraHeight", activeCamera.getHeight());
 
-        glUniform1i(glGetUniformLocation(shader.id, "screenWidth"), BlobbyEngine.getWindow().getWidth());
-        glUniform1i(glGetUniformLocation(shader.id, "screenHeight"), BlobbyEngine.getWindow().getHeight());
+        shader.setUniform1i("screenWidth", BlobbyEngine.getWindow().getWidth());
+        shader.setUniform1i("screenHeight", BlobbyEngine.getWindow().getHeight());
 
-        boolean flipped = texture.isFlipped();
+        shader.setUniform1i("flipped", booleanToInt(texture.isFlipped()));
 
         x = MathUtil.scaleNumber(0, 16, activeCamera.getLeft(), activeCamera.getRight(), x);
         y = MathUtil.scaleNumber(0, 9, activeCamera.getTop(), activeCamera.getBottom(), y);
         width = MathUtil.scaleNumber(0, 8, 0, activeCamera.getRight(), width);
         height = -MathUtil.scaleNumber(0, 4.5f, 0, activeCamera.getTop(), height);
 
-        new VertexArray(new float[] {
+        VERTEX_ARRAY.setVertices(new float[] {
                 x, y, // top left
                 x + width, y,  // top right
                 x + width, y + height, // bottom right
                 x, y + height // bottom left
-        }, new int[] {
-                booleanToInt(flipped), 0,
-                booleanToInt(!flipped), 0,
-                booleanToInt(!flipped), 1,
-                booleanToInt(flipped), 1
-        }, new int[] {
-                0, 1, 2,
-                2, 3, 0
-        }).render();
+        }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
     }
 
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture, Shader shader) {
         texture.bind(0);
         shader.bind();
-        glUniform1i(glGetUniformLocation(shader.id, "texture"), 0);
+        shader.setUniform1i("texture", 0);
 
-        FloatBuffer viewProjectionBuffer = BufferUtils.createFloatBuffer(16);
-        uiCamera.getViewProjectionMatrix().get(viewProjectionBuffer);
-        glUniformMatrix4fv(glGetUniformLocation(shader.id, "viewProjectionMatrix"), false, viewProjectionBuffer);
+        shader.setUniformMatrix4f("viewMatrix", uiCamera.getViewMatrix());
+        shader.setUniformMatrix4f("projectionMatrix", uiCamera.getProjectionMatrix());
+        shader.setUniformMatrix4f("viewProjectionMatrix", uiCamera.getViewProjectionMatrix());
 
-        boolean flipped = texture.isFlipped();
+        shader.setUniform1i("flipped", booleanToInt(texture.isFlipped()));
 
         Vector2f renderUVStart = new Vector2f(uvStart);
         Vector2f renderUVEnd = new Vector2f(uvEnd);
@@ -283,20 +285,12 @@ public final class Renderer {
         renderUVEnd.x = MathUtil.scaleNumber(-1, 1, uiCamera.getLeft(), uiCamera.getRight(), renderUVEnd.x);
         renderUVEnd.y = MathUtil.scaleNumber(-1, 1, uiCamera.getBottom(), uiCamera.getTop(), renderUVEnd.y);
 
-        new VertexArray(new float[] {
+        VERTEX_ARRAY.setVertices(new float[] {
                 renderUVStart.x, renderUVStart.y, // top left
                 renderUVEnd.x, renderUVStart.y,  // top right
                 renderUVEnd.x, renderUVEnd.y, // bottom right
                 renderUVStart.x, renderUVEnd.y // bottom left
-        }, new int[] {
-                booleanToInt(flipped), 0,
-                booleanToInt(!flipped), 0,
-                booleanToInt(!flipped), 1,
-                booleanToInt(flipped), 1
-        }, new int[] {
-                0, 1, 2,
-                2, 3, 0
-        }).render();
+        }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
     }
 
     public static void renderMenu(Menu menu) {
@@ -326,43 +320,82 @@ public final class Renderer {
 
     static class VertexArray {
 
-        public final int count;
-        private final int vbo;
-        private final int tbo;
-        private final int ibo;
+        public int count;
+        private int vbo;
+        private int tbo;
+        private int ibo;
+
+        private static FloatBuffer VERTEX_BUFFER = BufferUtils.createFloatBuffer(8);
+        private static IntBuffer TEXTURE_COORD_BUFFER = BufferUtils.createIntBuffer(8);
+        private static IntBuffer INDICES_BUFFER = BufferUtils.createIntBuffer(6);
+
+        public VertexArray() {
+            vbo = glGenBuffers();
+            tbo = glGenBuffers();
+            ibo = glGenBuffers();
+        }
 
         public VertexArray(float[] vertices, int[] textureCoords, int[] indices) {
             count = indices.length;
 
-            FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length);
-            vertexBuffer.put(vertices);
-            vertexBuffer.flip();
+            VERTEX_BUFFER.put(vertices);
+            VERTEX_BUFFER.flip();
             vbo = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, VERTEX_BUFFER, GL_STATIC_DRAW);
+            VERTEX_BUFFER.clear();
 
-            IntBuffer textureCoordBuffer = BufferUtils.createIntBuffer(textureCoords.length);
-            textureCoordBuffer.put(textureCoords);
-            textureCoordBuffer.flip();
+            TEXTURE_COORD_BUFFER.put(textureCoords);
+            TEXTURE_COORD_BUFFER.flip();
             tbo = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, tbo);
-            glBufferData(GL_ARRAY_BUFFER, textureCoordBuffer, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, TEXTURE_COORD_BUFFER, GL_STATIC_DRAW);
+            TEXTURE_COORD_BUFFER.clear();
 
-            IntBuffer indicesBuffer = BufferUtils.createIntBuffer(indices.length);
-            indicesBuffer.put(indices);
-            indicesBuffer.flip();
+            INDICES_BUFFER.put(indices);
+            INDICES_BUFFER.flip();
             ibo = glGenBuffers();
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, INDICES_BUFFER, GL_STATIC_DRAW);
+            INDICES_BUFFER.clear();
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        public void render() {
-            glEnableVertexAttribArray(0);
-            glEnableVertexAttribArray(1);
+        public VertexArray setVertices(float[] vertices) {
+            VERTEX_BUFFER.put(vertices);
+            VERTEX_BUFFER.flip();
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glBufferData(GL_ARRAY_BUFFER, VERTEX_BUFFER, GL_STATIC_DRAW);
+            VERTEX_BUFFER.clear();
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            return this;
+        }
 
+        public VertexArray setTextureCoords(int[] textureCoords) {
+            TEXTURE_COORD_BUFFER.put(textureCoords);
+            TEXTURE_COORD_BUFFER.flip();
+            glBindBuffer(GL_ARRAY_BUFFER, tbo);
+            glBufferData(GL_ARRAY_BUFFER, TEXTURE_COORD_BUFFER, GL_STATIC_DRAW);
+            TEXTURE_COORD_BUFFER.clear();
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            return this;
+        }
+
+        public VertexArray setIndices(int[] indices) {
+            count = indices.length;
+
+            INDICES_BUFFER.put(indices);
+            INDICES_BUFFER.flip();
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, INDICES_BUFFER, GL_STATIC_DRAW);
+            INDICES_BUFFER.clear();
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            return this;
+        }
+
+        public void render() {
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
             glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
             glBindBuffer(GL_ARRAY_BUFFER, tbo);
@@ -372,9 +405,6 @@ public final class Renderer {
             glDrawArrays(GL_TRIANGLES, 0, count);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-            glDisableVertexAttribArray(0);
-            glDisableVertexAttribArray(1);
         }
 
     }

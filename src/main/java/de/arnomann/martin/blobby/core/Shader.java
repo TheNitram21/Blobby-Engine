@@ -1,6 +1,10 @@
 package de.arnomann.martin.blobby.core;
 
+import org.joml.Matrix4f;
+import org.lwjgl.system.MemoryStack;
+
 import java.io.File;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -13,8 +17,8 @@ public class Shader {
             "uniform mat4 viewProjectionMatrix;\n" +
             "out vec2 texCoords;\n" +
             "void main() {\n" +
-            "   texCoords = textures;\n" +
-            "   gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
+            "    texCoords = textures;\n" +
+            "    gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
             "}\n";
     public static final String DEFAULT_FRAGMENT = "#version 330 core\n" +
             "#define MAX_LIGHTS 768\n" +
@@ -30,8 +34,10 @@ public class Shader {
             "uniform float cameraHeight;\n" +
             "uniform int screenWidth;\n" +
             "uniform int screenHeight;\n" +
+            "uniform int flipped;\n" +
             "in vec2 texCoords;\n" +
             "void main() {\n" +
+            "    vec2 textureCoordinates = texCoords;\n" +
             "    float smallestDistance = 1.0;\n" +
             "    for(int i = 0; i < MAX_LIGHTS; i++) {\n" +
             "        if(i >= lightCount) break;\n" +
@@ -40,7 +46,10 @@ public class Shader {
             "                vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lights[i].z;\n" +
             "        smallestDistance = min(smallestDistance, distance);\n" +
             "    }\n" +
-            "    vec4 color = texture2D(texture, texCoords);\n" +
+            "    if(flipped == 1) {\n" +
+            "        textureCoordinates.x *= -1;\n" +
+            "    }\n" +
+            "    vec4 color = texture2D(texture, textureCoordinates);\n" +
             "    float brightness = 1.0 - smallestDistance * 0.6;\n" +
             "    outColor = vec4(brightness, brightness, brightness, 1.0) * color;\n" +
             "}\n";
@@ -50,16 +59,21 @@ public class Shader {
             "uniform mat4 viewProjectionMatrix;\n" +
             "out vec2 texCoords;\n" +
             "void main() {\n" +
-            "   texCoords = textures;\n" +
-            "   gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
+            "    texCoords = textures;\n" +
+            "    gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
             "}\n";
     public static final String UI_FRAGMENT = "#version 330 core\n" +
             "layout(location = 0) out vec4 outColor;\n" +
             "uniform sampler2D texture;\n" +
+            "uniform int flipped;\n" +
             "in vec2 texCoords;\n" +
             "void main() {\n" +
-            "   vec4 color = texture2D(texture, texCoords);\n" +
-            "   outColor = color;\n" +
+            "    vec2 textureCoordinates = texCoords;\n" +
+            "    if(flipped == 1) {\n" +
+            "        textureCoordinates.x *= -1;\n" +
+            "    }\n" +
+            "    vec4 color = texture2D(texture, textureCoordinates);\n" +
+            "    outColor = color;\n" +
             "}\n";
 
     public final int id;
@@ -114,6 +128,32 @@ public class Shader {
         glDeleteShader(fragId);
 
         return programId;
+    }
+
+    public void setUniformMatrix4f(String name, Matrix4f matrix) {
+        int location = glGetUniformLocation(id, name);
+        try(MemoryStack stack = MemoryStack.stackPush()) {
+            if(location != -1)
+                glUniformMatrix4fv(location, false, matrix.get(stack.mallocFloat(16)));
+        }
+    }
+
+    public void setUniform3f(String name, float x, float y, float z) {
+        int location = glGetUniformLocation(id, name);
+        if(location != -1)
+            glUniform3f(location, x, y, z);
+    }
+
+    public void setUniform1i(String name, int value) {
+        int location = glGetUniformLocation(id, name);
+        if(location != -1)
+            glUniform1i(location, value);
+    }
+
+    public void setUniform1f(String name, float value) {
+        int location = glGetUniformLocation(id, name);
+        if(location != -1)
+            glUniform1f(location, value);
     }
 
     public void bind() {

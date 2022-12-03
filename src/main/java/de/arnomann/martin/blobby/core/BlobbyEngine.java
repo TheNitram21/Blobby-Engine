@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * The main class of the engine.
@@ -436,6 +437,10 @@ public final class BlobbyEngine {
      */
     public static Thread getMainThread() {
         return mainThread;
+    }
+
+    public static String checkForError() {
+        return glGetString(glGetError());
     }
 
     /**
