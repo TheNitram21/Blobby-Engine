@@ -33,22 +33,20 @@ public class Button extends Trigger {
     // the Trigger class.
     @Override
     public void onUpdate(UpdateEvent event) {
-        if(!onlyOnce || !triggered) {
-            if(Physics.objectInBox(new Vector2d(getPosition()).add(0, 2), getWidth(), getHeight(),
-                    "Player")) {
-                if(!triggeredLastFrame) {
-                    couldTrigger = true;
-                }
-
-                triggered = true;
-                triggeredLastFrame = true;
-            } else {
-                couldTrigger = false;
-
-                if(!triggered)
-                    triggeredLastFrame = false;
-                triggered = false;
+        if(Physics.objectInBox(new Vector2d(getPosition()).add(0, 2), getWidth(), getHeight(),
+                "Player")) {
+            if(!triggeredLastFrame) {
+                couldTrigger = true;
             }
+
+            triggered = true;
+            triggeredLastFrame = true;
+        } else {
+            couldTrigger = false;
+
+            if(!triggered)
+                triggeredLastFrame = false;
+            triggered = false;
         }
     }
 
