@@ -3,10 +3,7 @@ import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
 import de.arnomann.martin.blobby.core.Renderer;
-import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.entity.Player;
-import de.arnomann.martin.blobby.sound.Sound;
-import de.arnomann.martin.blobby.sound.SoundPlayer;
 import de.arnomann.martin.blobby.event.*;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.Logger;
@@ -16,13 +13,10 @@ import de.arnomann.martin.blobby.ui.Menu;
 import de.arnomann.martin.blobby.ui.UI;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 public class EngineTest implements EventListener {
 
@@ -80,13 +74,13 @@ public class EngineTest implements EventListener {
                     0.05, p.getHeight() * 0.75, "Block");
 
             if(!BlobbyEngine.isTransitioningBetweenScreens()) {
-                if(Input.keyPressed(GLFW_KEY_A) && !Input.keyPressed(GLFW_KEY_D) && canGoLeft) {
+                if(Input.keyPressed(Input.KEY_A) && !Input.keyPressed(Input.KEY_D) && canGoLeft) {
                     playerVelocity.x = -maxSpeed;
-                } else if(Input.keyPressed(GLFW_KEY_D) && !Input.keyPressed(GLFW_KEY_A) && canGoRight) {
+                } else if(Input.keyPressed(Input.KEY_D) && !Input.keyPressed(Input.KEY_A) && canGoRight) {
                     playerVelocity.x = maxSpeed;
                 }
 
-                if(Input.keyPressed(GLFW_KEY_SPACE) && playerOnGround) {
+                if(Input.keyPressed(Input.KEY_SPACE) && playerOnGround) {
                     playerVelocity.y = -jumpHeight;
                 }
             }
@@ -101,8 +95,8 @@ public class EngineTest implements EventListener {
                 p.getTexture().setFlipped(false);
             }
 
-            if(playerOnGround && (BlobbyEngine.isTransitioningBetweenScreens() || (!Input.keyPressed(GLFW_KEY_A) &&
-                    !Input.keyPressed(GLFW_KEY_D)))) {
+            if(playerOnGround && (BlobbyEngine.isTransitioningBetweenScreens() || (!Input.keyPressed(Input.KEY_A) &&
+                    !Input.keyPressed(Input.KEY_D)))) {
                 if(playerVelocity.x < -speedFalloff) {
                     playerVelocity.x = playerVelocity.x * speedFalloff * 0.75;
                 } else if(playerVelocity.x > speedFalloff) {
@@ -130,7 +124,7 @@ public class EngineTest implements EventListener {
 
     @Override
     public void onKeyPressed(KeyPressedEvent event) {
-        if(event.key == GLFW_KEY_ESCAPE) {
+        if(event.key == Input.KEY_ESCAPE) {
             if(BlobbyEngine.isMenuShown()) {
                 BlobbyEngine.hideMenu();
                 BlobbyEngine.paused = false;
@@ -140,7 +134,7 @@ public class EngineTest implements EventListener {
             }
         }
 
-        if(event.key == GLFW_KEY_V)
+        if(event.key == Input.KEY_V)
             BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());
     }
 }
