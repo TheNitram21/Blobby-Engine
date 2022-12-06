@@ -60,6 +60,13 @@ public class EngineTest implements EventListener {
         BlobbyEngine.getWindow().setTitle("Blobby Engine Test - " + (int) Math.floor(event.fps) + " FPS");
         UI.drawUI(new Vector2f(0.025f, 0.025f), new Vector2f(0.3f, 0.15f), BlobbyEngine.getTexture("uiTopLeft"));
 
+        String error = BlobbyEngine.checkForGLError();
+        if(error != null)
+            System.out.println("A GL error occurred!\n" + error);
+        error = BlobbyEngine.checkForALError();
+        if(error != null)
+            System.out.println("An AL error occurred!\n" + error);
+
         if(!BlobbyEngine.paused && !BlobbyEngine.isTransitioningBetweenScreens()) {
             Player p = BlobbyEngine.getPlayer();
 

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -182,6 +183,22 @@ public final class BlobbyEngine {
         Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, Map.class).newInstance(position, properties);
         ListenerManager.registerEventListener(entity);
         return entity;
+    }
+
+    public static String checkForGLError() {
+        int error = glGetError();
+        if(error != GL_NO_ERROR)
+            return glGetString(error);
+        else
+            return null;
+    }
+
+    public static String checkForALError() {
+        int error = alGetError();
+        if(error != AL_NO_ERROR)
+            return alGetString(error);
+        else
+            return null;
     }
 
     /**
@@ -437,10 +454,6 @@ public final class BlobbyEngine {
      */
     public static Thread getMainThread() {
         return mainThread;
-    }
-
-    public static String checkForError() {
-        return glGetString(glGetError());
     }
 
     /**
