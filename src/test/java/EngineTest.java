@@ -14,6 +14,7 @@ import de.arnomann.martin.blobby.ui.UI;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,9 @@ public class EngineTest implements EventListener {
 
     @Override
     public void onStart(StartEvent event) {
-//        BlobbyEngine.debugMode();
+        BlobbyEngine.debugMode();
+        logger.setOutputFile(new File("output.log"));
+        logger.info("Test for logging to files.");
 
         BlobbyEngine.getWindow().maxFramerate = -1;
         BlobbyEngine.getWindow().setVSyncEnabled(false);
@@ -46,6 +49,11 @@ public class EngineTest implements EventListener {
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
 
         Renderer.setScreenTransitionDuration(0.5);
+    }
+
+    @Override
+    public void onStop(StopEvent event) {
+        logger.destroy();
     }
 
     public static Vector2d playerVelocity = new Vector2d();

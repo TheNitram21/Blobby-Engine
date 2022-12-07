@@ -7,6 +7,7 @@ import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.event.ListenerManager;
+import de.arnomann.martin.blobby.event.StopEvent;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
@@ -86,6 +87,8 @@ public final class BlobbyEngine {
         logger = new Logger();
         mainThread = Thread.currentThread();
         consoleArguments = arguments;
+
+        Thread.setDefaultUncaughtExceptionHandler((thread, e) -> logger.error("An uncaught exception occurred!", e));
 
         if(runConfig.width / 16 != runConfig.height / 9) {
             throw new RuntimeException("Window size ratio not 16:9");
@@ -462,6 +465,10 @@ public final class BlobbyEngine {
     public static void stop() {
         if(window != null)
             glfwSetWindowShouldClose(window.getId(), true);
+
+        logger.destroy();
+        LevelLoader.logger.destroy();
+        ListenerManager.callEvent(new StopEvent());
     }
 
     /**

@@ -11,6 +11,8 @@ public interface EventListener {
     default void onUpdate(UpdateEvent event) {}
     /** Called each frame. Always called after {@link EventListener#onUpdate}. */
     default void onLateUpdate(LateUpdateEvent event) {}
+    /** Called when the window is closed. */
+    default void onStop(StopEvent event) {}
     /** Called when a key is pressed. */
     default void onKeyPressed(KeyPressedEvent event) {}
     /** Called when a key is released. */

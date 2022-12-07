@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  */
 public class LevelLoader {
 
-    private static final Logger logger = new Logger();
+    public static final Logger logger = new Logger();
     private static boolean loadingLevel = false;
 
     private LevelLoader() {}
