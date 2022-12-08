@@ -48,6 +48,7 @@ public class EngineTest implements EventListener {
                 BlobbyEngine.getTexture("button"), BlobbyEngine::stop));
         BlobbyEngine.menu = new Menu(buttons, BlobbyEngine.getTexture("menuBack"));
 
+        BlobbyEngine.getWindow().setWindowSize(1280, 720);
         Renderer.setScreenTransitionDuration(0.5);
     }
 
@@ -148,6 +149,9 @@ public class EngineTest implements EventListener {
                 BlobbyEngine.paused = true;
             }
         }
+
+        if(event.key == Input.KEY_F)
+            BlobbyEngine.getWindow().setFullscreen(!BlobbyEngine.getWindow().getFullscreen());
 
         if(event.key == Input.KEY_V)
             BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());

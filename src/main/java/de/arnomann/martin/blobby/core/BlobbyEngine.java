@@ -100,7 +100,7 @@ public final class BlobbyEngine {
         }
 
         window = new Window(runConfig);
-        unitMultiplier = window.getWidth() / 16d;
+        recalculateUnitMultiplier();
 
         Input.initialize();
         SoundPlayer.initialize();
@@ -130,6 +130,10 @@ public final class BlobbyEngine {
             } catch(ArrayIndexOutOfBoundsException ignored) {} // Means that this argument is not in Blobby Engine's
                                                                // argument format. Could be JOML.
         }
+    }
+
+    public static void recalculateUnitMultiplier() {
+        unitMultiplier = window.getWidth() / 16d;
     }
 
     /**

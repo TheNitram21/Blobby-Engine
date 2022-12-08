@@ -29,9 +29,12 @@ public final class Window {
     private final long windowId;
 
     private String title;
+    private int windowX;
+    private int windowY;
     private int width;
     private int height;
     private final String iconPath;
+    private boolean fullscreen;
 
     private boolean started = false;
 
@@ -52,6 +55,7 @@ public final class Window {
         this.width = runConfig.width;
         this.height = runConfig.height;
         this.iconPath = runConfig.iconPath;
+        this.fullscreen = runConfig.fullscreen;
 
         if(runConfig.fullscreen) {
             GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -66,7 +70,8 @@ public final class Window {
 
         windowId = glfwCreateWindow(width, height, title, runConfig.fullscreen ? glfwGetPrimaryMonitor() : 0, 0);
         if(windowId == 0) {
-            ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(), new RuntimeException("An unexpected error occurred whilst trying create the window."));
+            ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(),
+                    new RuntimeException("An unexpected error occurred whilst trying create the window."));
             BlobbyEngine.stop();
         }
 
@@ -87,6 +92,15 @@ public final class Window {
 
         glfwMakeContextCurrent(windowId);
         glfwSwapInterval(1);
+
+        glfwSetWindowPosCallback(windowId, (id, x, y) -> {
+            if(fullscreen)
+                return;
+
+            windowX = x;
+            windowY = y;
+        });
+        glfwSetWindowSizeCallback(windowId, (id, width, height) -> glViewport(0, 0, width, height));
 
         show();
     }
@@ -240,9 +254,26 @@ public final class Window {
         this.height = height;
 
         glfwSetWindowSize(windowId, this.width, this.height);
-        framebuffer.resize(this.width, this.height);
+        BlobbyEngine.recalculateUnitMultiplier();
 
         return true;
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
+
+        if(fullscreen) {
+            GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            glfwSetWindowMonitor(windowId, glfwGetPrimaryMonitor(), 0, 0, videoMode.width(), videoMode.height(),
+                    GLFW_DONT_CARE);
+        } else {
+            glfwSetWindowMonitor(windowId, 0, windowX, windowY, width, height, 0);
+        }
+
+    }
+
+    public boolean getFullscreen() {
+        return fullscreen;
     }
 
     /**
