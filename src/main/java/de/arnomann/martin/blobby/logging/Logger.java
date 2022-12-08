@@ -37,11 +37,17 @@ public class Logger {
         this.callerClass = callerClassTemp;
     }
 
+    /** Different types of logging */
     public enum LoggingType {
+        /** Useful information */
         INFO,
+        /** Warnings about inconveniences or minor errors */
         WARNING,
+        /** Errors about exceptions */
         ERROR,
+        /** Fatal errors */
         FATAL,
+        /** Information only useful for debugging */
         DEBUG
     }
 
@@ -61,6 +67,10 @@ public class Logger {
         loggingTypes[loggingType.ordinal()] = false;
     }
 
+    /**
+     * Sets the file where the log will be written to.
+     * @param outputFile the log file.
+     */
     public void setOutputFile(File outputFile) {
         if(outputFile.exists())
             outputFile.delete();
@@ -164,6 +174,9 @@ public class Logger {
         }
     }
 
+    /**
+     * Destroyes the logger and optionally saves the log file.
+     */
     public void destroy() {
         try {
             outputFileWriter.close();

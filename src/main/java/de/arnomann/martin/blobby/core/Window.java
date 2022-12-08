@@ -259,6 +259,10 @@ public final class Window {
         return true;
     }
 
+    /**
+     * Sets the window to fullscreen or windowed mode.
+     * @param fullscreen {@code true} if the window should fill the entire screen, {@code false} otherwise.
+     */
     public void setFullscreen(boolean fullscreen) {
         this.fullscreen = fullscreen;
 
@@ -272,6 +276,10 @@ public final class Window {
 
     }
 
+    /**
+     * Returns whether the window is in fullscreen mode.
+     * @return {@code true} if the window fills the entire screen, {@code false} otherwise.
+     */
     public boolean getFullscreen() {
         return fullscreen;
     }

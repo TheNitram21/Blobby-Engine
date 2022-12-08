@@ -128,6 +128,11 @@ public abstract class Entity implements EventListener {
         return this.getId() == ((Entity) that).getId();
     }
 
+    /**
+     * Searches for an entity using its id.
+     * @param id the id to search for.
+     * @return the found entity, if any.
+     */
     public static Entity getEntityById(long id) {
         AtomicReference<Entity> result = new AtomicReference<>(null);
 

@@ -20,6 +20,7 @@ import java.util.function.Consumer;
  */
 public class LevelLoader {
 
+    /** The level loader's logger */
     public static final Logger logger = new Logger();
     private static boolean loadingLevel = false;
 
@@ -122,6 +123,10 @@ public class LevelLoader {
         }
     }
 
+    /**
+     * Returns whether the level loader is currently loading a level.
+     * @return {@code true} if the level loader is loading a level, {@code false} otherwise.
+     */
     public static boolean isLoadingLevel() {
         return loadingLevel;
     }

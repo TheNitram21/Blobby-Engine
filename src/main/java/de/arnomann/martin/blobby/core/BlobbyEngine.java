@@ -132,6 +132,9 @@ public final class BlobbyEngine {
         }
     }
 
+    /**
+     * Recalculates the unit multiplier.
+     */
     public static void recalculateUnitMultiplier() {
         unitMultiplier = window.getWidth() / 16d;
     }
@@ -192,6 +195,10 @@ public final class BlobbyEngine {
         return entity;
     }
 
+    /**
+     * Checks OpenGL for errors.
+     * @return the error, or {@code null} if no error occurred.
+     */
     public static String checkForGLError() {
         int error = glGetError();
         if(error != GL_NO_ERROR)
@@ -200,6 +207,10 @@ public final class BlobbyEngine {
             return null;
     }
 
+    /**
+     * Checks OpenAL for errors.
+     * @return the error, or {@code null} if no error occurred.
+     */
     public static String checkForALError() {
         int error = alGetError();
         if(error != AL_NO_ERROR)
@@ -335,7 +346,7 @@ public final class BlobbyEngine {
      * @param name the path to the texture.
      * @return the texture.
      */
-    public static ITexture getTexture(String name) throws IllegalArgumentException {
+    public static ITexture getTexture(String name) {
         ITexture texture = textures.get(name);
         if(texture == null) {
             texture = loadTexture(name);
@@ -383,16 +394,26 @@ public final class BlobbyEngine {
         return texture;
     }
 
+    /**
+     * Shows the menu.
+     */
     public static void showMenu() {
         showMenu = true;
         menu.getButtons().forEach(Button::show);
     }
 
+    /**
+     * Hides the menu.
+     */
     public static void hideMenu() {
         showMenu = false;
         menu.getButtons().forEach(Button::hide);
     }
 
+    /**
+     * Returns whether the menu is currently shown.
+     * @return {@code true} if the menu is visible, {@code false} otherwise.
+     */
     public static boolean isMenuShown() {
         return showMenu;
     }

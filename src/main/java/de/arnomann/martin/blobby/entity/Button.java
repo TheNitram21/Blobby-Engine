@@ -14,6 +14,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Button extends Trigger {
 
+    /** The key the button will react to. */
     public static int keyCode = GLFW_KEY_E;
 
     private ITexture texture;

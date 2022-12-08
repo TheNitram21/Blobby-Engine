@@ -93,6 +93,7 @@ public class SoundPlayer {
     /**
      * Plays a sound from a path.
      * @param name the path.
+     * @param looping whether the sound should loop or not.
      * @return the played sound.
      */
     public static Sound playSound(String name, boolean looping) {
@@ -104,6 +105,7 @@ public class SoundPlayer {
     /**
      * Plays a sound from a sound instance.
      * @param sound the sound to play.
+     * @param looping whether the sound should loop or not.
      */
     public static void playSound(Sound sound, boolean looping) {
         sounds.add(sound);

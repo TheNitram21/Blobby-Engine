@@ -41,11 +41,15 @@ public final class Renderer {
 
     private static double screenTransitionDuration = 1d; // seconds
 
+    /** The default shader used for rendering. */
     public static final Shader defaultShader = new Shader(Shader.DEFAULT_VERTEX, Shader.DEFAULT_FRAGMENT);
+    /** The default shader used for rendering UI. */
     public static final Shader uiShader = new Shader(Shader.UI_VERTEX, Shader.UI_FRAGMENT);
 
+    /** The default camera used for rendering */
     public static final Camera defaultCamera = new Camera(-1.6f, 1.6f, -0.9f, 0.9f);
     private static final Camera uiCamera = new Camera(-1.6f, 1.6f, -0.9f, 0.9f);
+    /** The active camera used for rendering. */
     public static Camera activeCamera = defaultCamera;
 
     private static Float[] lights = new Float[] {};
@@ -67,7 +71,7 @@ public final class Renderer {
 
     private Renderer() {}
 
-    /* ONLY FOR INTERNAL USE */
+    /** ONLY FOR INTERNAL USE */
     public static void queueUITexture(Vector2f uvStart, Vector2f uvEnd, ITexture texture) {
         uvStart.x = uvStart.x * 2 - 1;
         uvStart.y = -(uvStart.y * 2 - 1);
@@ -89,6 +93,11 @@ public final class Renderer {
         queuedTextures.put(new Vector4i(x, y, width, height), texture);
     }
 
+    /**
+     * Renders a frame.
+     * @param window the window to render to.
+     * @param deltaTime the time between frames.
+     */
     public static void render(Window window, float deltaTime) {
         curWindow = window;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -218,10 +227,17 @@ public final class Renderer {
         finishRendering();
     }
 
+    /**
+     * Sets the window.
+     * @param window the new window.
+     * */
     public static void setWindow(Window window) {
         curWindow = window;
     }
 
+    /**
+     * Finishes rendering.
+     */
     public static void finishRendering() {
         glfwSwapBuffers(curWindow.getId());
         queuedTextures.clear();
@@ -230,6 +246,15 @@ public final class Renderer {
         Particle.updateParticleList();
     }
 
+    /**
+     * Renders a quad on the engine unit system.
+     * @param x the x position in units.
+     * @param y the y position in units.
+     * @param width the width of the quad in units.
+     * @param height the height of the quad in units.
+     * @param texture the texture to use for the quad.
+     * @param shader the shader to use for rendering the quad.
+     */
     public static void renderOnUnits(float x, float y, float width, float height, ITexture texture, Shader shader) {
         texture.bind(0);
         shader.bind();
@@ -267,6 +292,13 @@ public final class Renderer {
         }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
     }
 
+    /**
+     * Renders a quad on the UV coordinates.
+     * @param uvStart the top-left UV position.
+     * @param uvEnd the bottom-right UV position.
+     * @param texture the texture used for the quad.
+     * @param shader the shader used for rendering the quad.
+     */
     public static void renderUV(Vector2f uvStart, Vector2f uvEnd, ITexture texture, Shader shader) {
         texture.bind(0);
         shader.bind();
@@ -293,6 +325,10 @@ public final class Renderer {
         }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
     }
 
+    /**
+     * Renders a menu.
+     * @param menu the menu to render.
+     */
     public static void renderMenu(Menu menu) {
         renderUV(new Vector2f(-1f, 1f), new Vector2f(-0.5f, -1f), menu.getBackgroundTexture(), uiShader);
         for(Button b : menu.getButtons()) {
@@ -302,20 +338,20 @@ public final class Renderer {
         }
     }
 
+    /**
+     * Sets the screen transition duration.
+     * @param duration the new screen transition duration.
+     */
     public static void setScreenTransitionDuration(double duration) {
         screenTransitionDuration = duration;
     }
 
+    /**
+     * Returns the current screen transition duration.
+     * @return the screen transition duration.
+     */
     public static double getScreenTransitionDuration() {
         return screenTransitionDuration;
-    }
-
-    public static float windowXToVertexX(int x) {
-        return (float) (2.0 * x / curWindow.getWidth() - 1);
-    }
-
-    public static float windowYToVertexY(int y) {
-        return (float) (1.0 - 2.0 * y / curWindow.getHeight());
     }
 
     static class VertexArray {

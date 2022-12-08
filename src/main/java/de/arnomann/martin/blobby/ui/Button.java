@@ -66,18 +66,32 @@ public class Button implements EventListener {
         return uvEnd.y - uvStart.y;
     }
 
+    /**
+     * Sets whether the button is visible.
+     * @param visible whether the button is visible or not.
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
+    /**
+     * Shows the button.
+     */
     public void show() {
         setVisible(true);
     }
 
+    /**
+     * Hides the button.
+     */
     public void hide() {
         setVisible(false);
     }
 
+    /**
+     * Returns whether the button is visible or not.
+     * @return {@code true} if the button is visible, {@code false} otherwise.
+     */
     public boolean isVisible() {
         return visible;
     }

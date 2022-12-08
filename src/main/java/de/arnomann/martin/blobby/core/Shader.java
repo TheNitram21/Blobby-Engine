@@ -8,8 +8,10 @@ import java.io.File;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
+/** An OpenGL shader. */
 public class Shader {
 
+    /** The default vertex shader. */
     public static final String DEFAULT_VERTEX = "#version 330 core\n" +
             "in vec3 position;\n" +
             "in vec2 textures;\n" +
@@ -19,6 +21,7 @@ public class Shader {
             "    texCoords = textures;\n" +
             "    gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
             "}\n";
+    /** The default fragment shader. */
     public static final String DEFAULT_FRAGMENT = "#version 330 core\n" +
             "#define MAX_LIGHTS 768\n" +
             "layout(location = 0) out vec4 outColor;\n" +
@@ -52,6 +55,7 @@ public class Shader {
             "    float brightness = 1.0 - smallestDistance * 0.6;\n" +
             "    outColor = vec4(brightness, brightness, brightness, 1.0) * color;\n" +
             "}\n";
+    /** The UI vertex shader. */
     public static final String UI_VERTEX = "#version 330 core\n" +
             "in vec3 position;\n" +
             "in vec2 textures;\n" +
@@ -61,6 +65,7 @@ public class Shader {
             "    texCoords = textures;\n" +
             "    gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
             "}\n";
+    /** The UI fragment shader. */
     public static final String UI_FRAGMENT = "#version 330 core\n" +
             "layout(location = 0) out vec4 outColor;\n" +
             "uniform sampler2D texture;\n" +
@@ -75,8 +80,14 @@ public class Shader {
             "    outColor = color;\n" +
             "}\n";
 
+    /** The shader's id. */
     public final int id;
 
+    /**
+     * Creates a new shader program.
+     * @param vertexShader the vertex shader source.
+     * @param fragmentShader the fragment shader source.
+     */
     public Shader(String vertexShader, String fragmentShader) {
         id = createShader(vertexShader, fragmentShader);
         if(id == -1) {
@@ -85,6 +96,11 @@ public class Shader {
         }
     }
 
+    /**
+     * Creates a new shader program.
+     * @param vertexShaderPath the path to the vertex shader file.
+     * @param fragmentShaderPath the path to the fragment shader file.
+     */
     public Shader(File vertexShaderPath, File fragmentShaderPath) {
         id = createShader(BlobbyEngine.readFile(vertexShaderPath), BlobbyEngine.readFile(fragmentShaderPath));
         if(id == -1) {
@@ -129,6 +145,11 @@ public class Shader {
         return programId;
     }
 
+    /**
+     * Sets a 4x4 float matrix in the shader.
+     * @param name the uniform variable name.
+     * @param matrix the matrix to set in the shader.
+     */
     public void setUniformMatrix4f(String name, Matrix4f matrix) {
         int location = glGetUniformLocation(id, name);
         try(MemoryStack stack = MemoryStack.stackPush()) {
@@ -137,30 +158,54 @@ public class Shader {
         }
     }
 
+    /**
+     * Sets a 3d float vector in the shader.
+     * @param name the uniform variable name.
+     * @param x the x value.
+     * @param y the y value.
+     * @param z the z value.
+     */
     public void setUniform3f(String name, float x, float y, float z) {
         int location = glGetUniformLocation(id, name);
         if(location != -1)
             glUniform3f(location, x, y, z);
     }
 
+    /**
+     * Sets an integer in the shader.
+     * @param name the uniform variable name.
+     * @param value the integer to set in the shader.
+     */
     public void setUniform1i(String name, int value) {
         int location = glGetUniformLocation(id, name);
         if(location != -1)
             glUniform1i(location, value);
     }
 
+    /**
+     * Sets a float in the shader.
+     * @param name the uniform variable name.
+     * @param value the float to set in the shader.
+     */
     public void setUniform1f(String name, float value) {
         int location = glGetUniformLocation(id, name);
         if(location != -1)
             glUniform1f(location, value);
     }
 
+    /**
+     * Binds the shader for usage.
+     */
     public void bind() {
         glUseProgram(id);
     }
 
+    /**
+     * Unbinds the shader.
+     */
     public void unbind() {
         glUseProgram(0);
     }
 
 }
+

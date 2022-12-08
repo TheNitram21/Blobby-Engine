@@ -6,12 +6,18 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * A profiler for profiling the time executing some actions takes.
+ */
 public class Profiler {
 
     private final JFrame window;
 
     private final Map<String, JLabel> labels;
 
+    /**
+     * Creates a new profiler.
+     */
     public Profiler() {
         window = new JFrame("Blobby Engine Profiler");
         window.setResizable(true);
@@ -28,27 +34,48 @@ public class Profiler {
         window.setVisible(true);
     }
 
+    /**
+     * Destroyes the profiler.
+     */
     public void destroy() {
         window.setVisible(false);
         window.dispose();
     }
 
+    /**
+     * Updates the frame time.
+     * @param frameTime the updated frame time.
+     */
     public void updateFrameTime(float frameTime) {
         labels.get("FrameTime").setText("<html><nobr>Frame Time: <font color=#5eaed1>" +
                 String.format(Locale.US, "%.7f", frameTime) + "s</font> (<font color=#5eaed1>" +
                 String.format(Locale.US, "%.2f", 1 / frameTime) + " FPS</font>)</nobr></html>");
     }
 
+    /**
+     * Updates the update time.
+     * @param updateTime the updated update time.
+     */
     public void updateUpdateTime(float updateTime) {
         labels.get("UpdateTime").setText("<html><nobr>Update Time: <font color=#5eaed1>" +
                 String.format(Locale.US, "%.7f", updateTime) + "s</font></nobr></html>");
     }
 
+    /**
+     * Updates the render time.
+     * @param renderTime the updated render time.
+     */
     public void updateRenderTime(float renderTime) {
         labels.get("RenderTime").setText("<html><nobr>Render Time: <font color=#5eaed1>" +
                 String.format(Locale.US, "%.7f", renderTime) + "s</font></nobr></html>");
     }
 
+    /**
+     * Updates a custom action time.
+     * @param name the internal name of the action.
+     * @param time the (updated) time the action took.
+     * @param prefix the visual name of the action.
+     */
     public void updateTime(String name, float time, String prefix) {
         JLabel label = labels.get(name);
         if(label == null)

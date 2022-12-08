@@ -33,6 +33,9 @@ public class LevelChange extends Entity {
         return 0;
     }
 
+    /**
+     * Changes the level.
+     */
     public void changeLevel() {
         LevelLoader.loadLevel(nextLevel, BlobbyEngine::setLevel);
     }
