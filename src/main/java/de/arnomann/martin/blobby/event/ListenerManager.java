@@ -18,7 +18,8 @@ public class ListenerManager {
      * @param event the event.
      */
     public static void callEvent(Event event) {
-        List<EventListener> listenersCopy = new ArrayList<>(listeners);
+//        List<EventListener> listenersCopy = new ArrayList<>(listeners);
+        EventListener[] listenersCopy = listeners.toArray(new EventListener[0]);
 
         for(EventListener listener : listenersCopy) {
             try {

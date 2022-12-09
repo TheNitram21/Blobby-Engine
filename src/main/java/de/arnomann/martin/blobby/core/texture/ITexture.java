@@ -10,8 +10,9 @@ import static org.lwjgl.opengl.GL11.*;
 public interface ITexture {
     /**
      * Binds the texture so that OpenGL knows which texture to render.
+     * @param sampler the sampler to use.
      */
-    void bind();
+    void bind(int sampler);
 
     /**
      * Unbinds the texture.
@@ -52,21 +53,5 @@ public interface ITexture {
      * @see ITexture#setFlipped(boolean)
      */
     boolean isFlipped();
-
-    /**
-     * Sets the color modifiers of the texture.
-     * @param red the red channel.
-     * @param green the green channel.
-     * @param blue the blue channel.
-     * @param alpha the alpha channel.
-     * @see ITexture#getColorModifiers()
-     */
-    void setColorModifiers(float red, float green, float blue, float alpha);
-
-    /**
-     * Returns the color modifiers set with {@link ITexture#setColorModifiers(float, float, float, float)}.
-     * @return the color modifiers.
-     */
-    Vector4f getColorModifiers();
 
 }

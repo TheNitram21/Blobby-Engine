@@ -6,26 +6,31 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
-import de.arnomann.martin.blobby.entity.Sound;
 import de.arnomann.martin.blobby.event.ListenerManager;
+import de.arnomann.martin.blobby.event.StopEvent;
 import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
 import de.arnomann.martin.blobby.logging.Logger;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
+import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
 import org.joml.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.lwjgl.PointerBuffer;
+import org.lwjgl.glfw.GLFWVidMode;
 
 import javax.imageio.ImageIO;
 import java.io.*;
 import java.lang.Math;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * The main class of the engine.
@@ -40,6 +45,8 @@ public final class BlobbyEngine {
     public static final String SOUNDS_PATH = "sounds/";
     /** The path to scripts. **/
     public static final String SCRIPTS_PATH = "scripts/";
+    /** The path to shaders. */
+    public static final String SHADERS_PATH = "shaders/";
 
     private static Window window;
     private static Map<String, ITexture> textures;
@@ -49,8 +56,7 @@ public final class BlobbyEngine {
 
     /** The currently shown menu. */
     public static Menu menu;
-    /** Whether the {@link BlobbyEngine#menu} should be visible or not. */
-    public static boolean showMenu = false;
+    private static boolean showMenu = false;
 
     private static double unitMultiplier;
 
@@ -83,6 +89,8 @@ public final class BlobbyEngine {
         mainThread = Thread.currentThread();
         consoleArguments = arguments;
 
+        Thread.setDefaultUncaughtExceptionHandler((thread, e) -> logger.error("An uncaught exception occurred!", e));
+
         if(runConfig.width / 16 != runConfig.height / 9) {
             throw new RuntimeException("Window size ratio not 16:9");
         }
@@ -93,7 +101,7 @@ public final class BlobbyEngine {
         }
 
         window = new Window(runConfig);
-        unitMultiplier = window.getWidth() / 16d;
+        recalculateUnitMultiplier();
 
         Input.initialize();
         SoundPlayer.initialize();
@@ -113,7 +121,7 @@ public final class BlobbyEngine {
                 String key = split[0];
                 String value = split[1];
 
-                switch (key) {
+                switch(key) {
                     case "map":
                         LevelLoader.loadLevel(value, BlobbyEngine::setLevel);
                         break;
@@ -121,8 +129,15 @@ public final class BlobbyEngine {
                         break;
                 }
             } catch(ArrayIndexOutOfBoundsException ignored) {} // Means that this argument is not in Blobby Engine's
-                                                               // argument format. Probably JOML.
+                                                               // argument format. Could be JOML.
         }
+    }
+
+    /**
+     * Recalculates the unit multiplier.
+     */
+    public static void recalculateUnitMultiplier() {
+        unitMultiplier = window.getWidth() / 16d;
     }
 
     /**
@@ -182,6 +197,30 @@ public final class BlobbyEngine {
     }
 
     /**
+     * Checks OpenGL for errors.
+     * @return the error, or {@code null} if no error occurred.
+     */
+    public static String checkForGLError() {
+        int error = glGetError();
+        if(error != GL_NO_ERROR)
+            return glGetString(error);
+        else
+            return null;
+    }
+
+    /**
+     * Checks OpenAL for errors.
+     * @return the error, or {@code null} if no error occurred.
+     */
+    public static String checkForALError() {
+        int error = alGetError();
+        if(error != AL_NO_ERROR)
+            return alGetString(error);
+        else
+            return null;
+    }
+
+    /**
      * Reads the content of a file.
      * @param path the path to the file.
      * @return the file content.
@@ -205,6 +244,22 @@ public final class BlobbyEngine {
         return textBuilder.toString();
     }
 
+    static String readInternalFile(String filename) {
+        try {
+            String line;
+            BufferedReader reader = new BufferedReader(new FileReader(new File(BlobbyEngine.class
+                    .getResource(filename).toURI())));
+            StringBuilder content = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+
+            return content.toString();
+        } catch(URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Loads a JSON from a file.
      * @param path the path to the JSON file.
@@ -221,6 +276,32 @@ public final class BlobbyEngine {
     public static int getMonitorCount() {
         PointerBuffer monitors = glfwGetMonitors();
         return monitors.position() + monitors.remaining();
+    }
+
+    /**
+     * Returns the id of the primary monitor.
+     * @return the primary monitor's id;
+     */
+    public static long getPrimaryMonitorId() {
+        return glfwGetPrimaryMonitor();
+    }
+
+    /**
+     * Returns the width of the primary monitor.
+     * @return the primary monitor's width;
+     */
+    public static int getPrimaryMonitorWidth() {
+        GLFWVidMode videoMode = glfwGetVideoMode(getPrimaryMonitorId());
+        return videoMode.width();
+    }
+
+    /**
+     * Returns the height of the primary monitor.
+     * @return the primary monitor's height;
+     */
+    public static int getPrimaryMonitorHeight() {
+        GLFWVidMode videoMode = glfwGetVideoMode(getPrimaryMonitorId());
+        return videoMode.height();
     }
 
     /**
@@ -292,7 +373,7 @@ public final class BlobbyEngine {
      * @param name the path to the texture.
      * @return the texture.
      */
-    public static ITexture getTexture(String name) throws IllegalArgumentException {
+    public static ITexture getTexture(String name) {
         ITexture texture = textures.get(name);
         if(texture == null) {
             texture = loadTexture(name);
@@ -327,12 +408,7 @@ public final class BlobbyEngine {
         return texture;
     }
 
-    /**
-     * Loads a texture from a path. DOES NOT cache it.
-     * @param filename the path of the texture.
-     * @return the texture.
-     */
-    private static Texture getInternalTexture(String filename) {
+    static Texture getInternalTexture(String filename) {
         Texture texture = null;
 
         try {
@@ -343,6 +419,30 @@ public final class BlobbyEngine {
         }
 
         return texture;
+    }
+
+    /**
+     * Shows the menu.
+     */
+    public static void showMenu() {
+        showMenu = true;
+        menu.getButtons().forEach(Button::show);
+    }
+
+    /**
+     * Hides the menu.
+     */
+    public static void hideMenu() {
+        showMenu = false;
+        menu.getButtons().forEach(Button::hide);
+    }
+
+    /**
+     * Returns whether the menu is currently shown.
+     * @return {@code true} if the menu is visible, {@code false} otherwise.
+     */
+    public static boolean isMenuShown() {
+        return showMenu;
     }
 
     /**
@@ -357,6 +457,8 @@ public final class BlobbyEngine {
         SoundPlayer.stopAllSounds();
 
         currentLevel = level;
+        Renderer.defaultCamera.setPosition(new Vector2f(getEntityScreen(player).x * Renderer.defaultCamera.getWidth(),
+                -getEntityScreen(player).y * Renderer.defaultCamera.getHeight()));
     }
 
     /**
@@ -415,6 +517,10 @@ public final class BlobbyEngine {
     public static void stop() {
         if(window != null)
             glfwSetWindowShouldClose(window.getId(), true);
+
+        logger.destroy();
+        LevelLoader.logger.destroy();
+        ListenerManager.callEvent(new StopEvent());
     }
 
     /**
@@ -433,7 +539,7 @@ public final class BlobbyEngine {
             loadingScreenTexture = getInternalTexture("loadingScreen");
 
         Renderer.setWindow(window);
-        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), loadingScreenTexture);
+        Renderer.renderUV(new Vector2f(-1, 1), new Vector2f(1, -1), loadingScreenTexture, Renderer.uiShader);
         Renderer.finishRendering();
     }
 

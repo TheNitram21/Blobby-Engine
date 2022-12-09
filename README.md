@@ -16,14 +16,17 @@ The blobby engine is a 2D level-based easily moddable game engine.
 Blobby Engine's scripted NPCs allow for creating an immersive and interactive world for the player to explore.
 
 ### Lighting
-Blobby Engine supports lighting using precalculated light maps.<br>
-<img src="https://user-images.githubusercontent.com/49786755/186373213-d2fb3c38-a154-4d0b-9827-cd28f7b8be75.png" width="720">
+Blobby Engine supports real-time lighting using shaders.<br>
+<img src="https://user-images.githubusercontent.com/49786755/206754465-94cf297e-f9fd-4319-ac63-258041c76bc6.png" width="720">
+
+### Shaders
+Blobby Engine supports shaders. They are written in GLSL (OpenGL Shading Language).
 
 ### Physics
 Blobby Engine has built-in collision checks.
 
 ### Level Editor
-Blobby Engine has a level editor called BEE. BEE is also used for calculating light maps.<br>
+Blobby Engine has a level editor called BEE.<br>
 <img src="https://user-images.githubusercontent.com/49786755/186373193-ed6281ff-d89c-4231-9788-bfd63656785f.png" width="720">
 
 ## Download

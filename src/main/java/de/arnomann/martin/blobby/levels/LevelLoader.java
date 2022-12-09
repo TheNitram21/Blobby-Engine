@@ -20,7 +20,8 @@ import java.util.function.Consumer;
  */
 public class LevelLoader {
 
-    private static final Logger logger = new Logger();
+    /** The level loader's logger */
+    public static final Logger logger = new Logger();
     private static boolean loadingLevel = false;
 
     private LevelLoader() {}
@@ -107,11 +108,9 @@ public class LevelLoader {
                 backgroundTexture = BlobbyEngine.getTexture(json.getString("BackgroundTexture"));
             } catch(JSONException ignored) {}
 
-            Texture lightMapTexture = new Texture(BlobbyEngine.MAPS_PATH + name);
-
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens, backgroundTexture, lightMapTexture, name + ".json");
+            level = new Level(title, screens, backgroundTexture, name + ".json");
 
             logger.info("Level '" + fileName + "' loaded!");
 
@@ -124,6 +123,10 @@ public class LevelLoader {
         }
     }
 
+    /**
+     * Returns whether the level loader is currently loading a level.
+     * @return {@code true} if the level loader is loading a level, {@code false} otherwise.
+     */
     public static boolean isLoadingLevel() {
         return loadingLevel;
     }

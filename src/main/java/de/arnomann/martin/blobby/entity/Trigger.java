@@ -15,12 +15,12 @@ public class Trigger extends Entity {
     private final int width;
     private final int height;
 
-    private Entity target;
-    private final String method;
-    private final boolean onlyOnce;
+    protected Entity target;
+    protected final String method;
+    protected final boolean onlyOnce;
 
-    private boolean triggered;
-    private boolean triggeredLastFrame;
+    protected boolean triggered;
+    protected boolean triggeredLastFrame;
 
     public Trigger(Vector2d position, Map<String, String> parameters) {
         super(position, parameters);

@@ -43,8 +43,8 @@ public class Particle implements ITexture {
     }
 
     @Override
-    public void bind() {
-        animTex.bind();
+    public void bind(int sampler) {
+        animTex.bind(sampler);
 
         if(animTex.getTextureIndex() == animTex.getFrameCount() - 1) {
             particlesToRemove.add(this);
@@ -84,21 +84,6 @@ public class Particle implements ITexture {
     @Override
     public boolean isFlipped() {
         return animTex.isFlipped();
-    }
-
-    Vector4f colorModifiers = new Vector4f(1, 1, 1, 1);
-
-    @Override
-    public void setColorModifiers(float red, float green, float blue, float alpha) {
-        colorModifiers.x = red;
-        colorModifiers.y = green;
-        colorModifiers.z = blue;
-        colorModifiers.w = alpha;
-    }
-
-    @Override
-    public Vector4f getColorModifiers() {
-        return colorModifiers;
     }
 
     /**

@@ -88,13 +88,13 @@ public class AnimatedTexture implements ITexture {
     }
 
     @Override
-    public void bind() {
+    public void bind(int sampler) {
         if(playAnimation) {
             calculateTextureIndex();
 
-            glBindTexture(GL_TEXTURE_2D, textures.get(textureIndex).id);
+            textures.get(textureIndex).bind(sampler);
         } else {
-            glBindTexture(GL_TEXTURE_2D, textures.get(0).id);
+            textures.get(0).bind(sampler);
         }
     }
 
@@ -122,21 +122,6 @@ public class AnimatedTexture implements ITexture {
     @Override
     public boolean isFlipped() {
         return flipped;
-    }
-
-    Vector4f colorModifiers = new Vector4f(1, 1, 1, 1);
-
-    @Override
-    public void setColorModifiers(float red, float green, float blue, float alpha) {
-        colorModifiers.x = red;
-        colorModifiers.y = green;
-        colorModifiers.z = blue;
-        colorModifiers.w = alpha;
-    }
-
-    @Override
-    public Vector4f getColorModifiers() {
-        return colorModifiers;
     }
 
     /**

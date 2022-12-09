@@ -19,6 +19,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
 
 /**
  * Represents a basic window.
@@ -28,11 +29,16 @@ public final class Window {
     private final long windowId;
 
     private String title;
+    private int windowX;
+    private int windowY;
     private int width;
     private int height;
     private final String iconPath;
+    private boolean fullscreen;
 
     private boolean started = false;
+
+    private Framebuffer framebuffer;
 
     /**
      * The maximum amount of frames rendered each second. Negative values will make the framerate infinite.
@@ -49,6 +55,7 @@ public final class Window {
         this.width = runConfig.width;
         this.height = runConfig.height;
         this.iconPath = runConfig.iconPath;
+        this.fullscreen = runConfig.fullscreen;
 
         if(runConfig.fullscreen) {
             GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -63,7 +70,8 @@ public final class Window {
 
         windowId = glfwCreateWindow(width, height, title, runConfig.fullscreen ? glfwGetPrimaryMonitor() : 0, 0);
         if(windowId == 0) {
-            ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(), new RuntimeException("An unexpected error occurred whilst trying create the window."));
+            ErrorManagement.showErrorMessage(BlobbyEngine.getLogger(),
+                    new RuntimeException("An unexpected error occurred whilst trying create the window."));
             BlobbyEngine.stop();
         }
 
@@ -85,6 +93,15 @@ public final class Window {
         glfwMakeContextCurrent(windowId);
         glfwSwapInterval(1);
 
+        glfwSetWindowPosCallback(windowId, (id, x, y) -> {
+            if(fullscreen)
+                return;
+
+            windowX = x;
+            windowY = y;
+        });
+        glfwSetWindowSizeCallback(windowId, (id, width, height) -> glViewport(0, 0, width, height));
+
         show();
     }
 
@@ -100,9 +117,13 @@ public final class Window {
             glClearColor(0.2f, 0.3f, 1f, 0f);
 
             glEnable(GL_TEXTURE_2D);
-
+            glEnable(GL_MULTISAMPLE);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDepthFunc(GL_LEQUAL);
+
+            framebuffer = new Framebuffer(width, height);
+            framebuffer.unbind();
 
             Texture iconTexture;
 
@@ -118,6 +139,9 @@ public final class Window {
 
             ListenerManager.callEvent(new StartEvent());
             BlobbyEngine.onWindowOpen();
+
+            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
 
             double lastFrameTime = glfwGetTime();
             while(!glfwWindowShouldClose(windowId)) {
@@ -162,6 +186,9 @@ public final class Window {
             if(BlobbyEngine.isDebugMode())
                 BlobbyEngine.getProfiler().destroy();
 
+            glDisableVertexAttribArray(0);
+            glDisableVertexAttribArray(1);
+
             glfwTerminate();
         }
     }
@@ -193,6 +220,8 @@ public final class Window {
      * @return the width.
      */
     public int getWidth() {
+        if(fullscreen)
+            return BlobbyEngine.getPrimaryMonitorWidth();
         return width;
     }
 
@@ -201,6 +230,8 @@ public final class Window {
      * @return the height.
      */
     public int getHeight() {
+        if(fullscreen)
+            return BlobbyEngine.getPrimaryMonitorHeight();
         return height;
     }
 
@@ -227,8 +258,42 @@ public final class Window {
         this.height = height;
 
         glfwSetWindowSize(windowId, this.width, this.height);
+        BlobbyEngine.recalculateUnitMultiplier();
 
         return true;
+    }
+
+    /**
+     * Sets the window to fullscreen or windowed mode.
+     * @param fullscreen {@code true} if the window should fill the entire screen, {@code false} otherwise.
+     */
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
+
+        if(fullscreen) {
+            GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            glfwSetWindowMonitor(windowId, glfwGetPrimaryMonitor(), 0, 0, videoMode.width(), videoMode.height(),
+                    GLFW_DONT_CARE);
+        } else {
+            glfwSetWindowMonitor(windowId, 0, windowX, windowY, width, height, 0);
+        }
+
+    }
+
+    /**
+     * Returns whether the window is in fullscreen mode.
+     * @return {@code true} if the window fills the entire screen, {@code false} otherwise.
+     */
+    public boolean getFullscreen() {
+        return fullscreen;
+    }
+
+    /**
+     * Returns an alternate framebuffer.
+     * @return the framebuffer.
+     */
+    public Framebuffer getFramebuffer() {
+        return framebuffer;
     }
 
     /**

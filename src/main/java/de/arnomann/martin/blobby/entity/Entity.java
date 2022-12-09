@@ -1,6 +1,7 @@
 package de.arnomann.martin.blobby.entity;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.core.Shader;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
 import org.joml.Vector2d;
@@ -71,6 +72,14 @@ public abstract class Entity implements EventListener {
     }
 
     /**
+     * Returns the shader which should be used for rendering this entity.
+     * @return the shader.
+     */
+    public Shader getShader() {
+        return null;
+    }
+
+    /**
      * Returns whether the entity should be rendered in front of the player or not.
      * @return {@code true} if the entity should be rendered in front of the player, {@code false} otherwise.
      */
@@ -119,6 +128,11 @@ public abstract class Entity implements EventListener {
         return this.getId() == ((Entity) that).getId();
     }
 
+    /**
+     * Searches for an entity using its id.
+     * @param id the id to search for.
+     * @return the found entity, if any.
+     */
     public static Entity getEntityById(long id) {
         AtomicReference<Entity> result = new AtomicReference<>(null);
 

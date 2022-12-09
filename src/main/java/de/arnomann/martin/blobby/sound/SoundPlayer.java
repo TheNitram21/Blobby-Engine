@@ -18,7 +18,7 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
 /**
- * A class for playing sound. Sound has to be in the <i>OGG Vorbis</i> format.
+ * A class for playing sound. Sound has to be in the <i>OGG Vorbis</i> (.ogg) format.
  */
 public class SoundPlayer {
 
@@ -93,11 +93,11 @@ public class SoundPlayer {
     /**
      * Plays a sound from a path.
      * @param name the path.
+     * @param looping whether the sound should loop or not.
      * @return the played sound.
      */
     public static Sound playSound(String name, boolean looping) {
         Sound sound = createSound(name);
-        name = BlobbyEngine.SOUNDS_PATH + name;
         playSound(sound, looping);
         return sound;
     }
@@ -105,6 +105,7 @@ public class SoundPlayer {
     /**
      * Plays a sound from a sound instance.
      * @param sound the sound to play.
+     * @param looping whether the sound should loop or not.
      */
     public static void playSound(Sound sound, boolean looping) {
         sounds.add(sound);

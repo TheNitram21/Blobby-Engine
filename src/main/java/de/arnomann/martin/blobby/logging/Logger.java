@@ -2,6 +2,13 @@ package de.arnomann.martin.blobby.logging;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static de.arnomann.martin.blobby.logging.Logger.LoggingType.*;
 
 /**
@@ -11,6 +18,8 @@ public class Logger {
 
     private final Class<?> callerClass;
     private boolean[] loggingTypes = { true, true, true, true, false };
+    private File outputFile;
+    private BufferedWriter outputFileWriter;
 
     /**
      * Creates a new logger.
@@ -28,8 +37,18 @@ public class Logger {
         this.callerClass = callerClassTemp;
     }
 
+    /** Different types of logging */
     public enum LoggingType {
-        INFO, WARNING, ERROR, FATAL, DEBUG
+        /** Useful information */
+        INFO,
+        /** Warnings about inconveniences or minor errors */
+        WARNING,
+        /** Errors about exceptions */
+        ERROR,
+        /** Fatal errors */
+        FATAL,
+        /** Information only useful for debugging */
+        DEBUG
     }
 
     /**
@@ -46,6 +65,28 @@ public class Logger {
      */
     public void disable(LoggingType loggingType) {
         loggingTypes[loggingType.ordinal()] = false;
+    }
+
+    /**
+     * Sets the file where the log will be written to.
+     * @param outputFile the log file.
+     */
+    public void setOutputFile(File outputFile) {
+        if(outputFile.exists())
+            outputFile.delete();
+        try {
+            outputFile.createNewFile();
+        } catch (IOException e) {
+            error("An error occurred whilst trying to create the log file!", e);
+        }
+
+        this.outputFile = outputFile;
+        try {
+            outputFileWriter = new BufferedWriter(new FileWriter(outputFile));
+            outputFileWriter.write("# Blobby Engine log file\n");
+        } catch (IOException e) {
+            error("An error occurred whilst trying to create log file file writer!", e);
+        }
     }
 
     /**
@@ -115,10 +156,32 @@ public class Logger {
     }
 
     protected void send(LoggingType loggingType, String msg) {
+        String output = String.format("[%s %s] %s: %s%n", callerClass.getSimpleName(), loggingType.toString(),
+                DateTimeFormatter.ofPattern("HH:mm:ss").format(OffsetDateTime.now()), msg);
         if(loggingType.equals(LoggingType.INFO) || loggingType.equals(LoggingType.WARNING) || loggingType.equals(LoggingType.DEBUG)) {
-            System.out.printf("[%s %s]: %s%n", callerClass.getSimpleName(), loggingType.toString(), msg);
+            System.out.print(output);
         } else {
-            System.err.printf("[%s %s]: %s%n", callerClass.getSimpleName(), loggingType.toString(), msg);
+            System.err.print(output);
+        }
+
+        if(outputFileWriter != null) {
+            try {
+                outputFileWriter.append(output);
+                outputFileWriter.flush();
+            } catch (IOException e) {
+                System.err.println("An error occurred whilst trying to write to the log file!");
+            }
+        }
+    }
+
+    /**
+     * Destroyes the logger and optionally saves the log file.
+     */
+    public void destroy() {
+        try {
+            outputFileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

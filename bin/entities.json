@@ -19,6 +19,7 @@
             "EditorTexture": "editor/levelChange.png"
         },
 		{
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Light",
             "ClassName": "Light",
             "Parameters": [ "Radius" ],
             "EditorTexture": "editor/light.png"
@@ -46,6 +47,12 @@
             "ClassName": "MapSettings",
             "Parameters": [ "Key", "Value" ],
             "EditorTexture": "editor/mapSettings.png"
+        },
+        {
+            "InternalClassName": "de.arnomann.martin.blobby.entity.Button",
+            "ClassName": "Button",
+            "Parameters": [ "Target", "Method", "OnlyOnce", "Width", "Height", "Texture" ],
+            "EditorTexture": "editor/button.png"
         },
 
 		{
