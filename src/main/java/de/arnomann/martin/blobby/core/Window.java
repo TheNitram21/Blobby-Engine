@@ -220,6 +220,8 @@ public final class Window {
      * @return the width.
      */
     public int getWidth() {
+        if(fullscreen)
+            return BlobbyEngine.getPrimaryMonitorWidth();
         return width;
     }
 
@@ -228,6 +230,8 @@ public final class Window {
      * @return the height.
      */
     public int getHeight() {
+        if(fullscreen)
+            return BlobbyEngine.getPrimaryMonitorHeight();
         return height;
     }
 

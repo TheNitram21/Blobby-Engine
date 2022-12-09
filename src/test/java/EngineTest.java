@@ -152,6 +152,10 @@ public class EngineTest implements EventListener {
 
         if(event.key == Input.KEY_F)
             BlobbyEngine.getWindow().setFullscreen(!BlobbyEngine.getWindow().getFullscreen());
+        if(event.key == Input.KEY_G)
+            BlobbyEngine.getWindow().setWindowSize(1280, 720);
+        if(event.key == Input.KEY_T)
+            BlobbyEngine.getWindow().setWindowSize(854, 480);
 
         if(event.key == Input.KEY_V)
             BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());

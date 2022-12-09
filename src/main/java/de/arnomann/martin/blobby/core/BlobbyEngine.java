@@ -19,6 +19,7 @@ import org.joml.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.lwjgl.PointerBuffer;
+import org.lwjgl.glfw.GLFWVidMode;
 
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -275,6 +276,32 @@ public final class BlobbyEngine {
     public static int getMonitorCount() {
         PointerBuffer monitors = glfwGetMonitors();
         return monitors.position() + monitors.remaining();
+    }
+
+    /**
+     * Returns the id of the primary monitor.
+     * @return the primary monitor's id;
+     */
+    public static long getPrimaryMonitorId() {
+        return glfwGetPrimaryMonitor();
+    }
+
+    /**
+     * Returns the width of the primary monitor.
+     * @return the primary monitor's width;
+     */
+    public static int getPrimaryMonitorWidth() {
+        GLFWVidMode videoMode = glfwGetVideoMode(getPrimaryMonitorId());
+        return videoMode.width();
+    }
+
+    /**
+     * Returns the height of the primary monitor.
+     * @return the primary monitor's height;
+     */
+    public static int getPrimaryMonitorHeight() {
+        GLFWVidMode videoMode = glfwGetVideoMode(getPrimaryMonitorId());
+        return videoMode.height();
     }
 
     /**
