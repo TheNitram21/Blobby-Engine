@@ -17,7 +17,7 @@ Blobby Engine's scripted NPCs allow for creating an immersive and interactive wo
 
 ### Lighting
 Blobby Engine supports real-time lighting using shaders.<br>
-<img src="https://user-images.githubusercontent.com/49786755/186373213-d2fb3c38-a154-4d0b-9827-cd28f7b8be75.png" width="720">
+<img src="https://user-images.githubusercontent.com/49786755/206754465-94cf297e-f9fd-4319-ac63-258041c76bc6.png" width="720">
 
 ### Shaders
 Blobby Engine supports shaders. They are written in GLSL (OpenGL Shading Language).
