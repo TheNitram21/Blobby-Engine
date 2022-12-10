@@ -165,7 +165,8 @@ public final class Renderer {
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
                 screen.entities.forEach(entity -> {
-                    if(!(entity instanceof Block) && entity.getTexture() != null && !entity.renderInFrontOfPlayer()) {
+                    if(!entity.disabled() && !(entity instanceof Block) && entity.getTexture() != null &&
+                            !entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset());
                         renderOnUnits((float) entityPos.x, (float) entityPos.y, entity.getWidth(), entity.getHeight(),
                                 entity.getTexture(), (entity.getShader() != null ? entity.getShader() : defaultShader));
@@ -198,7 +199,8 @@ public final class Renderer {
         if(level != null) {
             level.screens.forEach((screenPos, screen) -> {
                 screen.entities.forEach(entity -> {
-                    if(!(entity instanceof Block) && entity.getTexture() != null && entity.renderInFrontOfPlayer()) {
+                    if(!entity.disabled() && !(entity instanceof Block) && entity.getTexture() != null &&
+                            entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset());
                         renderOnUnits((float) entityPos.x, (float) entityPos.y, entity.getWidth(), entity.getHeight(),
                                 entity.getTexture(), (entity.getShader() != null ? entity.getShader() : defaultShader));

@@ -4,6 +4,7 @@ import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Shader;
 import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.event.EventListener;
+import de.arnomann.martin.blobby.event.ListenerManager;
 import org.joml.Vector2d;
 
 import java.sql.Blob;
@@ -17,8 +18,9 @@ public abstract class Entity implements EventListener {
 
     private static int entityCount = 0;
 
-    private long id;
+    private final long id;
     private final Map<String, String> parameters;
+    private boolean disabled;
 
     /**
      * Creates a new entity. SHOULD NOT BE CALLED.
@@ -93,10 +95,28 @@ public abstract class Entity implements EventListener {
     public void initialize() {}
 
     /**
-     * Called just before unloading a level.
+     * Called just before unloading a level. Should only be called by Blobby Engine internally.
      */
     public final void destroy() {
         BlobbyEngine.getCurrentLevel().screens.get(BlobbyEngine.getEntityScreen(this)).entities.remove(this);
+    }
+
+    /**
+     * Disables this entity. It won't be rendered anymore (if not using custom rendering) and won't receive any events anymore.
+     * @see Entity#disabled()
+     */
+    public void disable() {
+        disabled = true;
+        ListenerManager.removeEventListener(this);
+    }
+
+    /**
+     * Returns whether this entity is disabled.
+     * @return {@code true}, if this entity is disabled using {@link Entity#disable()}, {@code false} otherwise.
+     * @see Entity#disable()
+     */
+    public boolean disabled() {
+        return disabled;
     }
 
     /**
@@ -125,7 +145,7 @@ public abstract class Entity implements EventListener {
             return false;
         if(!(that instanceof Entity))
             return false;
-        return this.getId() == ((Entity) that).getId();
+        return this.getId() == ((Entity) that).getId() && this.disabled() == ((Entity) that).disabled();
     }
 
     /**

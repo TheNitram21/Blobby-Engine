@@ -27,6 +27,9 @@ public class Scene extends Entity {
     }
 
     public void start() {
+        if(npc.disabled())
+            return;
+
         sceneRunning = true;
 
         new Thread(() -> {
@@ -39,6 +42,8 @@ public class Scene extends Entity {
                     String sceneLineWithoutMethod = sceneLine[0].split("\\(", 2)[1];
                     sceneLineWithoutMethod = sceneLineWithoutMethod.substring(0, sceneLineWithoutMethod.length() - 1);
                     String[] parameters = sceneLineWithoutMethod.split(", ");
+                    if(parameters.length == 1 && parameters[0].isEmpty())
+                        parameters = new String[0];
                     Class<?>[] parameterClasses = new Class<?>[parameters.length];
                     Arrays.fill(parameterClasses, String.class);
 
