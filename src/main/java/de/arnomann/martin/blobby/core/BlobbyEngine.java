@@ -363,6 +363,9 @@ public final class BlobbyEngine {
      */
     public static ITexture loadTexture(String filename) {
         ITexture texture = getTextureWithoutCaching(filename);
+        if(texture == null)
+            return null;
+
         logger.debug("Loaded texture " + filename + " with size " + texture.getWidth() + ", " + texture.getHeight() + ".");
         textures.put(filename, texture);
         return texture;
@@ -377,6 +380,8 @@ public final class BlobbyEngine {
         ITexture texture = textures.get(name);
         if(texture == null) {
             texture = loadTexture(name);
+            if(texture == null)
+                return null;
         }
 
         return texture;
@@ -388,6 +393,9 @@ public final class BlobbyEngine {
      * @return the texture.
      */
     public static ITexture getTextureWithoutCaching(String filename) {
+        if(filename.isBlank())
+            return null;
+
         ITexture texture;
         filename = TEXTURES_PATH + filename;
         File file = new File(filename);
