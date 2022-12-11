@@ -28,7 +28,7 @@ public class EngineTest implements EventListener {
         logger.enable(Logger.LoggingType.DEBUG);
         ListenerManager.registerEventListener(new EngineTest());
         BlobbyEngine.run(new RunConfigurations("Blobby Engine Test", windowSize[0], windowSize[1], null,
-                false), args);
+                false, 4), args);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class EngineTest implements EventListener {
         BlobbyEngine.getWindow().setVSyncEnabled(false);
 
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player", "Width", "1")));
-//        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
-        LevelLoader.loadLevel("npc_test", BlobbyEngine::setLevel);
+        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
+//        LevelLoader.loadLevel("npc_test", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
         buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),

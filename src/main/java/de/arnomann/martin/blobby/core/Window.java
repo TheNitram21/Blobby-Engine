@@ -67,6 +67,7 @@ public final class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_SAMPLES, runConfig.multiSampling);
 
         windowId = glfwCreateWindow(width, height, title, runConfig.fullscreen ? glfwGetPrimaryMonitor() : 0, 0);
         if(windowId == 0) {
