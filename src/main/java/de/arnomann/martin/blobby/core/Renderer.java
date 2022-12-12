@@ -258,6 +258,14 @@ public final class Renderer {
      * @param shader the shader to use for rendering the quad.
      */
     public static void renderOnUnits(float x, float y, float width, float height, ITexture texture, Shader shader) {
+        x = MathUtil.scaleNumber(0, 16, activeCamera.getLeft(), activeCamera.getRight(), x);
+        y = MathUtil.scaleNumber(0, 9, activeCamera.getTop(), activeCamera.getBottom(), y);
+        width = MathUtil.scaleNumber(0, 8, 0, activeCamera.getRight(), width);
+        height = -MathUtil.scaleNumber(0, 4.5f, 0, activeCamera.getTop(), height);
+
+        if(!activeCamera.couldRender(x, y, x + width, y + height))
+            return;
+
         texture.bind(0);
         shader.bind();
         shader.setUniform1i("texture", 0);
@@ -280,11 +288,6 @@ public final class Renderer {
         shader.setUniform1i("screenHeight", BlobbyEngine.getWindow().getHeight());
 
         shader.setUniform1i("flipped", booleanToInt(texture.isFlipped()));
-
-        x = MathUtil.scaleNumber(0, 16, activeCamera.getLeft(), activeCamera.getRight(), x);
-        y = MathUtil.scaleNumber(0, 9, activeCamera.getTop(), activeCamera.getBottom(), y);
-        width = MathUtil.scaleNumber(0, 8, 0, activeCamera.getRight(), width);
-        height = -MathUtil.scaleNumber(0, 4.5f, 0, activeCamera.getTop(), height);
 
         VERTEX_ARRAY.setVertices(new float[] {
                 x, y, // top left

@@ -1,9 +1,7 @@
 package de.arnomann.martin.blobby.core;
 
+import org.joml.*;
 import org.joml.Math;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 /**
  * A camera used for rendering.
@@ -13,6 +11,8 @@ public class Camera {
     private Matrix4f projectionMatrix;
     private Matrix4f viewMatrix;
     private Matrix4f viewProjectionMatrix;
+
+    private FrustumIntersection frustumIntersection;
 
     private float left, right, bottom, top;
 
@@ -37,6 +37,8 @@ public class Camera {
             viewMatrix = new Matrix4f();
 
             viewProjectionMatrix = new Matrix4f(projectionMatrix).mul(viewMatrix);
+
+            frustumIntersection = new FrustumIntersection(viewProjectionMatrix);
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
@@ -148,12 +150,19 @@ public class Camera {
         return top - bottom;
     }
 
+    public boolean couldRender(float x1, float y1, float x2, float y2) {
+        return frustumIntersection.testAab(Math.min(x1, x2), Math.min(y1, y2), 0, Math.max(x1, x2), Math.max(y1, y2),
+                0);
+    }
+
     private void recalculateViewMatrix() {
         Matrix4f transform = new Matrix4f().translate(new Vector3f(position, 0f))
                 .mul(new Matrix4f().rotate(Math.toRadians(rotation), new Vector3f(0, 0, 1)));
 
         viewMatrix = transform.invert();
         viewProjectionMatrix = new Matrix4f(projectionMatrix).mul(viewMatrix);
+
+        frustumIntersection.set(viewProjectionMatrix);
     }
 
 }
