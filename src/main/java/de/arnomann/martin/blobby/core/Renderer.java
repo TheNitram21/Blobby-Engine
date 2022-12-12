@@ -211,8 +211,7 @@ public final class Renderer {
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_ENTITIES_IN_FRONT_OF_PLAYER));
 
         for(Particle particle : Particle.getParticles()) {
-            Vector2d particlePos = new Vector2d(particle.getPosition());
-            renderOnUnits((float) particlePos.x, (float) particlePos.y, 1, 1, particle, defaultShader);
+            renderParticle(particle, defaultShader);
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PARTICLES));
 
@@ -327,6 +326,55 @@ public final class Renderer {
                 renderUVEnd.x, renderUVStart.y,  // top right
                 renderUVEnd.x, renderUVEnd.y, // bottom right
                 renderUVStart.x, renderUVEnd.y // bottom left
+        }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
+    }
+
+    public static void renderParticle(Particle particle, Shader shader) {
+        float x = MathUtil.scaleNumber(0, 16, activeCamera.getLeft(), activeCamera.getRight(),
+                (float) particle.getPosition().x);
+        float y = MathUtil.scaleNumber(0, 9, activeCamera.getTop(), activeCamera.getBottom(),
+                (float) particle.getPosition().y);
+        float width = MathUtil.scaleNumber(0, 8, 0, activeCamera.getRight(), particle.getWidth());
+        float height = -MathUtil.scaleNumber(0, 4.5f, 0, activeCamera.getTop(), particle.getHeight());
+
+        Vector2f[] vertices = new Vector2f[4];
+        vertices[0] = new Vector2f(x, y);
+        vertices[1] = new Vector2f(x + width, y);
+        vertices[2] = new Vector2f(x + width, y + height);
+        vertices[3] = new Vector2f(x, y + height);
+        vertices = MathUtil.rotateQuad(vertices, particle.getRotation());
+
+        if(!activeCamera.couldRender(x, y, x + width, y + height))
+            return;
+
+        particle.bind(0);
+        shader.bind();
+        shader.setUniform1i("texture", 0);
+
+        shader.setUniformMatrix4f("viewMatrix", activeCamera.getViewMatrix());
+        shader.setUniformMatrix4f("projectionMatrix", activeCamera.getProjectionMatrix());
+        shader.setUniformMatrix4f("viewProjectionMatrix", activeCamera.getViewProjectionMatrix());
+
+        for(int i = 0; i < lights.length; i += 3) {
+            shader.setUniform3f("lights[" + i / 3 + "]", lights[i], lights[i + 1], lights[i + 2]);
+        }
+
+        shader.setUniform1i("lightCount", lights.length / 3);
+        shader.setUniform1f("unitMultiplier", (float) BlobbyEngine.unitMultiplier());
+
+        shader.setUniform1f("cameraWidth", activeCamera.getWidth());
+        shader.setUniform1f("cameraHeight", activeCamera.getHeight());
+
+        shader.setUniform1i("screenWidth", BlobbyEngine.getWindow().getWidth());
+        shader.setUniform1i("screenHeight", BlobbyEngine.getWindow().getHeight());
+
+        shader.setUniform1i("flipped", booleanToInt(false));
+
+        VERTEX_ARRAY.setVertices(new float[] {
+                vertices[0].x, vertices[0].y, // top left
+                vertices[1].x, vertices[1].y,  // top right
+                vertices[2].x, vertices[2].y, // bottom right
+                vertices[3].x, vertices[3].y // bottom left
         }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
     }
 

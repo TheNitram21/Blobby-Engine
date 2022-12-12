@@ -3,6 +3,7 @@ import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
 import de.arnomann.martin.blobby.core.Renderer;
+import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.event.*;
 import de.arnomann.martin.blobby.levels.LevelLoader;
@@ -11,6 +12,7 @@ import de.arnomann.martin.blobby.physics.Physics;
 import de.arnomann.martin.blobby.ui.Button;
 import de.arnomann.martin.blobby.ui.Menu;
 import de.arnomann.martin.blobby.ui.UI;
+import org.joml.Math;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
@@ -90,6 +92,16 @@ public class EngineTest implements EventListener {
             boolean canGoLeft = !Physics.objectInBox(new Vector2d(p.getPosition()).add(0, -p.getHeight() * 0.9),
                     0.05, p.getHeight() * 0.75, "Block");
 
+            if(playerOnGround && !onGroundLastFrame) {
+                Vector2d particlePos = new Vector2d(p.getPosition());
+                particlePos.add(p.getWidth() / 2d, 0);
+                for(int i = 0; i < 3; i++) {
+                    new Particle("dust", particlePos, new Vector2f((float) Math.random() * 2 - 1f, Math.min(
+                            (float) -Math.random(), -0.5f)), new Vector2f(0.15f, 0.15f), new Vector2f(0.015f,
+                            0.015f), 30f, 1110f, 1.5d);
+                }
+            }
+
             if(!BlobbyEngine.isTransitioningBetweenScreens()) {
                 if(Input.keyPressed(Input.KEY_A) && !Input.keyPressed(Input.KEY_D) && canGoLeft) {
                     playerVelocity.x = -maxSpeed;
@@ -136,6 +148,8 @@ public class EngineTest implements EventListener {
             }
 
             p.getPosition().add(playerVelocity.x * event.deltaTime, playerVelocity.y * event.deltaTime);
+
+            onGroundLastFrame = playerOnGround;
         }
     }
 

@@ -1,6 +1,9 @@
 package de.arnomann.martin.blobby;
 
 import org.joml.Math;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 /**
  * A utility class for maths.
@@ -65,6 +68,33 @@ public class MathUtil {
         if(Math.abs(rounded - value) > maxDiff)
             return value;
         return rounded;
+    }
+
+    public static Vector2f getQuadCenter(Vector2f[] vertices) {
+        float xSum = 0;
+        float ySum = 0;
+
+        for(int i = 0; i < 4; i++) {
+            xSum += vertices[i].x;
+            ySum += vertices[i].y;
+        }
+
+        return new Vector2f(xSum / 4, ySum / 4);
+    }
+
+    public static Vector2f[] rotateQuad(Vector2f[] vertices, float angleDegrees) {
+        Vector2f center = getQuadCenter(vertices);
+        Matrix4f rotationMatrix = new Matrix4f().identity().translate(center.x, center.y, 0f).rotateZ(Math.toRadians(
+                angleDegrees)).translate(-center.x, -center.y, 0f);
+
+        Vector2f[] rotatedVertices = new Vector2f[4];
+        for(int i = 0; i < 4; i++) {
+            Vector3f vertex = new Vector3f(vertices[i], 0f);
+            rotationMatrix.transformPosition(vertex);
+            rotatedVertices[i] = new Vector2f(vertex.x, vertex.y);
+        }
+
+        return rotatedVertices;
     }
 
 }
