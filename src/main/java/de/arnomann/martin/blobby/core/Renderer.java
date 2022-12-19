@@ -53,6 +53,7 @@ public final class Renderer {
     public static Camera activeCamera = defaultCamera;
 
     private static Float[] lights = new Float[] {};
+    private static float ambientLight = 0.6f;
 
     private static final int[] QUAD_TEXTURE_COORDS = new int[] {
             0, 0, // top left
@@ -237,6 +238,14 @@ public final class Renderer {
     }
 
     /**
+     * Sets the ambient light strength.
+     * @param ambientLight the new ambient light strength.
+     */
+    public static void setAmbientLight(float ambientLight) {
+        Renderer.ambientLight = ambientLight;
+    }
+
+    /**
      * Finishes rendering.
      */
     public static void finishRendering() {
@@ -278,6 +287,7 @@ public final class Renderer {
         }
 
         shader.setUniform1i("lightCount", lights.length / 3);
+        shader.setUniform1f("ambientLight", 1f - ambientLight);
         shader.setUniform1f("unitMultiplier", (float) BlobbyEngine.unitMultiplier());
 
         shader.setUniform1f("cameraWidth", activeCamera.getWidth());
@@ -360,6 +370,7 @@ public final class Renderer {
         }
 
         shader.setUniform1i("lightCount", lights.length / 3);
+        shader.setUniform1f("ambientLight", 1f - ambientLight);
         shader.setUniform1f("unitMultiplier", (float) BlobbyEngine.unitMultiplier());
 
         shader.setUniform1f("cameraWidth", activeCamera.getWidth());

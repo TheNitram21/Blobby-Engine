@@ -31,6 +31,7 @@ public class Shader {
             "uniform mat4 viewProjectionMatrix;\n" +
             "uniform vec3 lights[MAX_LIGHTS]; // XY is the light position, Z is the radius\n" +
             "uniform int lightCount;\n" +
+            "uniform float ambientLight;\n" +
             "uniform float unitMultiplier;\n" +
             "uniform float cameraWidth;\n" +
             "uniform float cameraHeight;\n" +
@@ -52,7 +53,7 @@ public class Shader {
             "        textureCoordinates.x *= -1;\n" +
             "    }\n" +
             "    vec4 color = texture2D(texture, textureCoordinates);\n" +
-            "    float brightness = 1.0 - smallestDistance * 0.6;\n" +
+            "    float brightness = 1.0 - smallestDistance * ambientLight;\n" +
             "    outColor = vec4(brightness, brightness, brightness, 1.0) * color;\n" +
             "}\n";
     /** The UI vertex shader. */
