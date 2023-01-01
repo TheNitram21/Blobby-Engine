@@ -15,6 +15,7 @@ public class Player extends Entity {
     private ITexture texture;
     private int width = 1;
     private int height = 2;
+    private boolean allowMovement = true;
 
     public Player(Vector2d pos, Map<String, String> parameters) {
         super(pos, parameters);
@@ -27,7 +28,7 @@ public class Player extends Entity {
 
     @Override
     public Vector2d getPosition() {
-        return position;
+        return new Vector2d(position);
     }
 
     /**
@@ -36,7 +37,10 @@ public class Player extends Entity {
      * @param y the new y.
      */
     public void setPosition(double x, double y) {
-        position = new Vector2d(x, y);
+        if(allowMovement) {
+            position.x = x;
+            position.y = y;
+        }
     }
 
     /**
@@ -44,7 +48,25 @@ public class Player extends Entity {
      * @param v the new position.
      */
     public void setPosition(Vector2d v) {
-        position = v;
+        if(allowMovement) {
+            position.x = v.x;
+            position.y = v.y;
+        }
+    }
+
+    /**
+     * Allows player movement.
+     */
+    public void allowMovement() {
+        allowMovement = true;
+    }
+
+    /**
+     * Prevents player movement.
+     */
+    public void preventMovement() {
+        allowMovement = false;
+        System.out.println("MOVEMENT PREVENTED");
     }
 
     @Override

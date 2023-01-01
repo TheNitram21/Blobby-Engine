@@ -129,6 +129,9 @@ public class Level {
      * @return the entity, or null if nothing was found.
      */
     public Entity findEntityByParameter(String parameter, String value) {
+        if(parameter.equalsIgnoreCase("Name") && value.equalsIgnoreCase("Player"))
+            return BlobbyEngine.getPlayer();
+
         for(Screen screen : screens.values()) {
             for(Entity entity : screen.entities) {
                 if(entity.getParameters().containsKey(parameter)) {

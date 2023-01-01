@@ -7,6 +7,7 @@ import de.arnomann.martin.blobby.event.EventListener;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import org.joml.Vector2d;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Blob;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -117,6 +118,14 @@ public abstract class Entity implements EventListener {
      */
     public boolean disabled() {
         return disabled;
+    }
+
+    public void callMethod(String methodName) {
+        try {
+            getClass().getMethod(methodName).invoke(this);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -7,3 +7,4 @@ wait(3)
 moveTo(3, 3, 5)
 
 call(Teleporter, teleportPlayer)
+call(Player, preventMovement)

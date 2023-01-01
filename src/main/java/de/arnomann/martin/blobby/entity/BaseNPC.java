@@ -40,11 +40,7 @@ public abstract class BaseNPC extends Entity {
             return;
         }
 
-        try {
-            target.getClass().getMethod(method).invoke(target);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        target.callMethod(method);
     }
 
 }

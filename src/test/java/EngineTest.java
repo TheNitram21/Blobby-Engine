@@ -43,8 +43,8 @@ public class EngineTest implements EventListener {
         BlobbyEngine.getWindow().setVSyncEnabled(false);
 
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player", "Width", "1")));
-        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
-//        LevelLoader.loadLevel("npc_test", BlobbyEngine::setLevel);
+//        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
+        LevelLoader.loadLevel("npc_test", BlobbyEngine::setLevel);
 
         List<Button> buttons = new ArrayList<>();
         buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),
@@ -140,15 +140,15 @@ public class EngineTest implements EventListener {
                 playerVelocity.y += fallSpeed * event.deltaTime;
             } else if(playerVelocity.y > 0) {
                 playerVelocity.y = 0;
-                p.getPosition().set(p.getPosition().x, MathUtil.roundWithMaxDifference((float) p.getPosition().y,
-                        0.3f));
+                p.setPosition(p.getPosition().set(p.getPosition().x, MathUtil.roundWithMaxDifference((float) p.getPosition().y,
+                        0.3f)));
             }
 
             if(headCollision && playerVelocity.y < 0) {
                 playerVelocity.y = 0;
             }
 
-            p.getPosition().add(playerVelocity.x * event.deltaTime, playerVelocity.y * event.deltaTime);
+            p.setPosition(p.getPosition().add(playerVelocity.x * event.deltaTime, playerVelocity.y * event.deltaTime));
 
             onGroundLastFrame = playerOnGround;
         }

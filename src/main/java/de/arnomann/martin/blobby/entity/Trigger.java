@@ -64,13 +64,8 @@ public class Trigger extends Entity {
         if(!onlyOnce || !triggered) {
             if(Physics.objectInBox(new Vector2d(getPosition()).add(0, 2), getWidth(), getHeight(),
                     "Player")) {
-                if(!triggeredLastFrame) {
-                    try {
-                        target.getClass().getMethod(method).invoke(target);
-                    } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if(!triggeredLastFrame)
+                    target.callMethod(method);
 
                 triggered = true;
                 triggeredLastFrame = true;
