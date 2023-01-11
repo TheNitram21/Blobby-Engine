@@ -66,7 +66,14 @@ public class Player extends Entity {
      */
     public void preventMovement() {
         allowMovement = false;
-        System.out.println("MOVEMENT PREVENTED");
+    }
+
+    /**
+     * Returns whether the player can currently move or not.
+     * @return {@code true}, if the player is allowed to move, {@code false} otherwise.
+     */
+    public boolean isMovementAllowed() {
+        return allowMovement;
     }
 
     @Override
