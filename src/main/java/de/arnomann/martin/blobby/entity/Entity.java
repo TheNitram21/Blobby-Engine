@@ -32,6 +32,7 @@ public abstract class Entity implements EventListener {
         entityCount++;
         this.id = entityCount;
         this.parameters = parameters;
+        ListenerManager.registerEventListener(this);
     }
 
     /**
@@ -99,6 +100,7 @@ public abstract class Entity implements EventListener {
      * Called just before unloading a level. Should only be called by Blobby Engine internally.
      */
     public final void destroy() {
+        disable();
         BlobbyEngine.getCurrentLevel().screens.get(BlobbyEngine.getEntityScreen(this)).entities.remove(this);
     }
 
@@ -107,6 +109,9 @@ public abstract class Entity implements EventListener {
      * @see Entity#disabled()
      */
     public void disable() {
+        if(disabled)
+            return;
+
         disabled = true;
         ListenerManager.removeEventListener(this);
     }

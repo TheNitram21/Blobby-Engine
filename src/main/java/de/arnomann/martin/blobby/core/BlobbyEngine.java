@@ -191,9 +191,7 @@ public final class BlobbyEngine {
             throw new IllegalStateException("Couldn't find an entity with the classname " + classname + " in 'entities.json'!");
 
         Class<?> entityClass = Class.forName(classnameWithPackage);
-        Entity entity = (Entity) entityClass.getConstructor(Vector2d.class, Map.class).newInstance(position, properties);
-        ListenerManager.registerEventListener(entity);
-        return entity;
+        return (Entity) entityClass.getConstructor(Vector2d.class, Map.class).newInstance(position, properties);
     }
 
     /**
