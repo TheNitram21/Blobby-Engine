@@ -1,11 +1,13 @@
 import de.arnomann.martin.blobby.MathUtil;
 import de.arnomann.martin.blobby.RunConfigurations;
+import de.arnomann.martin.blobby.SaveManager;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.core.Input;
 import de.arnomann.martin.blobby.core.Renderer;
 import de.arnomann.martin.blobby.core.texture.Particle;
 import de.arnomann.martin.blobby.entity.Player;
 import de.arnomann.martin.blobby.event.*;
+import de.arnomann.martin.blobby.levels.Level;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import de.arnomann.martin.blobby.logging.Logger;
 import de.arnomann.martin.blobby.physics.Physics;
@@ -17,6 +19,7 @@ import org.joml.Vector2d;
 import org.joml.Vector2f;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +46,8 @@ public class EngineTest implements EventListener {
         BlobbyEngine.getWindow().setVSyncEnabled(false);
 
         BlobbyEngine.setPlayer(new Player(new Vector2d(0, 0), Map.of("Texture", "player", "Width", "1")));
-//        LevelLoader.loadLevel("blobby_debug", BlobbyEngine::setLevel);
-        LevelLoader.loadLevel("npc_test", BlobbyEngine::setLevel);
+//        LevelLoader.loadLevel("blobby_debug", this::changeLevel);
+        LevelLoader.loadLevel("npc_test", this::changeLevel);
 
         List<Button> buttons = new ArrayList<>();
         buttons.add(new Button(new Vector2f(0.025f, 0.1f), new Vector2f(0.225f, 0.18f),
@@ -149,6 +152,8 @@ public class EngineTest implements EventListener {
             }
 
             p.setPosition(p.getPosition().add(playerVelocity.x * event.deltaTime, playerVelocity.y * event.deltaTime));
+            SaveManager.savedValues.put("PlayerX", p.getPosition().x);
+            SaveManager.savedValues.put("PlayerY", p.getPosition().y);
 
             onGroundLastFrame = playerOnGround;
         }
@@ -175,5 +180,35 @@ public class EngineTest implements EventListener {
 
         if(event.key == Input.KEY_V)
             BlobbyEngine.getWindow().setVSyncEnabled(!BlobbyEngine.getWindow().isVSyncEnabled());
+
+        if(event.key == Input.KEY_F6) {
+            try {
+                SaveManager.save();
+                SaveManager.save("save_latest");
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(event.key == Input.KEY_F7) {
+            try {
+                SaveManager.load();
+                String levelName = (String) SaveManager.savedValues.get("CurrentLevel");
+                Vector2d playerPos = new Vector2d((double) SaveManager.savedValues.get("PlayerX"), (double) SaveManager
+                        .savedValues.get("PlayerY"));
+
+                LevelLoader.loadLevel(levelName, this::changeLevel);
+                BlobbyEngine.getPlayer().setPosition(playerPos);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+    private void changeLevel(Level level) {
+        BlobbyEngine.setLevel(level);
+        SaveManager.savedValues.put("CurrentLevel", level.fileName.substring(0, level.fileName.length() - 5));
+        SaveManager.savedValues.put("PlayerX", BlobbyEngine.getPlayer().getPosition().x);
+        SaveManager.savedValues.put("PlayerY", BlobbyEngine.getPlayer().getPosition().y);
+    }
+
 }

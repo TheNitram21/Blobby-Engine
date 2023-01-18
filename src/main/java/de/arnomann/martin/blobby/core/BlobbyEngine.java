@@ -47,6 +47,10 @@ public final class BlobbyEngine {
     public static final String SCRIPTS_PATH = "scripts/";
     /** The path to shaders. */
     public static final String SHADERS_PATH = "shaders/";
+    /**
+     * The path to save files.
+     */
+    public static final String SAVES_PATH = "saves/";
 
     private static Window window;
     private static Map<String, ITexture> textures;
