@@ -6,6 +6,7 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import de.arnomann.martin.blobby.entity.Player;
+import de.arnomann.martin.blobby.event.LevelChangedEvent;
 import de.arnomann.martin.blobby.event.ListenerManager;
 import de.arnomann.martin.blobby.event.StopEvent;
 import de.arnomann.martin.blobby.levels.Level;
@@ -467,8 +468,10 @@ public final class BlobbyEngine {
         SoundPlayer.stopAllSounds();
 
         currentLevel = level;
+        BlobbyEngine.getPlayer().setPosition(currentLevel.playerStartPosition);
         Renderer.defaultCamera.setPosition(new Vector2f(getEntityScreen(player).x * Renderer.defaultCamera.getWidth(),
                 -getEntityScreen(player).y * Renderer.defaultCamera.getHeight()));
+        ListenerManager.callEvent(new LevelChangedEvent(currentLevel));
     }
 
     /**

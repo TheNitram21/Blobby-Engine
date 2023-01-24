@@ -5,6 +5,7 @@ import de.arnomann.martin.blobby.core.texture.ITexture;
 import de.arnomann.martin.blobby.core.texture.Texture;
 import de.arnomann.martin.blobby.entity.Entity;
 import org.joml.Math;
+import org.joml.Vector2d;
 import org.joml.Vector2i;
 
 import java.util.*;
@@ -26,6 +27,8 @@ public class Level {
      * The background texture.
      */
     public final ITexture backgroundTexture;
+    /** The position where the player starts. */
+    public final Vector2d playerStartPosition;
     /** The name of the level file (not including <code>maps/</code>, but including <code>.json</code>) */
     public final String fileName;
 
@@ -40,10 +43,12 @@ public class Level {
      * @param backgroundTexture the texture displayed as the background.
      * @param fileName the name of the level file.
      */
-    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, String fileName) {
+    public Level(String title, Map<Vector2i, Screen> screens, ITexture backgroundTexture, Vector2d playerStartPosition,
+                 String fileName) {
         this.title = title;
         this.screens = screens;
         this.backgroundTexture = backgroundTexture;
+        this.playerStartPosition = playerStartPosition;
         this.fileName = fileName;
         this.settings = new HashMap<>();
 

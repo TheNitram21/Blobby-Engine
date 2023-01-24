@@ -1,5 +1,8 @@
 package de.arnomann.martin.blobby.event;
 
+import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.levels.Level;
+
 /**
  * A event listener.
  */
@@ -19,7 +22,11 @@ public interface EventListener {
     default void onKeyReleased(KeyReleasedEvent event) {}
     /** Called when a mouse button is pressed. */
     default void onMouseButtonPressed(MouseButtonPressedEvent event) {}
-    /** Called after rendering blocks and the player, but before UI. */
+    /** Called after finishing rendering a render step. */
     default void onRenderStepDone(RenderStepDoneEvent event) {}
+    /**
+     * Called after the level is changed using {@link BlobbyEngine#setLevel(Level)}
+     */
+    default void onLevelChanged(LevelChangedEvent event) {}
 
 }

@@ -99,7 +99,6 @@ public class LevelLoader {
                 screens.put(new Vector2i(screenX, screenY), new Screen(entities));
             }
 
-            BlobbyEngine.getPlayer().setPosition(json.getDouble("PlayerStartX"), json.getDouble("PlayerStartY"));
             String title = json.getString("Name");
 
             ITexture backgroundTexture = null;
@@ -110,7 +109,8 @@ public class LevelLoader {
 
             BlobbyEngine.renderPlayer = true;
 
-            level = new Level(title, screens, backgroundTexture, name + ".json");
+            level = new Level(title, screens, backgroundTexture, new Vector2d(json.getDouble("PlayerStartX"),
+                    json.getDouble("PlayerStartY")), name + ".json");
 
             logger.info("Level '" + fileName + "' loaded!");
 
