@@ -44,9 +44,11 @@ public class Shader {
             "    float smallestDistance = 1.0;\n" +
             "    for(int i = 0; i < MAX_LIGHTS; i++) {\n" +
             "        if(i >= lightCount) break;\n" +
-            "        vec4 lightPosition = viewMatrix * vec4(lights[i].x / 5.0, lights[i].y / -5.0, 0.0, 1.0);\n" +
-            "        float distance = distance(lightPosition.xy * vec2(-unitMultiplier * 5.0, unitMultiplier * -5.0),\n" +
-            "                vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lights[i].z;\n" +
+            "        vec2 pixelDivider = vec2(screenWidth / 256.0, screenHeight / -144.0);\n" +
+            "        vec4 lightPosition = viewMatrix * vec4(lights[i].x / 5.0, lights[i].y / -5.0," +
+            "                0.0, 1.0);\n" +
+            "        float distance = distance(lightPosition.xy * vec2(-unitMultiplier * pixelDivider.x, unitMultiplier *" +
+            "                pixelDivider.y), vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lights[i].z;\n" +
             "        smallestDistance = min(smallestDistance, distance);\n" +
             "    }\n" +
             "    if(flipped == 1) {\n" +

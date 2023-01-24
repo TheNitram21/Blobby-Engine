@@ -265,6 +265,14 @@ public final class Window {
     }
 
     /**
+     * Returns the size of the window.
+     * @return the window size.
+     */
+    public Vector2i getWindowSize() {
+        return new Vector2i(getWidth(), getHeight());
+    }
+
+    /**
      * Sets the window to fullscreen or windowed mode.
      * @param fullscreen {@code true} if the window should fill the entire screen, {@code false} otherwise.
      */
@@ -272,11 +280,12 @@ public final class Window {
         this.fullscreen = fullscreen;
 
         if(fullscreen) {
-            GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            glfwSetWindowMonitor(windowId, glfwGetPrimaryMonitor(), 0, 0, videoMode.width(), videoMode.height(),
-                    GLFW_DONT_CARE);
+            glfwSetWindowMonitor(windowId, glfwGetPrimaryMonitor(), 0, 0, BlobbyEngine.getPrimaryMonitorWidth(),
+                    BlobbyEngine.getPrimaryMonitorHeight(), GLFW_DONT_CARE);
+            glViewport(0, 0, BlobbyEngine.getPrimaryMonitorWidth(), BlobbyEngine.getPrimaryMonitorHeight());
         } else {
             glfwSetWindowMonitor(windowId, 0, windowX, windowY, width, height, 0);
+            glViewport(0, 0, width, height);
         }
 
     }
@@ -315,14 +324,6 @@ public final class Window {
      */
     public boolean isVSyncEnabled() {
         return vSync;
-    }
-
-    /**
-     * Returns the size of the window.
-     * @return the window size.
-     */
-    public Vector2i getWindowSize() {
-        return new Vector2i(width, height);
     }
 
 }
