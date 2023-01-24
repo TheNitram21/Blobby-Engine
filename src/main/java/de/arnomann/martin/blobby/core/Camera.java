@@ -18,6 +18,7 @@ public class Camera {
 
     private Vector2f position = new Vector2f();
     private float rotation = 0f;
+    private float zoom = 1f;
 
     /**
      * Creates a new camera.
@@ -75,6 +76,23 @@ public class Camera {
      */
     public void setRotation(float rotation) {
         this.rotation = rotation;
+        recalculateViewMatrix();
+    }
+
+    /**
+     * Returns the zoom of the camera.
+     * @return the camera's zoom
+     */
+    public float getZoom() {
+        return zoom;
+    }
+
+    /**
+     * Sets the zoom of the camera. A zoom of {@code 2f} means that the player can see twice as much.
+     * @param zoom the new zoom.
+     */
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
         recalculateViewMatrix();
     }
 
@@ -157,7 +175,8 @@ public class Camera {
 
     private void recalculateViewMatrix() {
         Matrix4f transform = new Matrix4f().translate(new Vector3f(position, 0f))
-                .mul(new Matrix4f().rotate(Math.toRadians(rotation), new Vector3f(0, 0, 1)));
+                .mul(new Matrix4f().rotate(Math.toRadians(rotation), new Vector3f(0, 0, 1)))
+                .mul(new Matrix4f().scale(zoom, zoom, 1f));
 
         viewMatrix = transform.invert();
         viewProjectionMatrix = new Matrix4f(projectionMatrix).mul(viewMatrix);
