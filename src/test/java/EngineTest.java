@@ -74,6 +74,7 @@ public class EngineTest implements EventListener {
 
     @Override
     public void onUpdate(UpdateEvent event) {
+        Renderer.addLightEmitter(new Vector2f(0.5f, 0.5f), 0.5f);
         BlobbyEngine.getWindow().setTitle("Blobby Engine Test - " + (int) Math.floor(event.fps) + " FPS");
         UI.drawUI(new Vector2f(0.025f, 0.025f), new Vector2f(0.3f, 0.15f), BlobbyEngine.getTexture("uiTopLeft"));
 

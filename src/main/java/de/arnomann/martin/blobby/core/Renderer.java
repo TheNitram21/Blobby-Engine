@@ -52,6 +52,7 @@ public final class Renderer {
     /** The active camera used for rendering. */
     public static Camera activeCamera = defaultCamera;
 
+    private static final List<Float> lightsList = new ArrayList<>();
     private static Float[] lights = new Float[] {};
     private static float ambientLight = 0.6f;
 
@@ -109,22 +110,21 @@ public final class Renderer {
 
         Vector2i playerScreen = BlobbyEngine.getEntityScreen(player);
 
-        List<Float> lights = new ArrayList<>();
         if(level != null) {
             for (Entity entity : level.getAllEntities()) {
                 if (!(entity instanceof Light))
                     continue;
 
-                lights.add((float) (entity.getPosition().x + 0.5f));
-                lights.add((float) (entity.getPosition().y + 0.5f));
-                lights.add(Float.valueOf(entity.getParameters().get("Radius")));
+                lightsList.add((float) (entity.getPosition().x + 0.5f));
+                lightsList.add((float) (entity.getPosition().y + 0.5f));
+                lightsList.add(Float.valueOf(entity.getParameters().get("Radius")));
             }
 
-            Renderer.lights = new Float[lights.size()];
-            for(int i = 0; i < lights.size(); i++)
-                Renderer.lights[i] = lights.get(i);
+            lights = new Float[lightsList.size()];
+            for(int i = 0; i < lightsList.size(); i++)
+                lights[i] = lightsList.get(i);
         } else {
-            Renderer.lights = new Float[] {};
+            lights = new Float[] {};
         }
 
         if(currentScreen == null) {
@@ -255,8 +255,20 @@ public final class Renderer {
         glfwSwapBuffers(curWindow.getId());
         queuedTextures.clear();
         queuedUITextures.clear();
+        lightsList.clear();
 
         Particle.updateParticleList();
+    }
+
+    /**
+     * Adds a new light emitter at a position with a radius.
+     * @param position the light's position
+     * @param radius the light's radius
+     */
+    public static void addLightEmitter(Vector2f position, float radius) {
+        lightsList.add(position.x);
+        lightsList.add(position.y);
+        lightsList.add(radius);
     }
 
     /**
