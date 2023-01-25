@@ -60,6 +60,6 @@ public class TestNPC extends BaseNPC {
             return;
 
         Renderer.renderOnUnits((float) getPosition().x, (float) getPosition().y, getWidth(), getHeight(),
-                BlobbyEngine.getTexture("player"), Renderer.defaultShader);
+                0f, BlobbyEngine.getTexture("player"), Renderer.defaultShader);
     }
 }

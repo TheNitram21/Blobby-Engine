@@ -159,7 +159,7 @@ public final class Renderer {
             Vector2i backgroundSize = new Vector2i(level.getWidthInScreens() * 16, level.getHeightInScreens() * 9);
 
             renderOnUnits(level.getFirstScreenX() * 16, level.getFirstScreenY() * 9, backgroundSize.x, backgroundSize.y,
-                    level.backgroundTexture, defaultShader);
+                    0f, level.backgroundTexture, defaultShader);
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_BACKGROUND));
 
@@ -170,7 +170,8 @@ public final class Renderer {
                             !entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset());
                         renderOnUnits((float) entityPos.x, (float) entityPos.y, entity.getWidth(), entity.getHeight(),
-                                entity.getTexture(), (entity.getShader() != null ? entity.getShader() : defaultShader));
+                                entity.getRotation(), entity.getTexture(), (entity.getShader() != null ?
+                                        entity.getShader() : defaultShader));
                     }
                 });
             });
@@ -179,7 +180,7 @@ public final class Renderer {
 
         if(BlobbyEngine.renderPlayer) {
             renderOnUnits((float) player.getPosition().x, (float) player.getPosition().y - player.getHeight(),
-                    player.getWidth(), player.getHeight(), player.getTexture(),
+                    player.getWidth(), player.getHeight(), player.getRotation(), player.getTexture(),
                     (player.getShader() != null ? player.getShader() : defaultShader));
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PLAYER));
@@ -190,7 +191,8 @@ public final class Renderer {
                     if(entity instanceof Block && entity.getTexture() != null) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset());
                         renderOnUnits((float) entityPos.x, (float) entityPos.y, entity.getWidth(), entity.getHeight(),
-                                entity.getTexture(), (entity.getShader() != null ? entity.getShader() : defaultShader));
+                                0f, entity.getTexture(), (entity.getShader() != null ? entity.getShader() :
+                                        defaultShader));
                     }
                 });
             });
@@ -204,7 +206,8 @@ public final class Renderer {
                             entity.renderInFrontOfPlayer()) {
                         Vector2d entityPos = new Vector2d(entity.getPosition()).add(entity.getRenderingOffset());
                         renderOnUnits((float) entityPos.x, (float) entityPos.y, entity.getWidth(), entity.getHeight(),
-                                entity.getTexture(), (entity.getShader() != null ? entity.getShader() : defaultShader));
+                                entity.getRotation(), entity.getTexture(), (entity.getShader() != null ?
+                                        entity.getShader() : defaultShader));
                     }
                 });
             });
@@ -216,7 +219,7 @@ public final class Renderer {
         }
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_PARTICLES));
 
-        queuedTextures.forEach((pos, tex) -> renderOnUnits(pos.x, pos.y, pos.z, pos.w, tex, defaultShader));
+        queuedTextures.forEach((pos, tex) -> renderOnUnits(pos.x, pos.y, pos.z, pos.w, 0f, tex, defaultShader));
         queuedUITextures.forEach((uvs, tex) -> renderUV(new Vector2f(uvs.x, uvs.y), new Vector2f(uvs.z, uvs.w), tex, uiShader));
         ListenerManager.callEvent(new RenderStepDoneEvent(RenderStepDoneEvent.RenderStep.RENDER_QUEUED_TEXTURES));
 
@@ -265,11 +268,19 @@ public final class Renderer {
      * @param texture the texture to use for the quad.
      * @param shader the shader to use for rendering the quad.
      */
-    public static void renderOnUnits(float x, float y, float width, float height, ITexture texture, Shader shader) {
+    public static void renderOnUnits(float x, float y, float width, float height, float rotationDegrees, ITexture texture,
+                                     Shader shader) {
         x = MathUtil.scaleNumber(0, 16, activeCamera.getLeft(), activeCamera.getRight(), x);
         y = MathUtil.scaleNumber(0, 9, activeCamera.getTop(), activeCamera.getBottom(), y);
         width = MathUtil.scaleNumber(0, 8, 0, activeCamera.getRight(), width);
         height = -MathUtil.scaleNumber(0, 4.5f, 0, activeCamera.getTop(), height);
+
+        Vector2f[] vertices = new Vector2f[4];
+        vertices[0] = new Vector2f(x, y);
+        vertices[1] = new Vector2f(x + width, y);
+        vertices[2] = new Vector2f(x + width, y + height);
+        vertices[3] = new Vector2f(x, y + height);
+        vertices = MathUtil.rotateQuad(vertices, rotationDegrees);
 
         if(!activeCamera.couldRender(x, y, x + width, y + height))
             return;
@@ -299,10 +310,10 @@ public final class Renderer {
         shader.setUniform1i("flipped", booleanToInt(texture.isFlipped()));
 
         VERTEX_ARRAY.setVertices(new float[] {
-                x, y, // top left
-                x + width, y,  // top right
-                x + width, y + height, // bottom right
-                x, y + height // bottom left
+                vertices[0].x, vertices[0].y, // top left
+                vertices[1].x, vertices[1].y, // top right
+                vertices[2].x, vertices[2].y, // bottom right
+                vertices[3].x, vertices[3].y // bottom left
         }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();
     }
 
@@ -383,7 +394,7 @@ public final class Renderer {
 
         VERTEX_ARRAY.setVertices(new float[] {
                 vertices[0].x, vertices[0].y, // top left
-                vertices[1].x, vertices[1].y,  // top right
+                vertices[1].x, vertices[1].y, // top right
                 vertices[2].x, vertices[2].y, // bottom right
                 vertices[3].x, vertices[3].y // bottom left
         }).setTextureCoords(QUAD_TEXTURE_COORDS).setIndices(QUAD_INDICES).render();

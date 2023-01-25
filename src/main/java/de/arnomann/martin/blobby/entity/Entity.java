@@ -36,31 +36,31 @@ public abstract class Entity implements EventListener {
     }
 
     /**
-     * Returns the position of the entity. OVERRIDE.
+     * Returns the position of the entity.
      * @return the position.
      */
     public abstract Vector2d getPosition();
 
     /**
-     * Sets the position of the entity. OVERRIDE.
+     * Sets the position of the entity. The default implementation doesn't do anything.
      * @param position the new position.
      */
     public void setPosition(Vector2d position) {}
 
     /**
-     * Returns the width of the entity in units. OVERRIDE.
+     * Returns the width of the entity in units.
      * @return the width.
      */
     public abstract int getWidth();
 
     /**
-     * Returns the height of the entity in units. OVERRIDE.
+     * Returns the height of the entity in units.
      * @return the height.
      */
     public abstract int getHeight();
 
     /**
-     * Returns the offset of the texture when rendering in units. OVERRIDE.
+     * Returns the offset of the texture when rendering in units.
      * @return the offset.
      */
     public Vector2d getRenderingOffset() {
@@ -68,7 +68,15 @@ public abstract class Entity implements EventListener {
     }
 
     /**
-     * Returns the texture of the entity. OVERRIDE.
+     * Returns the rotation of the entity in degrees. The rotation will only affect rendering and not the built-in collision checks.
+     * @return the rotation.
+     */
+    public float getRotation() {
+        return 0f;
+    }
+
+    /**
+     * Returns the texture of the entity. If {@code null}, the entity won't be rendered by the default renderer.
      * @return the texture.
      */
     public ITexture getTexture() {

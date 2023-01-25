@@ -1,7 +1,6 @@
 package de.arnomann.martin.blobby.entity;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
-import de.arnomann.martin.blobby.core.Renderer;
 import de.arnomann.martin.blobby.levels.LevelLoader;
 import org.joml.Vector2d;
 
