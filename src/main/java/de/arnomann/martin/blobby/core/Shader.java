@@ -11,20 +11,21 @@ import static org.lwjgl.opengl.GL20.*;
 /** An OpenGL shader. */
 public class Shader {
 
+    private static final String glslVersion = "#version 330 core";
     /** The default vertex shader. */
-    public static final String DEFAULT_VERTEX = "#version 330 core\n" +
-            "in vec3 position;\n" +
-            "in vec2 textures;\n" +
+    public static final String DEFAULT_VERTEX = glslVersion + "\n" +
+            "layout(location = 0) in vec3 in_Position;\n" +
+            "layout(location = 1) in vec2 in_TextureCoords;\n" +
             "uniform mat4 viewProjectionMatrix;\n" +
-            "out vec2 texCoords;\n" +
+            "out vec2 textureCoords;\n" +
             "void main() {\n" +
-            "    texCoords = textures;\n" +
-            "    gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
+            "    textureCoords = in_TextureCoords;\n" +
+            "    gl_Position = viewProjectionMatrix * vec4(in_Position, 1.0);\n" +
             "}\n";
     /** The default fragment shader. */
-    public static final String DEFAULT_FRAGMENT = "#version 330 core\n" +
+    public static final String DEFAULT_FRAGMENT = glslVersion + "\n" +
             "#define MAX_LIGHTS 768\n" +
-            "layout(location = 0) out vec4 outColor;\n" +
+            "in vec2 textureCoords;\n" +
             "uniform sampler2D texture;\n" +
             "uniform mat4 viewMatrix;\n" +
             "uniform mat4 projectionMatrix;\n" +
@@ -38,9 +39,9 @@ public class Shader {
             "uniform int screenWidth;\n" +
             "uniform int screenHeight;\n" +
             "uniform int flipped;\n" +
-            "in vec2 texCoords;\n" +
+            "out vec4 outColor;\n" +
             "void main() {\n" +
-            "    vec2 textureCoordinates = texCoords;\n" +
+            "    vec2 textureCoordinates = textureCoords;\n" +
             "    float smallestDistance = 1.0;\n" +
             "    for(int i = 0; i < MAX_LIGHTS; i++) {\n" +
             "        if(i >= lightCount) break;\n" +
@@ -59,23 +60,23 @@ public class Shader {
             "    outColor = vec4(brightness, brightness, brightness, 1.0) * color;\n" +
             "}\n";
     /** The UI vertex shader. */
-    public static final String UI_VERTEX = "#version 330 core\n" +
-            "in vec3 position;\n" +
-            "in vec2 textures;\n" +
+    public static final String UI_VERTEX = glslVersion + "\n" +
+            "layout(location = 0) in vec3 in_Position;\n" +
+            "layout(location = 1) in vec2 in_TextureCoords;\n" +
             "uniform mat4 viewProjectionMatrix;\n" +
-            "out vec2 texCoords;\n" +
+            "out vec2 textureCoords;\n" +
             "void main() {\n" +
-            "    texCoords = textures;\n" +
-            "    gl_Position = viewProjectionMatrix * vec4(position, 1.0);\n" +
+            "    textureCoords = in_TextureCoords;\n" +
+            "    gl_Position = viewProjectionMatrix * vec4(in_Position, 1.0);\n" +
             "}\n";
     /** The UI fragment shader. */
-    public static final String UI_FRAGMENT = "#version 330 core\n" +
-            "layout(location = 0) out vec4 outColor;\n" +
+    public static final String UI_FRAGMENT = glslVersion + "\n" +
+            "in vec2 textureCoords;\n" +
             "uniform sampler2D texture;\n" +
             "uniform int flipped;\n" +
-            "in vec2 texCoords;\n" +
+            "out vec4 outColor;\n" +
             "void main() {\n" +
-            "    vec2 textureCoordinates = texCoords;\n" +
+            "    vec2 textureCoordinates = textureCoords;\n" +
             "    if(flipped == 1) {\n" +
             "        textureCoordinates.x *= -1;\n" +
             "    }\n" +
