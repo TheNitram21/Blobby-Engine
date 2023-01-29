@@ -20,8 +20,7 @@ import java.nio.IntBuffer;
 import java.util.*;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL46.*;
 import static de.arnomann.martin.blobby.MathUtil.booleanToInt;
 
 /**
@@ -444,15 +443,19 @@ public final class Renderer {
     static class VertexArray {
 
         public int count;
-        private int vbo;
-        private int tbo;
-        private int ibo;
+        private final int vao;
+        private final int vbo;
+        private final int tbo;
+        private final int ibo;
 
-        private static FloatBuffer VERTEX_BUFFER = BufferUtils.createFloatBuffer(8);
-        private static IntBuffer TEXTURE_COORD_BUFFER = BufferUtils.createIntBuffer(8);
-        private static IntBuffer INDICES_BUFFER = BufferUtils.createIntBuffer(6);
+        private final static FloatBuffer VERTEX_BUFFER = BufferUtils.createFloatBuffer(8);
+        private final static IntBuffer TEXTURE_COORD_BUFFER = BufferUtils.createIntBuffer(8);
+        private final static IntBuffer INDICES_BUFFER = BufferUtils.createIntBuffer(6);
 
         public VertexArray() {
+            vao = glGenVertexArrays();
+            glBindVertexArray(vao);
+
             vbo = glGenBuffers();
             tbo = glGenBuffers();
             ibo = glGenBuffers();
@@ -460,6 +463,9 @@ public final class Renderer {
 
         public VertexArray(float[] vertices, int[] textureCoords, int[] indices) {
             count = indices.length;
+
+            vao = glGenVertexArrays();
+            glBindVertexArray(vao);
 
             VERTEX_BUFFER.put(vertices);
             VERTEX_BUFFER.flip();

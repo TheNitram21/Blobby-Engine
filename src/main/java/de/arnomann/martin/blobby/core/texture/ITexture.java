@@ -1,8 +1,6 @@
 package de.arnomann.martin.blobby.core.texture;
 
-import org.joml.Vector4f;
-
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL46.*;
 
 /**
  * A basic texture.

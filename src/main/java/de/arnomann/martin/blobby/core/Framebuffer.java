@@ -1,6 +1,6 @@
 package de.arnomann.martin.blobby.core;
 
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL46.*;
 
 /**
  * An OpenGL framebuffer.

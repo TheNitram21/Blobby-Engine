@@ -1,15 +1,12 @@
 package de.arnomann.martin.blobby.core.texture;
 
 import org.joml.Vector2i;
-import org.joml.Vector4f;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBindTexture;
 
 /**
  * Represents a texture that has animations.

@@ -1,6 +1,5 @@
 package de.arnomann.martin.blobby.core.texture;
 
-import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
@@ -9,8 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL46.*;
 
 /**
  * A static texture.

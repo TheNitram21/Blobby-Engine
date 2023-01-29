@@ -18,8 +18,7 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL46.*;
 
 /**
  * Represents a basic window.
@@ -37,8 +36,6 @@ public final class Window {
     private boolean fullscreen;
 
     private boolean started = false;
-
-    private Framebuffer framebuffer;
 
     /**
      * The maximum amount of frames rendered each second. Negative values will make the framerate infinite.
@@ -68,8 +65,9 @@ public final class Window {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
         glfwWindowHint(GLFW_SAMPLES, runConfig.multiSampling);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         windowId = glfwCreateWindow(width, height, title, runConfig.fullscreen ? glfwGetPrimaryMonitor() : 0, 0);
         if(windowId == 0) {
@@ -124,9 +122,6 @@ public final class Window {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDepthFunc(GL_LEQUAL);
-
-            framebuffer = new Framebuffer(width, height);
-            framebuffer.unbind();
 
             Texture iconTexture;
 
@@ -298,14 +293,6 @@ public final class Window {
      */
     public boolean getFullscreen() {
         return fullscreen;
-    }
-
-    /**
-     * Returns an alternate framebuffer.
-     * @return the framebuffer.
-     */
-    public Framebuffer getFramebuffer() {
-        return framebuffer;
     }
 
     /**
