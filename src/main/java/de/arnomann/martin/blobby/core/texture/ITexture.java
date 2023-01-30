@@ -32,6 +32,12 @@ public interface ITexture {
     int getHeight();
 
     /**
+     * Returns the id of the texture.
+     * @return the texture's id.
+     */
+    int getId();
+
+    /**
      * Returns the filename of the texture. <i>null</i> if the texture was read from a buffered image.
      * @return the filename.
      */

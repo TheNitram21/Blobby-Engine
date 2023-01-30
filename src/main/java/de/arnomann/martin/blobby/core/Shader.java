@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL46.*;
 /** An OpenGL shader. */
 public class Shader {
 
-    private static final String glslVersion = "#version 330 core";
+    private static final String glslVersion = "#version 460 core";
     /** The default vertex shader. */
     public static final String DEFAULT_VERTEX = glslVersion + "\n" +
             "layout(location = 0) in vec3 in_Position;\n" +
@@ -95,7 +95,6 @@ public class Shader {
         id = createShader(vertexShader, fragmentShader);
         if(id == -1) {
             BlobbyEngine.getLogger().error("An error occurred whilst trying to create the shader!");
-            return;
         }
     }
 
@@ -108,7 +107,6 @@ public class Shader {
         id = createShader(BlobbyEngine.readFile(vertexShaderPath), BlobbyEngine.readFile(fragmentShaderPath));
         if(id == -1) {
             BlobbyEngine.getLogger().error("An error occurred whilst trying to create the shader!");
-            return;
         }
     }
 

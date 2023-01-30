@@ -34,6 +34,7 @@ public class Framebuffer {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureId, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     /**
@@ -45,6 +46,7 @@ public class Framebuffer {
         this.width = width;
         this.height = height;
 
+        glDeleteFramebuffers(id);
         create();
     }
 

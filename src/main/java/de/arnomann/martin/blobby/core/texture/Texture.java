@@ -25,6 +25,19 @@ public class Texture implements ITexture {
 
     protected boolean flipped = false;
 
+    public Texture(int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        id = glGenTextures();
+        bind(0);
+
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
+    }
+
     /**
      * Creates a texture from a buffered image. The filename will not be set.
      * @param image the buffered image.
@@ -131,6 +144,11 @@ public class Texture implements ITexture {
     @Override
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

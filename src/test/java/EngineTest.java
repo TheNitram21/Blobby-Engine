@@ -57,7 +57,6 @@ public class EngineTest implements EventListener {
         BlobbyEngine.getWindow().setWindowSize(1280, 720);
         Renderer.setScreenTransitionDuration(0.5);
         Renderer.setAmbientLight(0.55f);
-        Renderer.defaultCamera.setZoom(0.9f);
     }
 
     @Override

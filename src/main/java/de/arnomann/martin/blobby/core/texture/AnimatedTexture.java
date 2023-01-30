@@ -106,6 +106,11 @@ public class AnimatedTexture implements ITexture {
     }
 
     @Override
+    public int getId() {
+        return textures.get(textureIndex).getId();
+    }
+
+    @Override
     public String getFilename() {
         return filename;
     }
