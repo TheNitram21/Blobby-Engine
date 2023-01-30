@@ -53,7 +53,7 @@ Remember to replace `VERSION` with the version you want to get.
 To create a simple window, first download the `BlobbyEngineFiles.zip` from the [latest release](https://github.com/TheNitram21/Blobby-Engine/releases/latest)
 and unzip it into a directory for the game. The ZIP file does contain the whole JRE (Java Runtime Environment) on version 11,
 so the download could take some time (if you have a bad internet connection) and Blobby Engine will only support Java 11.<br>
-Open your IDE. If you don't want to compile you game and create an executable file everytime you want to test your game, create your project inside the game directory.
+Open your IDE. If you don't want to compile your game and create an executable file everytime you want to test your game, create your project inside the game directory.
 Then download the engine using Maven (see [Download](#download)). For opening a basic window using Blobby Engine, the following code is needed:
 ```java
 public class Game implements EventListener {
@@ -65,7 +65,7 @@ public class Game implements EventListener {
 ```
 This will create a window with the title "Title", a resolution of 1280x720 (the window has to have an aspect ratio of 16:9) and the default icon.
 Also, the window will not be in fullscreen mode.<br>
-But when running the now, it will crash! Why? That's because you haven't loaded any level. Open the **B**lobby **E**ngine **E**ditor (located in `bin/BEE.exe` from the game directory) and save an empty level into the `map` directory inside your game directory (you'll have to set some level parameters, BEE will tell you which).<br>
+But when running the game now, it will crash! Why? That's because you haven't loaded any level. Open the **B**lobby **E**ngine **E**ditor (located in `bin/BEE.exe` from the game directory) and save an empty level into the `map` directory inside your game directory (you'll have to set some level parameters, BEE will tell you which).<br>
 Now back to the code: Add the following method to your main class.
 ```java
 @Override
