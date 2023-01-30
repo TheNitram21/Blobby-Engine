@@ -39,17 +39,18 @@ public class Shader {
             "uniform int screenHeight;\n" +
             "uniform int flipped;\n" +
             "out vec4 outColor;\n" +
+            "float calculateLightDistance(vec3 light) {\n" +
+            "    vec2 pixelDivider = vec2(screenWidth / 256.0, screenHeight / -144.0);\n" +
+            "    vec4 lightPosition = viewMatrix * vec4(light.x / 5.0, light.y / -5.0, 0.0, 1.0);\n" +
+            "    return distance(lightPosition.xy * vec2(-unitMultiplier * pixelDivider.x, unitMultiplier *\n" +
+            "            pixelDivider.y), vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / light.z;\n" +
+            "}\n" +
             "void main() {\n" +
             "    vec2 textureCoordinates = textureCoords;\n" +
             "    float smallestDistance = 1.0;\n" +
             "    for(int i = 0; i < MAX_LIGHTS; i++) {\n" +
             "        if(i >= lightCount) break;\n" +
-            "        vec2 pixelDivider = vec2(screenWidth / 256.0, screenHeight / -144.0);\n" +
-            "        vec4 lightPosition = viewMatrix * vec4(lights[i].x / 5.0, lights[i].y / -5.0," +
-            "                0.0, 1.0);\n" +
-            "        float distance = distance(lightPosition.xy * vec2(-unitMultiplier * pixelDivider.x, unitMultiplier *" +
-            "                pixelDivider.y), vec2(0.0, screenHeight) - gl_FragCoord.xy) / unitMultiplier / lights[i].z;\n" +
-            "        smallestDistance = min(smallestDistance, distance);\n" +
+            "        smallestDistance = min(smallestDistance, calculateLightDistance(lights[i]));\n" +
             "    }\n" +
             "    if(flipped == 1) {\n" +
             "        textureCoordinates.x *= -1;\n" +
