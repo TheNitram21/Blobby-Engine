@@ -531,7 +531,6 @@ public final class Renderer {
             glVertexAttribPointer(1, 2, GL_INT, false, 0, 0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
             glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
-            glDrawArrays(GL_TRIANGLES, 0, count);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
