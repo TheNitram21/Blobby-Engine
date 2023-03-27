@@ -32,6 +32,6 @@ public interface EventListener {
     /** Called after a save file is saved using {@link SaveManager#save()} */
     default void onSave(SaveEvent event) {}
     /** Called after a save file is loaded using {@link SaveManager#load()} */
-    default void onLOad(LoadEvent event) {}
+    default void onLoad(LoadEvent event) {}
 
 }
