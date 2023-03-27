@@ -46,18 +46,18 @@ public class Physics {
         if(Arrays.asList(entityClassNames).contains("Player")) {
             Player p = BlobbyEngine.getPlayer();
             collides.set(r.intersects(p.getPosition().x, p.getPosition().y, p.getWidth(), p.getHeight()));
-        } else {
-            BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
-                screen.entities.forEach(e -> {
-                    if(!Arrays.asList(entityClassNames).contains(e.getClass().getSimpleName()))
-                        return;
-
-                    if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight())) {
-                        collides.set(true);
-                    }
-                });
-            });
         }
+
+        BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> screen.entities.forEach(e -> {
+            if(e.disabled())
+                return;
+            if(!Arrays.asList(entityClassNames).contains(e.getClass().getSimpleName()))
+                return;
+
+            if(r.intersects(e.getPosition().x, e.getPosition().y, e.getWidth(), e.getHeight())) {
+                collides.set(true);
+            }
+        }));
 
         return collides.get();
     }
@@ -75,18 +75,18 @@ public class Physics {
         if(Arrays.asList(entityClassNames).contains("Player")) {
             Player p = BlobbyEngine.getPlayer();
             collides.set(distance(circleCenter, p.getPosition()) < circleRadius);
-        } else {
-            BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> {
-                screen.entities.forEach(e -> {
-                    if(!Arrays.asList(entityClassNames).contains(e.getClass().getSimpleName()))
-                        return;
-
-                    if(distance(circleCenter, e.getPosition()) < circleRadius) {
-                        collides.set(true);
-                    }
-                });
-            });
         }
+
+        BlobbyEngine.getCurrentLevel().screens.forEach((posS, screen) -> screen.entities.forEach(e -> {
+            if(e.disabled())
+                return;
+            if(!Arrays.asList(entityClassNames).contains(e.getClass().getSimpleName()))
+                return;
+
+            if(distance(circleCenter, e.getPosition()) < circleRadius) {
+                collides.set(true);
+            }
+        }));
 
         return collides.get();
     }
