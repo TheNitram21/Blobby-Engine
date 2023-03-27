@@ -1,6 +1,9 @@
 package de.arnomann.martin.blobby;
 
 import de.arnomann.martin.blobby.core.BlobbyEngine;
+import de.arnomann.martin.blobby.event.ListenerManager;
+import de.arnomann.martin.blobby.event.LoadEvent;
+import de.arnomann.martin.blobby.event.SaveEvent;
 
 import java.io.*;
 import java.time.OffsetDateTime;
@@ -29,6 +32,8 @@ public class SaveManager {
         outputStream.writeObject(savedValues);
 
         outputStream.close();
+
+        ListenerManager.callEvent(new SaveEvent());
     }
 
     public static HashMap<String, Object> load() throws IOException, ClassNotFoundException {
@@ -63,6 +68,8 @@ public class SaveManager {
         inputStream.close();
         savedValues.clear();
         savedValues.putAll((HashMap<String, Object>) input);
+
+        ListenerManager.callEvent(new LoadEvent());
         return savedValues;
     }
 

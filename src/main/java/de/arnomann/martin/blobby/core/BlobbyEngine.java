@@ -44,13 +44,11 @@ public final class BlobbyEngine {
     public static final String MAPS_PATH = "maps/";
     /** The path to sounds. */
     public static final String SOUNDS_PATH = "sounds/";
-    /** The path to scripts. **/
+    /** The path to scripts. */
     public static final String SCRIPTS_PATH = "scripts/";
     /** The path to shaders. */
     public static final String SHADERS_PATH = "shaders/";
-    /**
-     * The path to save files.
-     */
+    /** The path to save files. */
     public static final String SAVES_PATH = "saves/";
 
     private static Window window;

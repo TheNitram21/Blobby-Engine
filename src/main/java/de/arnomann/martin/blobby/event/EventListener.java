@@ -1,5 +1,6 @@
 package de.arnomann.martin.blobby.event;
 
+import de.arnomann.martin.blobby.SaveManager;
 import de.arnomann.martin.blobby.core.BlobbyEngine;
 import de.arnomann.martin.blobby.levels.Level;
 
@@ -28,5 +29,9 @@ public interface EventListener {
      * Called after the level is changed using {@link BlobbyEngine#setLevel(Level)}
      */
     default void onLevelChanged(LevelChangedEvent event) {}
+    /** Called after a save file is saved using {@link SaveManager#save()} */
+    default void onSave(SaveEvent event) {}
+    /** Called after a save file is loaded using {@link SaveManager#load()} */
+    default void onLOad(LoadEvent event) {}
 
 }
