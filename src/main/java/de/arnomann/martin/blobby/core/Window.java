@@ -255,8 +255,10 @@ public final class Window {
         this.width = width;
         this.height = height;
 
-        glfwSetWindowSize(windowId, this.width, this.height);
-        BlobbyEngine.recalculateUnitMultiplier();
+        if(!fullscreen) {
+            glfwSetWindowSize(windowId, this.width, this.height);
+            BlobbyEngine.recalculateUnitMultiplier();
+        }
 
         return true;
     }
