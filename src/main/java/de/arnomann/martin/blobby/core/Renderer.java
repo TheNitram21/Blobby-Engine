@@ -141,11 +141,7 @@ public final class Renderer {
                 screenTransition = screenTransitionDuration;
 
             if(screenTransition >= screenTransitionDuration) {
-                defaultCamera.setPosition(new Vector2f(playerScreen.x * defaultCamera.getWidth(),
-                        playerScreen.y * defaultCamera.getHeight() * -1));
-                screenTransition = 0;
-                currentScreen = playerScreen;
-                BlobbyEngine.transitioningScreen = false;
+                resetScreenTransition();
             } else {
                 Vector2i screenDiff = new Vector2i(playerScreen).sub(currentScreen);
                 defaultCamera.setPosition(cameraPositionAtScreenTransitionStart.add(new Vector2f(
@@ -438,6 +434,18 @@ public final class Renderer {
      */
     public static double getScreenTransitionDuration() {
         return screenTransitionDuration;
+    }
+
+    /**
+     * Resets any current screen transition.
+     */
+    public static void resetScreenTransition() {
+        Vector2i playerScreen = BlobbyEngine.getEntityScreen(BlobbyEngine.getPlayer());
+        defaultCamera.setPosition(new Vector2f(playerScreen.x * defaultCamera.getWidth(),
+                playerScreen.y * defaultCamera.getHeight() * -1));
+        screenTransition = 0;
+        currentScreen = playerScreen;
+        BlobbyEngine.transitioningScreen = false;
     }
 
     static class VertexArray {
