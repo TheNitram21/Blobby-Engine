@@ -3,11 +3,8 @@ package de.arnomann.martin.blobby.core;
 import de.arnomann.martin.blobby.MathUtil;
 import de.arnomann.martin.blobby.RunConfigurations;
 import de.arnomann.martin.blobby.core.texture.Texture;
-import de.arnomann.martin.blobby.event.LateUpdateEvent;
+import de.arnomann.martin.blobby.event.*;
 import de.arnomann.martin.blobby.logging.ErrorManagement;
-import de.arnomann.martin.blobby.event.ListenerManager;
-import de.arnomann.martin.blobby.event.StartEvent;
-import de.arnomann.martin.blobby.event.UpdateEvent;
 import de.arnomann.martin.blobby.sound.SoundPlayer;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFWImage;
@@ -176,6 +173,8 @@ public final class Window {
                     glfwPollEvents();
                 }
             }
+
+            ListenerManager.callEvent(new StopEvent());
 
             if(SoundPlayer.isInitialized())
                 SoundPlayer.destroy();

@@ -531,7 +531,6 @@ public final class BlobbyEngine {
 
         logger.destroy();
         LevelLoader.logger.destroy();
-        ListenerManager.callEvent(new StopEvent());
     }
 
     /**
