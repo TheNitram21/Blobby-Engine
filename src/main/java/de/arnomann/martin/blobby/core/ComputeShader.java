@@ -104,6 +104,10 @@ public class ComputeShader {
             glUniform1f(location, value);
     }
 
+    /**
+     * Sets the texture the compute shader will write to.
+     * @param texture the texture the compute shader's output will be written to.
+     */
     public void setOutputTexture(Texture texture) {
         glBindImageTexture(0, texture.getId(), 0, false, 0, GL_READ_WRITE, GL_RGBA8);
     }

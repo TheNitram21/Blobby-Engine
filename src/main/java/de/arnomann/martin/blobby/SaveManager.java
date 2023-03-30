@@ -10,18 +10,30 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
+/**
+ * A utility class for saving and loading save files.
+ */
 public class SaveManager {
 
     public static final HashMap<String, Object> savedValues = new HashMap<>();
 
     private SaveManager() {}
 
+    /**
+     * Saves the savedValues hash map to a file on disk.
+     * @throws IOException if an error occurred while saving.
+     */
     public static void save() throws IOException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
         String currentTime = OffsetDateTime.now().format(timeFormatter);
         save("save_" + currentTime);
     }
 
+    /**
+     * Saves the savedValues hash map to a file on disk.
+     * @param saveFileName the name of the save file.
+     * @throws IOException if an error occurred while saving.
+     */
     public static void save(String saveFileName) throws IOException {
         File file = new File(BlobbyEngine.SAVES_PATH + saveFileName + ".sav");
         if(file.exists())
@@ -36,6 +48,12 @@ public class SaveManager {
         ListenerManager.callEvent(new SaveEvent());
     }
 
+    /**
+     * Loads the latest save file.
+     * @return the loaded values.
+     * @throws IOException if an error occurred while reading the save file.
+     * @throws ClassNotFoundException shouldn't happen.
+     */
     public static HashMap<String, Object> load() throws IOException, ClassNotFoundException {
         File[] filesInDir = new File(BlobbyEngine.SAVES_PATH).listFiles(File::isFile);
         long lastModifiedTime = Long.MIN_VALUE;
@@ -55,6 +73,13 @@ public class SaveManager {
         return null;
     }
 
+    /**
+     * Loads the latest save file.
+     * @param saveFileName the name of the save file.
+     * @return the loaded values.
+     * @throws IOException if an error occurred while reading the save file.
+     * @throws ClassNotFoundException shouldn't happen.
+     */
     public static HashMap<String, Object> load(String saveFileName) throws IOException, ClassNotFoundException {
         File file = new File(BlobbyEngine.SAVES_PATH + saveFileName + ".sav");
         if(!file.exists())
